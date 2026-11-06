@@ -859,7 +859,7 @@ def check_schema(value, spec, path="$"):
     """Tiny structural validator: dict spec = exact keys, list spec = homogeneous list,
     tuple spec = any of the alternatives, otherwise an isinstance check."""
     if isinstance(spec, dict) and len(spec) == 1 and isinstance(next(iter(spec)), type):
-        (key_type, value_spec), = spec.items()
+        ((key_type, value_spec),) = spec.items()
         assert isinstance(value, dict), f"{path}: expected object, got {type(value).__name__}"
         for key, item in value.items():
             assert isinstance(key, key_type), f"{path}: key {key!r} is not {key_type}"
