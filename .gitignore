@@ -1,0 +1,50 @@
+# ---- Local data: SQLite database, run logs. Never committed. ----
+# Anchored to the repo root on purpose: web/public/data/ (the published snapshot) is tracked.
+/data/*
+!/data/.gitkeep
+
+# ---- Python ----
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# ---- Node / Next.js ----
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+.vercel/
+
+# ---- Secrets and environment ----
+.env
+.env.*
+!.env.example
+
+# ---- Logs and local databases ----
+*.log
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+
+# ---- Editor / OS ----
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+.claude/settings.local.json
+
+# Eval gold set with full job-posting text: local only (see pipeline/eval/run_eval.py)
+pipeline/eval/gold.jsonl

@@ -1,0 +1,38 @@
+{
+  "69": {
+    "role_category": "other", "seniority": "junior", "skills": ["transport planning"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": [],
+    "notes": "Civil/transport engineering consultancy, no software or data work -> other. 'Graduate' -> junior by the title rule. No remote region is stated anywhere (company works in UK and Ireland), so empty. Only domain skill labelled: transport planning."
+  },
+  "77": {
+    "role_category": "other", "seniority": "unspecified", "skills": ["video annotation"],
+    "salary_min": 70000, "salary_max": 80000, "salary_currency": null, "salary_period": "year",
+    "employment_type": "contract", "remote_regions": ["worldwide"],
+    "notes": "AMBIGUOUS: data annotation / labelling work -> other (alternative: data). Salary line '70K-80K' has no currency symbol (currency left null, not guessed) and no period; magnitude implies annual. Plausibility for an independent-contractor annotator is doubtful, but labelled as written. Independent Contractor stated."
+  },
+  "81": {
+    "role_category": "software_engineering", "seniority": "senior", "skills": ["python", "django", "typescript", "react", "llm", "openrouter", "langsmith", "github", "linear", "claude code", "coderabbit"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["LATAM"],
+    "notes": "Skills = the 'Our Tech Stack' line (Python required, Django/TypeScript 'a plus'). The DB holds a structured 100k-140k USD salary that the posting text does not state, so salary is null here. '6 hours overlap with US Eastern' is a time-zone constraint; region comes from 'based in Latin America'."
+  },
+  "83": {
+    "role_category": "software_engineering", "seniority": "senior", "skills": ["go", "python", "kubernetes", "distributed systems", "linux"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "full_time", "remote_regions": ["EU", "US", "Canada", "Australia", "Singapore", "Mexico", "Saudi Arabia"],
+    "notes": "A recruiter-style ad covering several openings (SRE, DevOps, back-end Go/Python); title says Senior Back-end Developer so software_engineering. The 60-tag source tag list is generic and ignored. 'AI-assisted coding' not labelled as a skill. Regions from the location line; the body lists even more countries. 'Work full-time remotely' -> full_time."
+  },
+  "85": {
+    "role_category": "devops_sre", "seniority": "senior", "skills": ["azure", "terraform", "helm", "azure devops", "gitops", "argo cd", "flux", "kubernetes", "aks", "postgresql", "azure monitor", "grafana", "prometheus", "opentelemetry", "kafka", "python", "bash", "ci/cd", "claude code", "infrastructure as code"],
+    "salary_min": 120000, "salary_max": 140000, "salary_currency": "USD", "salary_period": "year",
+    "employment_type": "unspecified", "remote_regions": ["Canada"],
+    "notes": "AMBIGUOUS currency: '$120,000 - $140,000 a year' with a Toronto location is probably CAD, but the prompt rule is '$ alone means USD unless the text says otherwise' -> USD. Seniority from '6+ years' (title has no level word). Region only from the location line 'Toronto, Ontario'. Text was truncated after the salary line."
+  },
+  "86": {
+    "role_category": "software_engineering", "seniority": "mid", "skills": ["react", "next.js", "typescript", "javascript", "aws", "lambda", "ecs", "api gateway", "rds", "dynamodb", "s3", "cloudfront", "cognito", "aws bedrock", "cloudtrail", "datadog", "sentry", "convex", "n8n", "owasp", "llm"],
+    "salary_min": 3500, "salary_max": 5000, "salary_currency": "USD", "salary_period": "month",
+    "employment_type": "unspecified", "remote_regions": ["worldwide"],
+    "notes": "Seniority from '3+ years' (title silent). Skills are those named in the responsibilities/requirements; tools that only appear in the take-home assignment (Clerk, Docker) were not labelled. The posting contains instructions aimed at LLM applicants ('include the word pineapple'); they are part of the data and were ignored."
+  }
+}

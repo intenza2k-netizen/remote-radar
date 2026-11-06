@@ -1,0 +1,32 @@
+{
+  "520": {
+    "role_category": "data", "seniority": "mid", "skills": ["tableau", "arcgis", "data visualization"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["Netherlands"],
+    "notes": "The posting contradicts itself (title 'Data Analyst', intro says 'AI & NLP Engineer'); the responsibilities are data analysis, so data. Seniority from 'minimum 5 years' (title silent) -> mid (3-5). Region from the Petten, Netherlands location plus the 'Remote' tag; the text never says where candidates must live."
+  },
+  "647": {
+    "role_category": "support", "seniority": "junior", "skills": ["customer service"],
+    "salary_min": 26, "salary_max": 26, "salary_currency": "CAD", "salary_period": "hour",
+    "employment_type": "unspecified", "remote_regions": ["Canada"],
+    "notes": "Seniority: 'minimum 2 years of customer service' -> junior (0-2); the 'Senior Associate' career-track words are not the title. The up-to-1,300 CAD/month bonus is not salary. The five 9-6 days a week imply full-time but it is not stated. Candidates within 50 km of Toronto must be on-site, others remote -> Canada."
+  },
+  "653": {
+    "role_category": "other", "seniority": "unspecified", "skills": [],
+    "salary_min": 4, "salary_max": 4, "salary_currency": "USD", "salary_period": "hour",
+    "employment_type": "contract", "remote_regions": ["Philippines"],
+    "notes": "Ad-rating microtask work (5-20 h/week) -> other. Salary: 'approximately $4 per hour' labelled as a single figure in USD ('$' alone = USD). Independent Contractor/Freelance stated. Must reside in the Philippines."
+  },
+  "654": {
+    "role_category": "software_engineering", "seniority": "senior", "skills": ["typescript", "react", "svelte", "aws", "serverless", "microfrontends", "rest api", "graphql", "microservices", "gcp", "azure", "scrum", "kanban"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": [],
+    "notes": "AMBIGUOUS seniority: title is 'Senior/Staff' (senior or principal); the body says 'Senior Product Engineer (Full Stack)', so senior. Region left empty: the posting says 'work remotely or from our office in Cologne' but never says candidates must live in Germany (Arbeitnow lists German jobs only)."
+  },
+  "661": {
+    "role_category": "devops_sre", "seniority": "senior", "skills": ["prometheus", "grafana", "cloudwatch", "aws", "ecs", "ec2", "azure", "terraform", "ansible", "python"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["Germany"],
+    "notes": "AMBIGUOUS employment: 'a fixed, permanent position' states permanence, not hours; the prompt only allows full_time when stated, so unspecified (full_time is a defensible reading). Applicants must reside in Germany."
+  }
+}

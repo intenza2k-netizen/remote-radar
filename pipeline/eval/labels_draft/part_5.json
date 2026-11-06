@@ -1,0 +1,38 @@
+{
+  "315": {
+    "role_category": "sales", "seniority": "lead", "skills": ["business development"],
+    "salary_min": 300000, "salary_max": 377000, "salary_currency": "USD", "salary_period": "year",
+    "employment_type": "unspecified", "remote_regions": ["US"],
+    "notes": "AMBIGUOUS role: 'Head of' (prompt: management) but the main work is identifying and closing partnerships, which the prompt lists under sales -> sales (decide by the main work). 'Head of' -> lead. The pay is an 'On Target Earnings Range', labelled as salary (period not stated, annual by magnitude); OTE includes variable pay, so a model returning null is defensible."
+  },
+  "331": {
+    "role_category": "management", "seniority": "lead", "skills": [],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["Thailand"],
+    "notes": "AMBIGUOUS role: people-management of an onboarding/customer-success team (coaching, performance management) -> management (alternative: support). Title 'Lead' -> lead. No concrete technologies in the visible text (requirements section truncated)."
+  },
+  "332": {
+    "role_category": "support", "seniority": "junior", "skills": ["rest api", "javascript", "java", "php", "csharp", "objective-c", "swift", "ruby", "python", "ios", "android", "github", "shopify", "magento"],
+    "salary_min": 100000, "salary_max": 125000, "salary_currency": "AUD", "salary_period": "year",
+    "employment_type": "unspecified", "remote_regions": ["Australia"],
+    "notes": "Seniority: '{ 1 - 2 } years' (template placeholder left in the posting) -> junior by the years rule. 'Positions listed as Remote are only available within the specified country' -> Australia. Generic 'web development' and 'database management' not labelled as skills."
+  },
+  "360": {
+    "role_category": "sales", "seniority": "junior", "skills": ["salesforce", "crm"],
+    "salary_min": 54600, "salary_max": 54600, "salary_currency": "EUR", "salary_period": "year",
+    "employment_type": "unspecified", "remote_regions": ["Ireland"],
+    "notes": "AMBIGUOUS salary: '54,600 base with on target earnings of 91,000 base plus equity'. Labelled the base only (single figure sets min and max); the OTE figure includes variable pay. Seniority: '2+ years' -> junior by the years rule (title 'I' is not a mapped level word)."
+  },
+  "425": {
+    "role_category": "support", "seniority": "unspecified", "skills": ["gdpr"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["EMEA"],
+    "notes": "AMBIGUOUS role: partner technical enablement, explicitly 'unlike a traditional pre-sales Solutions Engineer' -> support (alternatives: sales, other). 'EMEA' is not in the prompt's region vocabulary; kept as written. The requirements section is truncated, so no years or tools are visible. DB holds a structured 80k-100k EUR salary that the posting text does not state."
+  },
+  "460": {
+    "role_category": "software_engineering", "seniority": "unspecified", "skills": ["opentext exstream", "quadient inspire", "compart", "messagepoint", "safe", "scrum", "istqb", "test management", "customer communication management"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "part_time", "remote_regions": ["Switzerland"],
+    "notes": "German-language posting. AMBIGUOUS role: test management for a document-system migration; closest prompt category is QA -> software_engineering (alternatives: other, management). 'Mehrjaehrige Erfahrung' (several years) gives no number -> unspecified. '50% Position' -> part_time. Region from the Bern location and the 'Remote' tag."
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "762": {
+    "role_category": "software_engineering", "seniority": "unspecified", "skills": ["java", "react", "typescript"],
+    "salary_min": 132948, "salary_max": 189927, "salary_currency": "USD", "salary_period": "year",
+    "employment_type": "unspecified", "remote_regions": ["US"],
+    "notes": "'This range encompasses multiple levels' and no level word or years, so unspecified. Pay period is not stated but a US base salary range of this size is annual. Region: location USA plus 'within the ET time zone'."
+  },
+  "781": {
+    "role_category": "data", "seniority": "unspecified", "skills": ["apache iceberg", "delta lake", "hudi", "ceph", "postgresql", "pgvector", "trino", "duckdb", "clickhouse", "spark sql", "kafka", "airflow", "dagster", "argo workflows", "sql", "kubernetes", "linux", "terraform", "pulumi", "gitops", "change data capture", "oauth", "tak server"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["US"],
+    "notes": "AMBIGUOUS role: forward-deployed engineer who deploys and operates a data platform and builds pipelines -> data (alternatives: devops_sre, software_engineering). Seniority: 'engineering leader' who mentors juniors but no level word or years visible (preferred-qualifications section truncated) -> unspecified. Skills taken from Required Qualifications; the list is long and the likeliest place for gold/model disagreement. US citizenship required."
+  },
+  "907": {
+    "role_category": "design", "seniority": "senior", "skills": ["product design", "visual design", "accessibility"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["Germany"],
+    "notes": "AMBIGUOUS seniority: title '(Senior) Product Designer' (optional level) with 'minimum 3 years' -> senior from the title word (mid is defensible). No design tools are named. 'chances of entering full-time' is odd wording, so employment is unspecified. 'You work remotely (Germany-wide)'."
+  },
+  "945": {
+    "role_category": "other", "seniority": "unspecified", "skills": [],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "contract", "remote_regions": [],
+    "notes": "Not a real vacancy: a speculative call to join a contractor network, with no role, skills or location. Included on purpose as a hard 'nothing to extract' case. Contractor stated. The 'United Kingdom' text is the job board's footer, not the employer's statement."
+  },
+  "1008": {
+    "role_category": "data", "seniority": "unspecified", "skills": ["python", "sql", "bigquery", "machine learning", "llm", "statistics"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["Germany"],
+    "notes": "German-language posting. 'einschlaegige Berufserfahrung' gives no number of years -> unspecified. 100% home office with quarterly office days in Kassel and fluent German required -> Germany."
+  }
+}

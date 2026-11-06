@@ -1,0 +1,25 @@
+{
+  "backend": "ollama",
+  "model": "gemma4:31b-it-q4_K_M",
+  "prompt_version": "v1",
+  "last_run_started_at": "2026-11-06T11:18:05Z",
+  "gpu_before_load": {
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "vram_used_mib": 2722,
+    "vram_total_mib": 32607
+  },
+  "warmup_ms": 41407,
+  "ollama_ps": {
+    "size_bytes": 2707937032,
+    "size_vram_bytes": 2707937032,
+    "gpu_fraction": 1.0,
+    "context_length": 8192
+  },
+  "gpu_while_loaded": {
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "vram_used_mib": 25567,
+    "vram_total_mib": 32607
+  },
+  "last_run_finished_at": "2026-11-06T11:19:47Z",
+  "total_cost_usd": 0.0
+}

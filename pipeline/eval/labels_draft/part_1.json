@@ -1,0 +1,38 @@
+{
+  "2": {
+    "role_category": "other", "seniority": "unspecified", "skills": [],
+    "salary_min": 20, "salary_max": 40, "salary_currency": "GBP", "salary_period": "hour",
+    "employment_type": "unspecified", "remote_regions": ["UK"],
+    "notes": "Role is student coaching/wellbeing (education), not customer support: 'other' chosen over 'support'. Self-set pay rate suggests self-employed but the text never says contract, so employment is unspecified. No concrete technologies named."
+  },
+  "11": {
+    "role_category": "design", "seniority": "unspecified", "skills": ["adobe creative suite", "motion graphics"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "contract", "remote_regions": ["US"],
+    "notes": "'Pay based on freelancer's rate' is not a figure, so no salary. 'Project-based | Contract' header gives contract. Source tags are a generic RemoteOK tag dump and were ignored."
+  },
+  "20": {
+    "role_category": "marketing", "seniority": "senior", "skills": [],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["US"],
+    "notes": "AMBIGUOUS seniority: title has no level word but the body says 'The Sr Marketing Operations Specialist'; labelled senior from the body. The source text itself is cut off mid-sentence, so no skills are visible. Region from the location line 'Remote - US'."
+  },
+  "21": {
+    "role_category": "support", "seniority": "unspecified", "skills": [],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["US", "Canada"],
+    "notes": "AMBIGUOUS role: customer-facing implementation/installation of the company's own software; prompt says 'solutions/implementation support' -> support (alternative: other). 'Intapp' is the product being implemented, not a stated skill, so not labelled. Seniority wording ('advanced expertise', 'expert') carries no level word or years."
+  },
+  "33": {
+    "role_category": "product", "seniority": "lead", "skills": ["product management", "llm", "distributed systems", "api"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["worldwide"],
+    "notes": "Title 'Technical Product Lead' -> lead (title word rule) even though it is an individual-owner role. Skills are subjective here: kept only the clearly named ones (product management, LLMs, distributed systems, APIs); payments/KYC domain knowledge not labelled as skills. 'We hire globally' -> worldwide."
+  },
+  "43": {
+    "role_category": "support", "seniority": "senior", "skills": ["halopsa", "hudu", "intune", "immybot", "meraki", "microsoft 365", "avigilon", "rhombus", "azure ad", "active directory", "cisco"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["worldwide"],
+    "notes": "Tier III help desk = technical support (alternative: devops_sre for IT systems admin). Title has no level word; '6+ years' -> senior. Skills taken from 'Our Technology Stack' and qualifications. Location line says 'Worldwide' although the company is Arizona-based."
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "98": {
+    "role_category": "marketing", "seniority": "unspecified", "skills": ["seo", "copywriting"],
+    "salary_min": 20000, "salary_max": 35000, "salary_currency": "USD", "salary_period": "year",
+    "employment_type": "contract", "remote_regions": ["worldwide"],
+    "notes": "AMBIGUOUS salary: the salary line says '$20k -$35k' (no period; annual by magnitude) but the body pays per word ($0.034-$0.07). Labelled the salary line since the prompt allows 'in the text or in the salary line'; a model that returns null (per-word pay is not a salary) is defensible. '2 to 4 years ... preferred' is not a requirement -> unspecified. Source tags (excel, quickbooks) belong to another posting and were ignored."
+  },
+  "185": {
+    "role_category": "sales", "seniority": "senior", "skills": ["b2b sales", "crm", "linkedin sales navigator", "sales automation", "cold calling"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["Switzerland"],
+    "notes": "German-language posting. Hands-on hunter selling role despite 'Manager' in the title -> sales, not management. Seniority: title silent, but the text says 'Die Rolle ist senior gedacht' (role is meant to be senior; mid-level accepted if exceptional) -> senior. Region: Zurich-based, 'auch remote', Swiss market -> Switzerland. Remaining part of the posting (benefits) was truncated."
+  },
+  "198": {
+    "role_category": "management", "seniority": "lead", "skills": ["aws", "eks", "terraform", "gitops", "datadog", "ci/cd", "infrastructure as code", "rds", "soc 2", "hipaa", "pci dss"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["US"],
+    "notes": "AMBIGUOUS role: Director who leads a team of infra/reliability engineers -> management (alternative: devops_sre). AMBIGUOUS seniority: the prompt's title list has no 'director' (it maps 'head of' -> lead); labelled lead by analogy. This is a prompt gap, not a model error, if models disagree. The requirements section is truncated. DB holds a structured 209.5k-270k USD salary that the posting text does not state."
+  },
+  "205": {
+    "role_category": "software_engineering", "seniority": "principal", "skills": ["playwright", "cypress", "jest", "junit", "typescript", "javascript", "python", "java", "jenkins", "github actions", "circleci", "testrail", "react", "openai", "anthropic", "llm", "test automation"],
+    "salary_min": 136000, "salary_max": 187000, "salary_currency": "USD", "salary_period": "year",
+    "employment_type": "unspecified", "remote_regions": ["Canada", "US"],
+    "notes": "AMBIGUOUS salary: the posting gives two bands, 'Canada ... $134,400-$184,800 CAD' and 'USA ... $136,000-$187,000 USD'. Labelled the USD band (matches the DB). A model returning the CAD band is equally defensible. 'Staff' in title -> principal. QA automation counts as software_engineering per the prompt."
+  },
+  "207": {
+    "role_category": "software_engineering", "seniority": "unspecified", "skills": ["go", "java", "c", "scala", "cassandra", "kafka", "kubernetes", "docker", "envoy", "aws", "gcp", "react", "distributed systems"],
+    "salary_min": 85000, "salary_max": 110000, "salary_currency": "GBP", "salary_period": "year",
+    "employment_type": "unspecified", "remote_regions": ["UK"],
+    "notes": "'Engineer III' / 'L40' is a level but not one the prompt maps, and no years are given -> unspecified (a defensible alternative is mid or senior; another prompt gap). Technologies listed as 'what you'll be working on' (explicitly not required) are labelled, since the prompt says to include required and nice-to-have skills."
+  },
+  "266": {
+    "role_category": "sales", "seniority": "junior", "skills": ["salesforce", "zoom", "generative ai"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": ["US"],
+    "notes": "AMBIGUOUS seniority: '1-3+ years of B2B sales experience' straddles junior (0-2) and mid (3-5); labelled junior from the minimum of 1 year. The 'Compensation' heading is empty, so no salary."
+  }
+}

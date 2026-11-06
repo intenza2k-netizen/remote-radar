@@ -1,0 +1,192 @@
+{
+ "apiVersion": "2.2.19",
+ "documentationUrl": "https://jobi.cy/apidocs",
+ "friendlyNotice": "Thanks for using Jobicy API! Please ensure Jobicy is clearly credited with a direct link to the source, and all application buttons redirect to the original job URL provided in this feed. That’s all! You might be building something amazing, we wish you the best of luck!",
+ "jobCount": 8,
+ "lastUpdate": "2026-11-06T06:17:17+00:00",
+ "nextCursor": "AgAAAABq7aweAAAAAGrtR2kAAAAAAAJcUpGStyjVOt7ULMvdFdHp_0xjGsH--7hP_G6cSgT0AUpIBnFpKbty0hIEXFdWD6oEWHEbLmtVhwQ3IUFSK2UDNSA",
+ "hasMore": true,
+ "appliedFilters": {
+  "count": 50
+ },
+ "jobs": [
+  {
+   "id": 159265,
+   "url": "https://jobicy.com/jobs/159265-data-scientist-7",
+   "jobSlug": "159265-data-scientist-7",
+   "jobTitle": "Data Scientist",
+   "companyName": "Solace",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2025/06/4e37a66b-221.png",
+   "jobIndustry": [
+    "Data Science & Analytics"
+   ],
+   "jobType": [
+    "Full-Time"
+   ],
+   "jobGeo": "USA",
+   "jobLevel": "Director",
+   "jobExcerpt": "About Solace Healthcare in the U.S. is fundamentally broken. The system is so complex that 88% of U.S. adults do not have the health literacy necessary to navigate it without help. Solace cuts through the red tape of healthcare by pairing patients with expert advocates and giving them the tools to make better decisions—and get&hellip;",
+   "jobDescription": "<h3><strong>About <a href=\"https://jobicy.com/company/solace\" target=\"_blank\" rel=\"noopener\">Solace</a></strong></h3>\n<p>Healthcare in the U.S. is fundamentally broken. The system is so complex that 88% of U.S. adults do not have the health literacy necessary to navigate it without help. Solace cuts through the red tape of healthcare by pairing patients with expert advocates and giving them the tools to make better decisions—and get better outcomes.</p>\n<p>We're a Series C startup, founded in 2022 and backed by Inspired Capital, Craft Ventures, Torch Capital, Menlo Ventures, Signalfire, and IVP. Our U.S. based team is lean, mission-driven, and growing quickly.</p>\n<p>Solace isn't a place to coast. We're here to redefine healthcare—and that demands urgency, precision, and heart. If you're looking to stretch yourself, sharpen your edge, and do the best work of your life alongside a team that cares deeply, you're in the right place. We’re intense, and we like it that way.</p>\n<p><em><strong>Read more in our Bloomberg funding announcement </strong></em>",
+   "pubDate": "2026-11-06T06:17:17+00:00",
+   "salaryMin": 160000,
+   "salaryMax": 200000,
+   "salaryCurrency": "USD",
+   "salaryPeriod": "yearly"
+  },
+  {
+   "id": 159255,
+   "url": "https://jobicy.com/jobs/159255-registered-nurse-healthcare-advocate-remote-1099",
+   "jobSlug": "159255-registered-nurse-healthcare-advocate-remote-1099",
+   "jobTitle": "Registered Nurse Healthcare Advocate (Remote 1099)",
+   "companyName": "Solace",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2025/06/4e37a66b-221.png",
+   "jobIndustry": [
+    "Healthcare & Medical"
+   ],
+   "jobType": [
+    "Contract"
+   ],
+   "jobGeo": "USA",
+   "jobLevel": "Any",
+   "jobExcerpt": "About Solace Healthcare in the U.S. is fundamentally broken. The system is so complex that 88% of U.S. adults do not have the health literacy necessary to navigate it without help. Solace cuts through the red tape of healthcare by pairing patients with expert advocates and giving them the tools to make better decisions—and get&hellip;",
+   "jobDescription": "<h3><strong>About <a href=\"https://jobicy.com/company/solace\" target=\"_blank\" rel=\"noopener\">Solace</a></strong></h3>\n<p>Healthcare in the U.S. is fundamentally broken. The system is so complex that 88% of U.S. adults do not have the health literacy necessary to navigate it without help. Solace cuts through the red tape of healthcare by pairing patients with expert advocates and giving them the tools to make better decisions—and get better outcomes.</p>\n<p>We're a Series C startup, founded in 2022 and backed by Inspired Capital, Craft Ventures, Torch Capital, Menlo Ventures, Signalfire, and IVP. Our U.S. based team is lean, mission-driven, and growing quickly.</p>\n<p>Solace isn't a place to coast. We're here to redefine healthcare—and that demands urgency, precision, and heart. If you're looking to stretch yourself, sharpen your edge, and do the best work of your life alongside a team that cares deeply, you're in the right place. We’re intense, and we like it that way.</p>\n<p><em><strong>Read more in our Bloomberg funding announcement </strong></em>",
+   "pubDate": "2026-11-06T06:16:43+00:00",
+   "salaryMin": 40,
+   "salaryMax": 40,
+   "salaryCurrency": "USD",
+   "salaryPeriod": "hourly"
+  },
+  {
+   "id": 154706,
+   "url": "https://jobicy.com/jobs/154706-crm-marketing-intern",
+   "jobSlug": "154706-crm-marketing-intern",
+   "jobTitle": "CRM Marketing Intern",
+   "companyName": "Catawiki",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2025/06/77d018df-221.png",
+   "jobIndustry": [
+    "Marketing & Sales"
+   ],
+   "jobType": [
+    "Internship"
+   ],
+   "jobGeo": "Netherlands",
+   "jobLevel": "Entry-Level, Junior",
+   "jobExcerpt": "At Catawiki, every day brings the extraordinary! Whether it’s Daniel Ricciardo’s Formula 1 Car, a Woolly Mammoth’s Skeleton, Lady Gaga's Jumpsuit or Usain Bolt’s running shoe, we encounter exceptional objects every day. We’re a one-of-a-kind marketplace for buying and selling special objects. Each week, more than 100,000 unique items are auctioned, all carefully curated by&hellip;",
+   "jobDescription": "<p>At <a href=\"https://jobicy.com/company/catawiki\" target=\"_blank\" rel=\"noopener\">Catawiki</a>, every day brings the extraordinary! Whether it’s <a href=\"https://www.catawiki.com/en/c/583-sports-memorabilia\" rel=\"nofollow ugc noopener\" target=\"_blank\">Daniel Ricciardo’s Formula 1 Car</a>, a <a href=\"https://www.catawiki.com/en/c/579-fossils\" rel=\"nofollow ugc noopener\" target=\"_blank\">Woolly Mammoth’s Skeleton</a>, <a href=\"https://www.catawiki.com/en/l/10035805\" rel=\"nofollow ugc noopener\" target=\"_blank\">Lady Gaga's Jumpsuit</a> or <a href=\"https://www.catawiki.com/en/c/583-sports-memorabilia\" rel=\"nofollow ugc noopener\" target=\"_blank\">Usain Bolt’s running shoe</a>, we encounter exceptional objects every day.</p>\n<p>We’re a one-of-a-kind marketplace for buying and selling special objects. Each week, more than 100,000 unique items are auctioned, all carefully curated by our passionate in-house experts.</p>\n<p>Having sold over 25 million unique objects, our mission is to become the world’s most popular destination for special objects. As a growing, diverse and sustainable scale-up, we proudly live by three core values. If these values resonate with you, we’d love to explore how you can join us.</p>\n<ul>\n<li>Taking ownership and driving impact </li>\n<li>Being open to change and feedback</li>\n<li>Being passionate about our mission and our customers. </li>\n</ul>\n<h3><strong>What you will do</strong></h3>\n<p>As a CRM intern you will operationally support the implementation of o",
+   "pubDate": "2026-11-06T03:20:09+00:00",
+   "salaryMin": 600,
+   "salaryMax": 600,
+   "salaryCurrency": "EUR",
+   "salaryPeriod": "monthly"
+  },
+  {
+   "id": 159260,
+   "url": "https://jobicy.com/jobs/159260-gcp-computer-system-validation-specialist-12-month-limited-term",
+   "jobSlug": "159260-gcp-computer-system-validation-specialist-12-month-limited-term",
+   "jobTitle": "GCP - Computer System Validation Specialist (12 month limited-term)",
+   "companyName": "Alimentiv",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2025/06/d11f5845-221.png",
+   "jobIndustry": [
+    "QA & Testing"
+   ],
+   "jobType": [
+    "Full-Time"
+   ],
+   "jobGeo": "Canada",
+   "jobLevel": "Senior",
+   "jobExcerpt": "Alimentiv is a global CRO with a singular focus: advancing therapies for patients with gastrointestinal diseases. GI is our WHY and for more than 30 years that purpose has driven our scientific rigour, operational excellence, and deep therapeutic expertise, including supporting more than 70% of IBD compounds in development.We operate as a private, profit-with-purpose company,&hellip;",
+   "jobDescription": "<p><a href=\"https://jobicy.com/company/alimentiv\" target=\"_blank\" rel=\"noopener\">Alimentiv</a> is a global CRO with a singular focus: advancing therapies for patients with gastrointestinal diseases. GI is our WHY and for more than 30 years that purpose has driven our scientific rigour, operational excellence, and deep therapeutic expertise, including supporting more than 70% of IBD compounds in development.<br>We operate as a private, profit-with-purpose company, channeling our commercial success back into scientific research, technology, and our people. With approximately 700 people across multiple countries and three service lines, we are growing deliberately, and the capability of our leaders and our organization is central to how we get there.</p>\n<p>If you want to do meaningful work, build something real, and invest back in research that changes lives — we want to meet you!</p>\n\n<p>Looking for a new challenge with real impact, ensuring technology meets the highest quality and compliance standards in a regulated environment? As a <strong>Computer System Validation (CSV) Specialist</strong>, you will play a key role in validating GCP-regulated systems, partnering with IT, Quality, and business teams to deliver compliant, reliable solutions. You'll lead validation activities from planning through execution, influence system quality and integrity, and help drive continuous compliance with industry regulations and best practices.</p>\n<h3>About the Role:</h3>\n<ul>\n<li>Execute ",
+   "pubDate": "2026-11-06T06:16:48+00:00",
+   "salaryMin": 69000,
+   "salaryMax": 115000,
+   "salaryCurrency": "CAD",
+   "salaryPeriod": "yearly"
+  },
+  {
+   "id": 159261,
+   "url": "https://jobicy.com/jobs/159261-sr-principal-sales-training-manager",
+   "jobSlug": "159261-sr-principal-sales-training-manager",
+   "jobTitle": "Sr. Principal Sales Training Manager",
+   "companyName": "Keyfactor, Inc.",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2025/06/ba8ae349-221.png",
+   "jobIndustry": [
+    "Education & E-learning"
+   ],
+   "jobType": [
+    "Full-Time"
+   ],
+   "jobGeo": "USA",
+   "jobLevel": "Director",
+   "jobExcerpt": "About Keyfactor Our mission is to securely connect the world: humans, machines, and AI. Keyfactor is the leader in trust infrastructure for AI and machines, helping the world's largest enterprises and government agencies take control of the cryptographic identities that safeguard every digital interaction. Behind the platform is a global team of people who care&hellip;",
+   "jobDescription": "<p><strong>About Keyfactor </strong></p>\n<p>Our mission is to securely connect the world: humans, machines, and AI. Keyfactor is the leader in trust infrastructure for AI and machines, helping the world's largest enterprises and government agencies take control of the cryptographic identities that safeguard every digital interaction. Behind the platform is a global team of people who care deeply about the work and each other. We move fast, think big, and show up for one another every day. If you're looking for work that matters and a team that brings out your best, we hope you'll trust your future with Keyfactor!</p>\n</p>\n<p><strong>Title: </strong>Sr. Principal Sales Training Manager</p>\n<p><strong>Location:</strong> United States (Remote)</p>\n<p><strong>Experience: </strong>Senior</p>\n<p><strong>Job Function:</strong> Business Transformation</p>\n<p><strong>Employment Type: </strong>Full-time</p>\n<p><strong>Industry: </strong>Computer &amp; Network Security</p>\n<p><strong>About the position</strong></p>\n<p>The Senior Principal Sales Training Manager drives hands-on training, execution, and adoption of Keyfactor's global sales enablement programs. This role works directly with sellers and sales leaders to ensure the skills, methodologies, messaging, and tools introduced through enablement are consistently applied in the field.</p>\n<p>A significant portion of this role focuses on delivering consistent, high-impact onboarding experience, guiding new sellers from initial trainin",
+   "pubDate": "2026-11-06T06:16:50+00:00"
+  },
+  {
+   "id": 159250,
+   "url": "https://jobicy.com/jobs/159250-database-programmer",
+   "jobSlug": "159250-database-programmer",
+   "jobTitle": "Database Programmer",
+   "companyName": "Alimentiv",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2025/06/d11f5845-221.png",
+   "jobIndustry": [
+    "Software Engineering"
+   ],
+   "jobType": [
+    "Full-Time"
+   ],
+   "jobGeo": "Canada,  USA",
+   "jobLevel": "Any",
+   "jobExcerpt": "Alimentiv is a global CRO with a singular focus: advancing therapies for patients with gastrointestinal diseases. GI is our WHY and for more than 30 years that purpose has driven our scientific rigour, operational excellence, and deep therapeutic expertise, including supporting more than 70% of IBD compounds in development.We operate as a private, profit-with-purpose company,&hellip;",
+   "jobDescription": "<p><a href=\"https://jobicy.com/company/alimentiv\" target=\"_blank\" rel=\"noopener\">Alimentiv</a> is a global CRO with a singular focus: advancing therapies for patients with gastrointestinal diseases. GI is our WHY and for more than 30 years that purpose has driven our scientific rigour, operational excellence, and deep therapeutic expertise, including supporting more than 70% of IBD compounds in development.<br>We operate as a private, profit-with-purpose company, channeling our commercial success back into scientific research, technology, and our people. With approximately 700 people across multiple countries and three service lines, we are growing deliberately, and the capability of our leaders and our organization is central to how we get there.</p>\n<p>If you want to do meaningful work, build something real, and invest back in research that changes lives — we want to meet you!</p>\n\n<h3>Job Overview</h3>\n<p>The Database Programmer is responsible for the design, development, testing, maintenance, and archiving of clinical study databases throughout the study lifecycle. This role will play a key part in supporting the deployment, adoption, and ongoing development of Medidata Rave EDC as Alimentiv expands its Electronic Data Capture (EDC) capabilities.</p>\n<p>The successful candidate will bring hands-on experience with Medidata Rave EDC and C# programming to develop custom functions, support database configurations, and contribute to clinical database programming activities ind",
+   "pubDate": "2026-11-06T06:16:11+00:00",
+   "salaryMin": 75000,
+   "salaryMax": 125000,
+   "salaryCurrency": "CAD",
+   "salaryPeriod": "yearly"
+  },
+  {
+   "id": 159236,
+   "url": "https://jobicy.com/jobs/159236-growth-marketing-manager-ai-paid-programs",
+   "jobSlug": "159236-growth-marketing-manager-ai-paid-programs",
+   "jobTitle": "Growth Marketing Manager, AI & Paid Programs",
+   "companyName": "Demandbase, Inc.",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2025/06/664c17c5-221.jpg",
+   "jobIndustry": [
+    "Marketing & Sales"
+   ],
+   "jobType": [
+    "Full-Time"
+   ],
+   "jobGeo": "USA",
+   "jobLevel": "Senior",
+   "jobExcerpt": "Introduction to Demandbase: Demandbase is the only pipeline AI platform that empowers GTM teams to automate growth at scale. With a unified view of data, insights, actions, and outcomes, B2B enterprises can seamlessly align and execute their account-based GTM strategies with confidence. Thousands of businesses trust Demandbase to maximize revenue, minimize waste, and consolidate their&hellip;",
+   "jobDescription": "<p><strong>Introduction to Demandbase:</strong></p>\n<p>Demandbase is the only pipeline AI platform that empowers GTM teams to automate growth at scale. With a unified view of data, insights, actions, and outcomes, B2B enterprises can seamlessly align and execute their account-based GTM strategies with confidence. Thousands of businesses trust Demandbase to maximize revenue, minimize waste, and consolidate their data and tech stacks – all in one platform. </p>\n<p>As a company, we’re as committed to growing careers as we are to building world-class technology. We invest heavily in people, our culture, and the community around us. We have also continuously been recognized as One of The Best Places To Work in the San Francisco Bay Area by Fortune, and One of The 60 Best Companies To Sell For by Selling Power. Our offices are located in San Francisco, New York, Austin, Seattle, India, and the United Kingdom. </p>\n<h3><strong>About the Role</strong></h3>\n<p>You'll run the programs that fill the top of our funnel: paid search, paid social, and our AI SDR. You'll also build the agents and workflows that make our demand gen team faster. You're part operator and part builder. You manage agency partners to pipeline outcomes, and when a process is manual and repetitive, you automate it. Success means more pipeline per dollar and fewer hours spent on work a workflow could do.</p>\n</p>\n<h3><strong>What You'll Do</strong></h3>\n<h3><strong>Paid programs</strong></h3>\n<ul>\n<li>\n<p>Drive paid ",
+   "pubDate": "2026-11-06T06:15:26+00:00"
+  },
+  {
+   "id": 159245,
+   "url": "https://jobicy.com/jobs/159245-licensed-practical-nurse-licensed-vocational-nurse-healthcare-advocate-remote-1099",
+   "jobSlug": "159245-licensed-practical-nurse-licensed-vocational-nurse-healthcare-advocate-remote-1099",
+   "jobTitle": "Licensed Practical Nurse | Licensed Vocational Nurse Healthcare Advocate (Remote-1099)",
+   "companyName": "Solace",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2025/06/4e37a66b-221.png",
+   "jobIndustry": [
+    "Healthcare & Medical"
+   ],
+   "jobType": [
+    "Contract"
+   ],
+   "jobGeo": "USA",
+   "jobLevel": "Any",
+   "jobExcerpt": "About Solace Healthcare in the U.S. is fundamentally broken. The system is so complex that 88% of U.S. adults do not have the health literacy necessary to navigate it without help. Solace cuts through the red tape of healthcare by pairing patients with expert advocates and giving them the tools to make better decisions—and get&hellip;",
+   "jobDescription": "<h3><strong>About <a href=\"https://jobicy.com/company/solace\" target=\"_blank\" rel=\"noopener\">Solace</a></strong></h3>\n<p>Healthcare in the U.S. is fundamentally broken. The system is so complex that 88% of U.S. adults do not have the health literacy necessary to navigate it without help. Solace cuts through the red tape of healthcare by pairing patients with expert advocates and giving them the tools to make better decisions—and get better outcomes.</p>\n<p>We're a Series C startup, founded in 2022 and backed by Inspired Capital, Craft Ventures, Torch Capital, Menlo Ventures, Signalfire, and IVP. Our U.S. based team is lean, mission-driven, and growing quickly.</p>\n<p>Solace isn't a place to coast. We're here to redefine healthcare—and that demands urgency, precision, and heart. If you're looking to stretch yourself, sharpen your edge, and do the best work of your life alongside a team that cares deeply, you're in the right place. We’re intense, and we like it that way.</p>\n<p><em><strong>Read more in our Bloomberg funding announcement </strong></em>",
+   "pubDate": "2026-11-06T06:16:04+00:00",
+   "salaryMin": 40,
+   "salaryMax": 40,
+   "salaryCurrency": "USD",
+   "salaryPeriod": "hourly"
+  }
+ ],
+ "statusCode": 200,
+ "success": true
+}

@@ -1,0 +1,38 @@
+{
+  "46": {
+    "role_category": "management", "seniority": "lead", "skills": ["javascript", "react", "llm evals"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "unspecified", "remote_regions": [],
+    "notes": "AMBIGUOUS role: '70% engineering leadership, 30% product', manages teams and team leads, but 'roll up your sleeves' -> management chosen (alternative: software_engineering). Region: only a company-wide 'team works remotely from every corner of the world'; no statement about candidate location, so left empty (a model answering worldwide is defensible). Preferred: on-device inference was not labelled as a skill."
+  },
+  "49": {
+    "role_category": "other", "seniority": "unspecified", "skills": ["google sheets", "excel", "quickbooks", "google workspace", "bookkeeping"],
+    "salary_min": 35300, "salary_max": 52000, "salary_currency": "USD", "salary_period": "year",
+    "employment_type": "full_time", "remote_regions": ["worldwide"],
+    "notes": "AMBIGUOUS salary: the salary line says '$35,3k- $52k' (garbled thousands separator, period unstated, clearly annual) while the body says '$15 to $25 per hour' for four US states only. Labelled the salary line as year (it is also what the DB parsed). Source tags (php, magento, photoshop...) are unrelated to the posting and were ignored. full_time inferred from the explicit '40 hours per week, Monday through Friday'."
+  },
+  "52": {
+    "role_category": "product", "seniority": "principal", "skills": ["product management", "llm"],
+    "salary_min": 195500, "salary_max": 230000, "salary_currency": "USD", "salary_period": "year",
+    "employment_type": "unspecified", "remote_regions": [],
+    "notes": "'Remote' with no region. Base salary stated in the body; bonus/equity ignored. Healthcare/oncology experience is domain experience, not labelled as a skill."
+  },
+  "53": {
+    "role_category": "support", "seniority": "unspecified", "skills": ["social media", "digital marketing", "customer service"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "contract", "remote_regions": ["worldwide"],
+    "notes": "Performance-based bonus pay with no figure -> no salary (the DB holds a structured 50k-90k USD/year that the posting text does not state). Independent contractor (1099) stated. Looks like a low-quality / possibly scam-like posting; labelled as written."
+  },
+  "55": {
+    "role_category": "software_engineering", "seniority": "lead", "skills": ["ruby", "ruby on rails", "postgresql", "mysql", "elasticsearch", "redis", "docker", "stimulus", "javascript", "tailwind css", "html", "llm", "nlp", "langchain", "hugging face", "kubernetes", "react", "hotwire", "graph database", "databricks"],
+    "salary_min": 170000, "salary_max": 200000, "salary_currency": "USD", "salary_period": "year",
+    "employment_type": "unspecified", "remote_regions": ["US", "Canada"],
+    "notes": "AMBIGUOUS salary: salary line '$170k - $200k' vs body '$160,000-$200,000 CAD/USD'. Labelled the salary line. Region from 'USA, Canada' and +/-3h of Eastern Time. HTTP was listed as a skill in the posting but not labelled (too generic)."
+  },
+  "67": {
+    "role_category": "support", "seniority": "mid", "skills": ["rest api", "soap", "json", "xml", "postman", "soapui", "swagger", "html", "css", "javascript", "go", "python", "nodejs", "apache", "nginx", "mysql", "oracle", "postgresql", "mongodb"],
+    "salary_min": null, "salary_max": null, "salary_currency": null, "salary_period": null,
+    "employment_type": "full_time", "remote_regions": ["Brazil"],
+    "notes": "AMBIGUOUS role and seniority: technical account management = customer-facing technical support (alternative: management, since the body says it leads a team of TAMs; header says 'Individual Contributor'). No title level word; header says '+3 years', requirements say '5+ years' -> mid by the years rule (the body also says 'senior technical voice' and 'leadership position'). Region from 'Remote, Brazil' although the body says 'work from everywhere'."
+  }
+}

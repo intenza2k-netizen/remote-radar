@@ -1,0 +1,926 @@
+# Canonical skill vocabulary for Remote Radar.
+#
+# skills.<slug>: {display, category, aliases}
+#   slug      lowercase, [a-z0-9-] only (c++ -> cpp, c# -> csharp, node.js -> nodejs)
+#   category  one of: language framework cloud data devops database ai_ml tool design business other
+#   aliases   alternative spellings; matching ignores case, spaces, dots, hyphens and slashes
+#             ("React JS", "react.js" and "reactjs" are the same key), so list only spellings
+#             that differ in letters. The slug and display name are always aliases of themselves.
+# drop: vague non-skills and junk tags (roles, levels, departments, industries, soft skills).
+#
+# Loading validates that no alias (after that loose matching) maps to two canonicals.
+
+skills:
+  # ------------------------------------------------------------------ languages
+  python: {display: Python, category: language, aliases: [python3, py, python 3, python 2, cpython, python programming]}
+  javascript: {display: JavaScript, category: language, aliases: [js, ecmascript, es6, es2015, es2020, vanilla js, vanilla javascript]}
+  typescript: {display: TypeScript, category: language, aliases: [ts]}
+  java: {display: Java, category: language, aliases: [core java, java se, java ee, j2ee, java 8, java 11, java 17]}
+  csharp: {display: "C#", category: language, aliases: ["c#", c sharp, c-sharp, csharp]}
+  cpp: {display: "C++", category: language, aliases: ["c++", c plus plus, cplusplus, "c/c++", modern c++, "c++11", "c++17"]}
+  c: {display: C, category: language, aliases: [c language, c programming, ansi c, embedded c]}
+  go: {display: Go, category: language, aliases: [golang, go lang, go language]}
+  rust: {display: Rust, category: language, aliases: [rust lang, rustlang]}
+  ruby: {display: Ruby, category: language, aliases: [ruby lang]}
+  php: {display: PHP, category: language, aliases: [php 7, php 8, php7, php8]}
+  swift: {display: Swift, category: language, aliases: [swift lang]}
+  kotlin: {display: Kotlin, category: language, aliases: []}
+  scala: {display: Scala, category: language, aliases: []}
+  r: {display: R, category: language, aliases: [r language, r programming, rstats, r lang]}
+  sql: {display: SQL, category: language, aliases: [t-sql, tsql, pl/sql, plsql, structured query language, sql queries, advanced sql]}
+  bash: {display: Bash, category: language, aliases: [shell, shell scripting, bash scripting]}
+  powershell: {display: PowerShell, category: language, aliases: [power shell, pwsh]}
+  perl: {display: Perl, category: language, aliases: []}
+  dart: {display: Dart, category: language, aliases: []}
+  elixir: {display: Elixir, category: language, aliases: []}
+  erlang: {display: Erlang, category: language, aliases: []}
+  haskell: {display: Haskell, category: language, aliases: []}
+  lua: {display: Lua, category: language, aliases: []}
+  matlab: {display: MATLAB, category: language, aliases: [simulink]}
+  objective-c: {display: Objective-C, category: language, aliases: [objc, objective c]}
+  solidity: {display: Solidity, category: language, aliases: []}
+  groovy: {display: Groovy, category: language, aliases: []}
+  clojure: {display: Clojure, category: language, aliases: []}
+  julia: {display: Julia, category: language, aliases: [julia lang]}
+  sas: {display: SAS, category: language, aliases: [sas programming]}
+  vba: {display: VBA, category: language, aliases: [visual basic for applications, excel vba]}
+  abap: {display: ABAP, category: language, aliases: []}
+  apex: {display: Apex, category: language, aliases: [salesforce apex]}
+  cobol: {display: COBOL, category: language, aliases: []}
+  fortran: {display: Fortran, category: language, aliases: []}
+  assembly: {display: Assembly, category: language, aliases: [asm, assembler]}
+  fsharp: {display: "F#", category: language, aliases: ["f#", f sharp]}
+  ocaml: {display: OCaml, category: language, aliases: []}
+  html: {display: HTML, category: language, aliases: [html5, html 5]}
+  css: {display: CSS, category: language, aliases: [css3, css 3, css modules]}
+  sass: {display: Sass/SCSS, category: language, aliases: [scss, sass/scss]}
+  regex: {display: Regex, category: language, aliases: [regular expressions, regexp]}
+  webassembly: {display: WebAssembly, category: language, aliases: [wasm]}
+  verilog: {display: Verilog, category: language, aliases: [systemverilog]}
+  vhdl: {display: VHDL, category: language, aliases: []}
+
+  # ------------------------------------------------------------------ frameworks and platforms
+  react: {display: React, category: framework, aliases: [react.js, reactjs, react js, react 18, react hooks]}
+  nextjs: {display: Next.js, category: framework, aliases: [next.js, next js]}
+  vue: {display: Vue, category: framework, aliases: [vue.js, vuejs, vue js, vue 3]}
+  nuxt: {display: Nuxt, category: framework, aliases: [nuxt.js, nuxtjs]}
+  angular: {display: Angular, category: framework, aliases: [angular.js, angularjs, angular 2]}
+  svelte: {display: Svelte, category: framework, aliases: [sveltekit, svelte kit]}
+  jquery: {display: jQuery, category: framework, aliases: [jquery ui]}
+  redux: {display: Redux, category: framework, aliases: [redux toolkit]}
+  nodejs: {display: Node.js, category: framework, aliases: [node.js, node js, node, node 20]}
+  express: {display: Express, category: framework, aliases: [express.js, expressjs]}
+  nestjs: {display: NestJS, category: framework, aliases: [nest.js, nest js]}
+  deno: {display: Deno, category: framework, aliases: []}
+  bun: {display: Bun, category: framework, aliases: [bun.js, bunjs]}
+  django: {display: Django, category: framework, aliases: [django rest framework, drf]}
+  flask: {display: Flask, category: framework, aliases: []}
+  fastapi: {display: FastAPI, category: framework, aliases: [fast api]}
+  celery: {display: Celery, category: framework, aliases: []}
+  spring: {display: Spring, category: framework, aliases: [spring boot, springboot, spring framework, spring mvc, spring cloud]}
+  dotnet: {display: .NET, category: framework, aliases: [.net, dot net, .net core, dotnet core, asp.net, asp.net core, aspnet, net framework, entity framework]}
+  ruby-on-rails: {display: Ruby on Rails, category: framework, aliases: [rails, ror, ruby/rails, ruby on rails, rails 7]}
+  laravel: {display: Laravel, category: framework, aliases: []}
+  symfony: {display: Symfony, category: framework, aliases: []}
+  phoenix: {display: Phoenix, category: framework, aliases: [phoenix framework]}
+  react-native: {display: React Native, category: framework, aliases: [reactnative, rn]}
+  flutter: {display: Flutter, category: framework, aliases: []}
+  electron: {display: Electron, category: framework, aliases: [electron.js, electronjs]}
+  tailwind: {display: Tailwind CSS, category: framework, aliases: [tailwindcss, tailwind css]}
+  bootstrap: {display: Bootstrap, category: framework, aliases: [bootstrap 5, twitter bootstrap]}
+  storybook: {display: Storybook, category: framework, aliases: [storybook.js]}
+  android: {display: Android, category: framework, aliases: [android sdk, android development, android studio, jetpack compose]}
+  ios: {display: iOS, category: framework, aliases: [ios development, ios sdk, swiftui, uikit, xcode, cocoa]}
+  unity: {display: Unity, category: framework, aliases: [unity3d, unity 3d, unity engine]}
+  unreal-engine: {display: Unreal Engine, category: framework, aliases: [unreal, ue4, ue5, unreal engine 5]}
+  godot: {display: Godot, category: framework, aliases: [godot engine]}
+  webpack: {display: Webpack, category: framework, aliases: []}
+  vite: {display: Vite, category: framework, aliases: [vitejs]}
+  qt: {display: Qt, category: framework, aliases: [qt framework, pyqt]}
+  mobile-development: {display: Mobile Development, category: framework, aliases: [mobile, mobile dev, mobile apps, mobile app development, mobile applications]}
+  web-development: {display: Web Development, category: framework, aliases: [web dev, web developer, web applications, web apps, web application development]}
+  backend: {display: Backend, category: framework, aliases: [back end, backend development, back-end, backend engineering, server side]}
+  frontend: {display: Frontend, category: framework, aliases: [front end, frontend development, front-end, ui development, client side]}
+  fullstack: {display: Full Stack, category: framework, aliases: [full stack, full-stack, fullstack development, full stack development]}
+  embedded-systems: {display: Embedded Systems, category: framework, aliases: [embedded, firmware, embedded software, rtos, microcontrollers]}
+  game-development: {display: Game Development, category: framework, aliases: [game dev, gamedev, game programming]}
+  blockchain: {display: Blockchain, category: framework, aliases: [web3, web 3, distributed ledger, dlt, smart contracts, defi]}
+  ethereum: {display: Ethereum, category: framework, aliases: [eth, evm]}
+  microservices: {display: Microservices, category: devops, aliases: [micro services, microservice architecture, service oriented architecture, soa]}
+  distributed-systems: {display: Distributed Systems, category: devops, aliases: [distributed computing, distributed system]}
+  system-design: {display: System Design, category: devops, aliases: [system architecture, software architecture, architecture, systems design, solution architecture]}
+
+  # ------------------------------------------------------------------ cloud
+  aws: {display: AWS, category: cloud, aliases: [amazon web services, amazon aws, aws cloud, aws lambda, aws ec2, aws s3, amazon s3, amazon ec2, ec2, cloudfront]}
+  gcp: {display: GCP, category: cloud, aliases: [google cloud, google cloud platform, gcloud, google cloud services]}
+  azure: {display: Azure, category: cloud, aliases: [microsoft azure, azure cloud, azure functions, ms azure]}
+  azure-devops: {display: Azure DevOps, category: devops, aliases: [ado, azure pipelines, azure boards, vsts]}
+  cloudflare: {display: Cloudflare, category: cloud, aliases: [cloudflare workers]}
+  vercel: {display: Vercel, category: cloud, aliases: []}
+  netlify: {display: Netlify, category: cloud, aliases: []}
+  heroku: {display: Heroku, category: cloud, aliases: []}
+  digitalocean: {display: DigitalOcean, category: cloud, aliases: [digital ocean]}
+  firebase: {display: Firebase, category: cloud, aliases: [firestore, google firebase]}
+  supabase: {display: Supabase, category: cloud, aliases: []}
+  serverless: {display: Serverless, category: cloud, aliases: [serverless architecture, faas]}
+  oracle-cloud: {display: Oracle Cloud, category: cloud, aliases: [oci, oracle cloud infrastructure]}
+  vmware: {display: VMware, category: cloud, aliases: [vsphere, esxi]}
+  cloud-computing: {display: Cloud Computing, category: cloud, aliases: [cloud, cloud infrastructure, cloud services, cloud platform, cloud native, cloud solutions]}
+
+  # ------------------------------------------------------------------ databases
+  postgresql: {display: PostgreSQL, category: database, aliases: [postgres, postgre, psql, pg, postgres sql, postgresql database]}
+  mysql: {display: MySQL, category: database, aliases: [my sql]}
+  mongodb: {display: MongoDB, category: database, aliases: [mongo, mongo db]}
+  redis: {display: Redis, category: database, aliases: [redis cache]}
+  elasticsearch: {display: Elasticsearch, category: database, aliases: [elastic search, elk, elk stack, elastic]}
+  opensearch: {display: OpenSearch, category: database, aliases: [open search]}
+  sqlite: {display: SQLite, category: database, aliases: [sqlite3]}
+  sql-server: {display: SQL Server, category: database, aliases: [mssql, ms sql, ms sql server, microsoft sql server, mssql server]}
+  oracle-database: {display: Oracle Database, category: database, aliases: [oracle, oracle db, oracle sql]}
+  dynamodb: {display: DynamoDB, category: database, aliases: [dynamo db, amazon dynamodb]}
+  cassandra: {display: Cassandra, category: database, aliases: [apache cassandra]}
+  mariadb: {display: MariaDB, category: database, aliases: []}
+  neo4j: {display: Neo4j, category: database, aliases: []}
+  cockroachdb: {display: CockroachDB, category: database, aliases: [cockroach db]}
+  clickhouse: {display: ClickHouse, category: database, aliases: [click house]}
+  nosql: {display: NoSQL, category: database, aliases: [no sql, non relational databases]}
+  rdbms: {display: Relational Databases, category: database, aliases: [relational databases, relational database, database design, databases, database management]}
+
+  # ------------------------------------------------------------------ data
+  pandas: {display: pandas, category: data, aliases: [python pandas]}
+  numpy: {display: NumPy, category: data, aliases: []}
+  scipy: {display: SciPy, category: data, aliases: []}
+  polars: {display: Polars, category: data, aliases: []}
+  dask: {display: Dask, category: data, aliases: []}
+  spark: {display: Spark, category: data, aliases: [apache spark, pyspark, spark sql, spark streaming]}
+  kafka: {display: Kafka, category: data, aliases: [apache kafka, kafka streams, confluent]}
+  kinesis: {display: Kinesis, category: data, aliases: [amazon kinesis, aws kinesis]}
+  airflow: {display: Airflow, category: data, aliases: [apache airflow]}
+  dbt: {display: dbt, category: data, aliases: [data build tool, dbt core, dbt cloud]}
+  snowflake: {display: Snowflake, category: data, aliases: [snowflake db, snowflake data warehouse, snowpark]}
+  bigquery: {display: BigQuery, category: data, aliases: [big query, google bigquery]}
+  redshift: {display: Redshift, category: data, aliases: [amazon redshift, aws redshift]}
+  databricks: {display: Databricks, category: data, aliases: [unity catalog]}
+  delta-lake: {display: Delta Lake, category: data, aliases: [deltalake]}
+  hadoop: {display: Hadoop, category: data, aliases: [hdfs, mapreduce]}
+  hive: {display: Hive, category: data, aliases: [apache hive]}
+  trino: {display: Trino, category: data, aliases: []}
+  presto: {display: Presto, category: data, aliases: [prestodb, prestosql]}
+  athena: {display: Athena, category: data, aliases: [amazon athena, aws athena]}
+  flink: {display: Flink, category: data, aliases: [apache flink]}
+  apache-beam: {display: Apache Beam, category: data, aliases: [beam]}
+  dagster: {display: Dagster, category: data, aliases: []}
+  prefect: {display: Prefect, category: data, aliases: []}
+  airbyte: {display: Airbyte, category: data, aliases: []}
+  fivetran: {display: Fivetran, category: data, aliases: []}
+  informatica: {display: Informatica, category: data, aliases: [informatica powercenter, powercenter]}
+  talend: {display: Talend, category: data, aliases: []}
+  ssis: {display: SSIS, category: data, aliases: [sql server integration services]}
+  tableau: {display: Tableau, category: data, aliases: [tableau desktop, tableau server]}
+  power-bi: {display: Power BI, category: data, aliases: [powerbi, microsoft power bi, ms power bi, dax, power query]}
+  looker: {display: Looker, category: data, aliases: [lookml]}
+  looker-studio: {display: Looker Studio, category: data, aliases: [data studio, google data studio]}
+  metabase: {display: Metabase, category: data, aliases: []}
+  superset: {display: Superset, category: data, aliases: [apache superset]}
+  qlik: {display: Qlik, category: data, aliases: [qlik sense, qlikview]}
+  jupyter: {display: Jupyter, category: data, aliases: [jupyter notebook, jupyter notebooks, jupyterlab]}
+  matplotlib: {display: Matplotlib, category: data, aliases: [seaborn]}
+  plotly: {display: Plotly, category: data, aliases: [plotly dash, dash]}
+  d3: {display: D3.js, category: data, aliases: [d3.js, d3js]}
+  etl: {display: ETL, category: data, aliases: [elt, etl/elt, elt/etl, etl pipelines, etl development, data integration]}
+  data-warehouse: {display: Data Warehousing, category: data, aliases: [data warehousing, data warehouse, dwh, datawarehouse, data lake, data lakes, data lakehouse]}
+  data-modeling: {display: Data Modeling, category: data, aliases: [data modelling, dimensional modeling, star schema, data models]}
+  data-pipelines: {display: Data Pipelines, category: data, aliases: [data pipeline, data ingestion, orchestration]}
+  data-analysis: {display: Data Analysis, category: data, aliases: [data analytics, analytics, data analyst, analysis, data insights, quantitative analysis]}
+  data-visualization: {display: Data Visualization, category: data, aliases: [data visualisation, dataviz, data viz, dashboards, dashboarding, reporting, bi reporting]}
+  data-engineering: {display: Data Engineering, category: data, aliases: [data engineer, big data engineering, dataops]}
+  data-science: {display: Data Science, category: data, aliases: [data scientist, data science and analytics]}
+  statistics: {display: Statistics, category: data, aliases: [stats, statistical analysis, statistical modeling, statistical modelling, biostatistics, hypothesis testing]}
+  mathematics: {display: Mathematics, category: data, aliases: [math, maths, linear algebra, calculus, applied mathematics]}
+  big-data: {display: Big Data, category: data, aliases: [bigdata, big data analytics]}
+  data-governance: {display: Data Governance, category: data, aliases: [data quality, data management, master data management, mdm, data catalog]}
+  business-intelligence: {display: Business Intelligence, category: data, aliases: [bi, bi tools, business intelligence tools, olap]}
+  analytics-engineering: {display: Analytics Engineering, category: data, aliases: [analytics engineer]}
+  ab-testing: {display: A/B Testing, category: data, aliases: [a/b testing, a/b tests, split testing, experimentation, experiment design, ab tests]}
+  product-analytics: {display: Product Analytics, category: data, aliases: []}
+  mixpanel: {display: Mixpanel, category: data, aliases: []}
+  amplitude: {display: Amplitude, category: data, aliases: [amplitude analytics]}
+  posthog: {display: PostHog, category: data, aliases: []}
+  google-analytics: {display: Google Analytics, category: data, aliases: [ga4, ga, universal analytics]}
+  google-tag-manager: {display: Google Tag Manager, category: data, aliases: [gtm tag manager]}
+  adobe-analytics: {display: Adobe Analytics, category: data, aliases: [omniture]}
+  web-analytics: {display: Web Analytics, category: data, aliases: [website analytics]}
+
+  # ------------------------------------------------------------------ devops and security
+  docker: {display: Docker, category: devops, aliases: [docker compose, dockerfile, docker swarm]}
+  containerization: {display: Containerization, category: devops, aliases: [containers, containerisation, container orchestration]}
+  kubernetes: {display: Kubernetes, category: devops, aliases: [k8s, kube, eks, gke, aks, k3s]}
+  openshift: {display: OpenShift, category: devops, aliases: [red hat openshift]}
+  terraform: {display: Terraform, category: devops, aliases: [terragrunt, hcl]}
+  opentofu: {display: OpenTofu, category: devops, aliases: []}
+  ansible: {display: Ansible, category: devops, aliases: [ansible playbooks]}
+  jenkins: {display: Jenkins, category: devops, aliases: [jenkins pipelines]}
+  circleci: {display: CircleCI, category: devops, aliases: [circle ci]}
+  teamcity: {display: TeamCity, category: devops, aliases: []}
+  travis-ci: {display: Travis CI, category: devops, aliases: [travis]}
+  github-actions: {display: GitHub Actions, category: devops, aliases: [gh actions, github workflows]}
+  gitlab-ci: {display: GitLab CI, category: devops, aliases: [gitlab ci/cd, gitlab pipelines]}
+  ci-cd: {display: CI/CD, category: devops, aliases: [cicd, ci cd, continuous integration, continuous delivery, continuous deployment, build pipelines, deployment pipelines]}
+  git: {display: Git, category: devops, aliases: [version control, source control, git flow, gitflow]}
+  svn: {display: Subversion, category: devops, aliases: [subversion, apache subversion]}
+  github: {display: GitHub, category: devops, aliases: [git hub]}
+  github-copilot: {display: GitHub Copilot, category: ai_ml, aliases: [copilot, git hub copilot]}
+  gitlab: {display: GitLab, category: devops, aliases: [git lab]}
+  bitbucket: {display: Bitbucket, category: devops, aliases: []}
+  linux: {display: Linux, category: devops, aliases: [linux/unix, linux unix, ubuntu, debian, centos, rhel, linux administration, linux admin, gnu/linux]}
+  unix: {display: Unix, category: devops, aliases: [unix administration, solaris, aix]}
+  nginx: {display: NGINX, category: devops, aliases: [nginx plus]}
+  apache: {display: Apache HTTP Server, category: devops, aliases: [apache http server, apache httpd, httpd]}
+  haproxy: {display: HAProxy, category: devops, aliases: []}
+  prometheus: {display: Prometheus, category: devops, aliases: [promql]}
+  grafana: {display: Grafana, category: devops, aliases: []}
+  datadog: {display: Datadog, category: devops, aliases: [data dog]}
+  new-relic: {display: New Relic, category: devops, aliases: [newrelic]}
+  dynatrace: {display: Dynatrace, category: devops, aliases: []}
+  appdynamics: {display: AppDynamics, category: devops, aliases: [app dynamics]}
+  splunk: {display: Splunk, category: devops, aliases: []}
+  sentry: {display: Sentry, category: devops, aliases: [error tracking]}
+  helm: {display: Helm, category: devops, aliases: [helm charts]}
+  argocd: {display: Argo CD, category: devops, aliases: [argo cd, argo]}
+  fluxcd: {display: Flux CD, category: devops, aliases: [flux, flux cd]}
+  gitops: {display: GitOps, category: devops, aliases: [git ops]}
+  pulumi: {display: Pulumi, category: devops, aliases: []}
+  cloudformation: {display: CloudFormation, category: devops, aliases: [aws cloudformation, cloud formation]}
+  aws-cdk: {display: AWS CDK, category: devops, aliases: [cdk, aws cdk]}
+  bicep: {display: Bicep, category: devops, aliases: [azure bicep]}
+  puppet: {display: Puppet, category: devops, aliases: []}
+  chef: {display: Chef, category: devops, aliases: []}
+  saltstack: {display: SaltStack, category: devops, aliases: []}
+  vagrant: {display: Vagrant, category: devops, aliases: []}
+  opentelemetry: {display: OpenTelemetry, category: devops, aliases: [otel]}
+  jaeger: {display: Jaeger, category: devops, aliases: []}
+  observability: {display: Observability, category: devops, aliases: [monitoring, application monitoring, apm, alerting, telemetry, tracing, distributed tracing, logging, log management]}
+  sre: {display: SRE, category: devops, aliases: [site reliability, site reliability engineering, reliability engineering, on-call, oncall]}
+  devops: {display: DevOps, category: devops, aliases: [dev ops, devsecops]}
+  platform-engineering: {display: Platform Engineering, category: devops, aliases: [internal developer platform, idp]}
+  infrastructure-as-code: {display: Infrastructure as Code, category: devops, aliases: [iac, infrastructure automation, configuration management]}
+  rabbitmq: {display: RabbitMQ, category: devops, aliases: [rabbit mq]}
+  activemq: {display: ActiveMQ, category: devops, aliases: [active mq]}
+  sqs: {display: Amazon SQS, category: devops, aliases: [aws sqs, amazon sqs]}
+  nats: {display: NATS, category: devops, aliases: [nats.io]}
+  message-queues: {display: Message Queues, category: devops, aliases: [message queue, pubsub, pub/sub]}
+  system-administration: {display: System Administration, category: devops, aliases: [sys admin, sysadmin, system and network administration, systems administration, system admin, server administration, systems administrator, it administration, internal it]}
+  networking: {display: Networking, category: devops, aliases: [tcp/ip, tcp ip, dns, vpn, network administration, network engineering, lan/wan, routing, firewalls, firewall, ccna, ccnp, sd-wan]}
+  cisco: {display: Cisco, category: devops, aliases: [cisco ios, cisco networking]}
+  juniper: {display: Juniper, category: devops, aliases: [junos]}
+  cybersecurity: {display: Cybersecurity, category: devops, aliases: [infosec, information security, security, cyber security, application security, appsec, network security, cloud security, security engineering, owasp]}
+  penetration-testing: {display: Penetration Testing, category: devops, aliases: [pentesting, pen testing, pentest, ethical hacking, red team, red teaming, vulnerability assessment]}
+  burp-suite: {display: Burp Suite, category: devops, aliases: [burp]}
+  metasploit: {display: Metasploit, category: devops, aliases: []}
+  siem: {display: SIEM, category: devops, aliases: [soc, security operations, threat detection, threat hunting]}
+  crowdstrike: {display: CrowdStrike, category: devops, aliases: [crowdstrike falcon]}
+  active-directory: {display: Active Directory, category: devops, aliases: [azure ad, entra id, entra, ldap, group policy]}
+  okta: {display: Okta, category: devops, aliases: []}
+  identity-access-management: {display: Identity and Access Management, category: devops, aliases: [iam, identity management, sso, single sign-on, access management]}
+  windows-server: {display: Windows Server, category: devops, aliases: [windows administration]}
+  intune: {display: Intune, category: devops, aliases: [microsoft intune]}
+  it-support: {display: IT Support, category: devops, aliases: [helpdesk, help desk, service desk, technical support, desktop support, it helpdesk, ticketing, hardware support, troubleshooting]}
+  itil: {display: ITIL, category: devops, aliases: [itil v4, itsm, it service management]}
+
+  # ------------------------------------------------------------------ AI and ML
+  machine-learning: {display: Machine Learning, category: ai_ml, aliases: [ml, ai/ml, ml/ai, aiml, ai ml, applied ml, applied machine learning, ml engineering, supervised learning]}
+  deep-learning: {display: Deep Learning, category: ai_ml, aliases: [dl, neural networks, neural network, neural nets, cnn, rnn, gan]}
+  ai: {display: AI, category: ai_ml, aliases: [artificial intelligence, ai engineering, applied ai, ai research, ai development, intelligent systems]}
+  ai-agents: {display: AI Agents, category: ai_ml, aliases: [agentic ai, agentic systems, agentic workflows, llm agents, agentic search]}
+  llm: {display: LLMs, category: ai_ml, aliases: [llms, large language models, large language model, language models, foundation models, llm apis]}
+  claude: {display: Claude, category: ai_ml, aliases: [anthropic, claude api, anthropic claude, claude code]}
+  gemini: {display: Gemini, category: ai_ml, aliases: [google gemini, gemini api]}
+  llama: {display: Llama, category: ai_ml, aliases: [meta llama, llama 2, llama 3]}
+  mistral: {display: Mistral, category: ai_ml, aliases: [mistral ai]}
+  rag: {display: RAG, category: ai_ml, aliases: [retrieval augmented generation, retrieval-augmented generation]}
+  semantic-search: {display: Semantic Search, category: ai_ml, aliases: [vector search]}
+  generative-ai: {display: Generative AI, category: ai_ml, aliases: [genai, gen ai, gen-ai, generative models, diffusion models, text to image]}
+  stable-diffusion: {display: Stable Diffusion, category: ai_ml, aliases: [stablediffusion, sdxl]}
+  midjourney: {display: Midjourney, category: ai_ml, aliases: []}
+  nlp: {display: NLP, category: ai_ml, aliases: [natural language processing, text mining, text analytics, text classification, ner, sentiment analysis]}
+  spacy: {display: spaCy, category: ai_ml, aliases: []}
+  nltk: {display: NLTK, category: ai_ml, aliases: []}
+  chatbots: {display: Chatbots, category: ai_ml, aliases: [chatbot, conversational ai, conversational agents, virtual agents]}
+  computer-vision: {display: Computer Vision, category: ai_ml, aliases: [image processing, image recognition, object detection, ocr, video analytics]}
+  opencv: {display: OpenCV, category: ai_ml, aliases: [open cv, cv2]}
+  pytorch: {display: PyTorch, category: ai_ml, aliases: [torch, py torch, pytorch lightning]}
+  tensorflow: {display: TensorFlow, category: ai_ml, aliases: [tf, tensor flow, tflite]}
+  keras: {display: Keras, category: ai_ml, aliases: []}
+  jax: {display: JAX, category: ai_ml, aliases: []}
+  scikit-learn: {display: scikit-learn, category: ai_ml, aliases: [sklearn, scikit learn, scikit]}
+  xgboost: {display: XGBoost, category: ai_ml, aliases: []}
+  lightgbm: {display: LightGBM, category: ai_ml, aliases: [light gbm]}
+  hugging-face: {display: Hugging Face, category: ai_ml, aliases: [huggingface, hf transformers, transformers library]}
+  langchain: {display: LangChain, category: ai_ml, aliases: [lang chain, langgraph]}
+  llamaindex: {display: LlamaIndex, category: ai_ml, aliases: [llama index, llama-index]}
+  openai: {display: OpenAI, category: ai_ml, aliases: [openai api, chatgpt, chat gpt, gpt, gpt-3, gpt3, gpt-3.5, gpt-4, gpt4, openai gpt]}
+  prompt-engineering: {display: Prompt Engineering, category: ai_ml, aliases: [prompt design, prompting, prompts, context engineering]}
+  fine-tuning: {display: Fine-tuning, category: ai_ml, aliases: [finetuning, fine tuning, model fine-tuning, lora, peft, rlhf]}
+  mlops: {display: MLOps, category: ai_ml, aliases: [ml ops, machine learning operations, model deployment, model serving, feature store]}
+  mlflow: {display: MLflow, category: ai_ml, aliases: [ml flow]}
+  kubeflow: {display: Kubeflow, category: ai_ml, aliases: []}
+  sagemaker: {display: SageMaker, category: ai_ml, aliases: [amazon sagemaker, aws sagemaker]}
+  vertex-ai: {display: Vertex AI, category: ai_ml, aliases: [google vertex ai]}
+  weights-and-biases: {display: Weights & Biases, category: ai_ml, aliases: [wandb, w&b]}
+  reinforcement-learning: {display: Reinforcement Learning, category: ai_ml, aliases: [rl, deep reinforcement learning]}
+  speech-recognition: {display: Speech Recognition, category: ai_ml, aliases: [speech, asr, speech to text, speech processing]}
+  text-to-speech: {display: Text to Speech, category: ai_ml, aliases: [tts, speech synthesis, voice synthesis]}
+  whisper: {display: Whisper, category: ai_ml, aliases: [openai whisper]}
+  vector-database: {display: Vector Databases, category: ai_ml, aliases: [vector databases, vector db, vector store, vector stores]}
+  pinecone: {display: Pinecone, category: ai_ml, aliases: []}
+  weaviate: {display: Weaviate, category: ai_ml, aliases: []}
+  milvus: {display: Milvus, category: ai_ml, aliases: []}
+  qdrant: {display: Qdrant, category: ai_ml, aliases: []}
+  chroma: {display: Chroma, category: ai_ml, aliases: [chromadb, chroma db]}
+  pgvector: {display: pgvector, category: ai_ml, aliases: []}
+  faiss: {display: FAISS, category: ai_ml, aliases: []}
+  embeddings: {display: Embeddings, category: ai_ml, aliases: [embedding models, text embeddings]}
+  ollama: {display: Ollama, category: ai_ml, aliases: [local llm, local llms]}
+  vllm: {display: vLLM, category: ai_ml, aliases: []}
+  data-annotation: {display: Data Annotation, category: ai_ml, aliases: [data labeling, data labelling, annotation, labeling, labelling, ai training, ai trainer, data tagging, rlhf annotation]}
+  content-moderation: {display: Content Moderation, category: business, aliases: [moderation, trust and safety, trust & safety]}
+  recommender-systems: {display: Recommender Systems, category: ai_ml, aliases: [recommendation systems, recommendation engines, recommender]}
+  time-series: {display: Time Series, category: ai_ml, aliases: [time series analysis, forecasting models]}
+  anomaly-detection: {display: Anomaly Detection, category: ai_ml, aliases: [outlier detection]}
+  predictive-modeling: {display: Predictive Modeling, category: ai_ml, aliases: [predictive modelling, predictive analytics, predictive models]}
+
+  # ------------------------------------------------------------------ tools and engineering practice
+  jira: {display: Jira, category: tool, aliases: [atlassian jira, jira administration]}
+  confluence: {display: Confluence, category: tool, aliases: [atlassian confluence]}
+  notion: {display: Notion, category: tool, aliases: [notion.so]}
+  coda: {display: Coda, category: tool, aliases: [coda.io]}
+  obsidian: {display: Obsidian, category: tool, aliases: []}
+  slack: {display: Slack, category: tool, aliases: []}
+  microsoft-teams: {display: Microsoft Teams, category: tool, aliases: [ms teams]}
+  zoom: {display: Zoom, category: tool, aliases: [zoom meetings]}
+  discord: {display: Discord, category: tool, aliases: []}
+  asana: {display: Asana, category: tool, aliases: []}
+  trello: {display: Trello, category: tool, aliases: []}
+  monday-com: {display: monday.com, category: tool, aliases: [monday]}
+  clickup: {display: ClickUp, category: tool, aliases: [click up]}
+  airtable: {display: Airtable, category: tool, aliases: []}
+  basecamp: {display: Basecamp, category: tool, aliases: []}
+  smartsheet: {display: Smartsheet, category: tool, aliases: []}
+  linear: {display: Linear, category: tool, aliases: [linear app]}
+  zapier: {display: Zapier, category: tool, aliases: []}
+  make-com: {display: Make, category: tool, aliases: [make.com, integromat]}
+  n8n: {display: n8n, category: tool, aliases: []}
+  workflow-automation: {display: Workflow Automation, category: tool, aliases: [automation, automations, process automation, no-code automation, business process automation]}
+  no-code: {display: No-code, category: tool, aliases: [nocode, low-code, low code, lowcode]}
+  bubble: {display: Bubble, category: tool, aliases: [bubble.io]}
+  retool: {display: Retool, category: tool, aliases: []}
+  power-platform: {display: Power Platform, category: tool, aliases: [power apps, power automate, powerapps, power platform]}
+  rpa: {display: RPA, category: tool, aliases: [robotic process automation]}
+  uipath: {display: UiPath, category: tool, aliases: [ui path]}
+  postman: {display: Postman, category: tool, aliases: []}
+  openapi: {display: OpenAPI, category: tool, aliases: [swagger, swagger ui, openapi spec]}
+  api-development: {display: API Development, category: tool, aliases: [api, apis, rest, restful, rest api, rest apis, restful api, restful apis, web api, web apis, api design, api integration, api integrations]}
+  graphql: {display: GraphQL, category: tool, aliases: [graph ql, apollo graphql]}
+  hasura: {display: Hasura, category: tool, aliases: []}
+  grpc: {display: gRPC, category: tool, aliases: [protobuf, protocol buffers]}
+  websockets: {display: WebSockets, category: tool, aliases: [web sockets, websocket]}
+  webrtc: {display: WebRTC, category: tool, aliases: [web rtc]}
+  software-testing: {display: Software Testing, category: tool, aliases: [testing, qa & testing, qa and testing, qa, quality assurance, software qa, qa testing, manual testing, test cases, test planning, unit testing, integration testing, tdd, test driven development, bdd, regression testing, quality engineering, sdet]}
+  test-automation: {display: Test Automation, category: tool, aliases: [automated testing, qa automation, automation testing, test automation framework]}
+  performance-testing: {display: Performance Testing, category: tool, aliases: [load testing, stress testing]}
+  selenium: {display: Selenium, category: tool, aliases: [selenium webdriver]}
+  cypress: {display: Cypress, category: tool, aliases: [cypress.io]}
+  playwright: {display: Playwright, category: tool, aliases: []}
+  jest: {display: Jest, category: tool, aliases: [jestjs]}
+  pytest: {display: pytest, category: tool, aliases: [py.test]}
+  junit: {display: JUnit, category: tool, aliases: []}
+  jmeter: {display: JMeter, category: tool, aliases: [apache jmeter]}
+  k6: {display: k6, category: tool, aliases: [grafana k6]}
+  appium: {display: Appium, category: tool, aliases: []}
+  stripe: {display: Stripe, category: tool, aliases: [stripe api]}
+  paypal: {display: PayPal, category: tool, aliases: [pay pal]}
+  adyen: {display: Adyen, category: tool, aliases: []}
+  braintree: {display: Braintree, category: tool, aliases: []}
+  payments: {display: Payments, category: tool, aliases: [payment processing, payment integration, payment gateways, payment systems]}
+  twilio: {display: Twilio, category: tool, aliases: []}
+  sendgrid: {display: SendGrid, category: tool, aliases: []}
+  voip: {display: VoIP, category: tool, aliases: [telephony, asterisk, freeswitch]}
+  shopify: {display: Shopify, category: tool, aliases: [shopify plus, shopify liquid, liquid, shopify development, shopify apps]}
+  wordpress: {display: WordPress, category: tool, aliases: [wp, wordpress development, wordpress themes, wordpress plugins]}
+  woocommerce: {display: WooCommerce, category: tool, aliases: [woo commerce]}
+  elementor: {display: Elementor, category: tool, aliases: []}
+  webflow: {display: Webflow, category: tool, aliases: []}
+  wix: {display: Wix, category: tool, aliases: []}
+  squarespace: {display: Squarespace, category: tool, aliases: []}
+  framer: {display: Framer, category: design, aliases: []}
+  cms: {display: CMS, category: tool, aliases: [headless cms, content management system, content management systems]}
+  contentful: {display: Contentful, category: tool, aliases: []}
+  strapi: {display: Strapi, category: tool, aliases: []}
+  drupal: {display: Drupal, category: tool, aliases: []}
+  magento: {display: Magento, category: tool, aliases: [adobe commerce]}
+  bigcommerce: {display: BigCommerce, category: tool, aliases: [big commerce]}
+  commercetools: {display: commercetools, category: tool, aliases: []}
+  sap: {display: SAP, category: tool, aliases: [sap erp, sap/erp consulting, sap hana, sap s/4hana, s/4hana, sap fico, sap mm, sap sd, sap basis, sap btp, sap successfactors, successfactors]}
+  servicenow: {display: ServiceNow, category: tool, aliases: [service now]}
+  freshservice: {display: Freshservice, category: tool, aliases: []}
+  workday: {display: Workday, category: tool, aliases: [workday hcm]}
+  adp: {display: ADP, category: tool, aliases: [adp workforce now]}
+  bamboohr: {display: BambooHR, category: tool, aliases: [bamboo hr]}
+  personio: {display: Personio, category: tool, aliases: []}
+  rippling: {display: Rippling, category: tool, aliases: []}
+  netsuite: {display: NetSuite, category: tool, aliases: [oracle netsuite, net suite]}
+  oracle-erp: {display: Oracle ERP, category: tool, aliases: [oracle fusion, oracle erp cloud, oracle cloud erp]}
+  microsoft-dynamics: {display: Microsoft Dynamics, category: tool, aliases: [dynamics 365, dynamics, ms dynamics, d365]}
+  odoo: {display: Odoo, category: tool, aliases: []}
+  quickbooks: {display: QuickBooks, category: tool, aliases: [quick books, quickbooks online]}
+  xero: {display: Xero, category: tool, aliases: []}
+  datev: {display: DATEV, category: tool, aliases: []}
+  google-workspace: {display: Google Workspace, category: tool, aliases: [g suite, gsuite, google apps, google docs, google drive, gmail, google suite]}
+  google-apps-script: {display: Google Apps Script, category: tool, aliases: [apps script]}
+  microsoft-365: {display: Microsoft 365, category: tool, aliases: [office 365, o365, m365, microsoft office, ms office, office suite, ms 365, microsoft 365 admin, sharepoint, onedrive, outlook, microsoft word]}
+  latex: {display: LaTeX, category: tool, aliases: [tex, overleaf]}
+  zendesk: {display: Zendesk, category: tool, aliases: [zendesk support]}
+  freshdesk: {display: Freshdesk, category: tool, aliases: []}
+  intercom: {display: Intercom, category: tool, aliases: []}
+  cad: {display: CAD, category: design, aliases: [computer aided design, cad design, computer-aided design]}
+  autocad: {display: AutoCAD, category: design, aliases: [auto cad]}
+  solidworks: {display: SolidWorks, category: design, aliases: [solid works]}
+  revit: {display: Revit, category: design, aliases: [autodesk revit]}
+  bim: {display: BIM, category: design, aliases: [building information modeling, building information modelling]}
+
+  # ------------------------------------------------------------------ business
+  excel: {display: Excel, category: business, aliases: [ms excel, microsoft excel, excel formulas, advanced excel, pivot tables, pivot table, vlookup, excel modeling, excel macros]}
+  google-sheets: {display: Google Sheets, category: business, aliases: [gsheets, g sheets, google spreadsheets, google sheet]}
+  powerpoint: {display: PowerPoint, category: business, aliases: [ms powerpoint, microsoft powerpoint, power point]}
+  google-slides: {display: Google Slides, category: business, aliases: []}
+  salesforce: {display: Salesforce, category: business, aliases: [sfdc, salesforce crm, salesforce admin, salesforce administration, salesforce developer, sales cloud, service cloud, salesforce cpq, cpq, salesforce marketing cloud, lightning, lwc, soql]}
+  hubspot: {display: HubSpot, category: business, aliases: [hub spot, hubspot crm, hubspot cms, hubspot marketing hub]}
+  pipedrive: {display: Pipedrive, category: business, aliases: []}
+  zoho: {display: Zoho, category: business, aliases: [zoho crm, zoho books]}
+  crm: {display: CRM, category: business, aliases: [crm software, crm systems, crm management, customer relationship management]}
+  mailchimp: {display: Mailchimp, category: business, aliases: [mail chimp]}
+  klaviyo: {display: Klaviyo, category: business, aliases: []}
+  activecampaign: {display: ActiveCampaign, category: business, aliases: [active campaign]}
+  braze: {display: Braze, category: business, aliases: []}
+  brevo: {display: Brevo, category: business, aliases: [sendinblue]}
+  marketo: {display: Marketo, category: business, aliases: [adobe marketo]}
+  pardot: {display: Pardot, category: business, aliases: [account engagement, salesforce pardot]}
+  marketing-automation: {display: Marketing Automation, category: business, aliases: [marketing automation platforms, marketing automation tools]}
+  outreach: {display: Outreach, category: business, aliases: [outreach.io]}
+  salesloft: {display: Salesloft, category: business, aliases: []}
+  apollo: {display: Apollo.io, category: business, aliases: [apollo.io]}
+  zoominfo: {display: ZoomInfo, category: business, aliases: [zoom info]}
+  gong: {display: Gong, category: business, aliases: [gong.io]}
+  sales-engagement: {display: Sales Engagement, category: business, aliases: [sales engagement platforms]}
+  linkedin-sales-navigator: {display: LinkedIn Sales Navigator, category: business, aliases: [sales navigator]}
+  semrush: {display: Semrush, category: business, aliases: [sem rush]}
+  ahrefs: {display: Ahrefs, category: business, aliases: []}
+  moz: {display: Moz, category: business, aliases: []}
+  screaming-frog: {display: Screaming Frog, category: business, aliases: []}
+  google-search-console: {display: Google Search Console, category: business, aliases: [search console, gsc]}
+  seo: {display: SEO, category: business, aliases: [search engine optimization, search engine optimisation, technical seo, on-page seo, off-page seo, link building, local seo, organic search, keyword research, seo tools]}
+  paid-advertising: {display: Paid Advertising, category: business, aliases: [ppc, sem, ads, advertising, paid ads, paid media, paid search, paid social, performance marketing, online advertising, digital advertising, display advertising, programmatic, media buying, ad campaigns, ad ops]}
+  google-ads: {display: Google Ads, category: business, aliases: [adwords, google adwords]}
+  meta-ads: {display: Meta Ads, category: business, aliases: [facebook ads, instagram ads, facebook advertising, meta advertising]}
+  linkedin-ads: {display: LinkedIn Ads, category: business, aliases: [linkedin advertising]}
+  tiktok-ads: {display: TikTok Ads, category: business, aliases: [tiktok advertising]}
+  conversion-optimization: {display: Conversion Optimization, category: business, aliases: [cro, conversion optimisation, conversion rate optimization]}
+  content-marketing: {display: Content Marketing, category: business, aliases: [content strategy, content creation, content marketing strategy, blogging, blog writing, content planning, content production, thought leadership]}
+  email-marketing: {display: Email Marketing, category: business, aliases: [email campaigns, email automation, newsletter, newsletters, lifecycle marketing, email deliverability]}
+  social-media: {display: Social Media, category: business, aliases: [social media marketing, smm, social media management, social media manager, social media strategy, community management, community manager, community building]}
+  influencer-marketing: {display: Influencer Marketing, category: business, aliases: [influencer, influencer management, influencer outreach]}
+  copywriting: {display: Copywriting, category: business, aliases: [copy writing, copywriter, ad copy, sales copy, direct response]}
+  ux-writing: {display: UX Writing, category: design, aliases: [ux copy, microcopy, content design]}
+  editing-proofreading: {display: Editing & Proofreading, category: business, aliases: [proofreading, editing, copy editing, copyediting, proofreader]}
+  content-writing: {display: Content Writing, category: business, aliases: [writing, content writer, article writing, blog posts, ghostwriting, freelance writing, seo writing, creative writing]}
+  technical-writing: {display: Technical Writing, category: business, aliases: [technical writer, documentation, api documentation, docs, software documentation]}
+  knowledge-management: {display: Knowledge Management, category: business, aliases: [knowledge base, knowledge bases]}
+  journalism: {display: Journalism, category: business, aliases: [journalist, reporting and journalism]}
+  public-relations: {display: Public Relations, category: business, aliases: [pr, media relations, press relations, crisis communications]}
+  corporate-communications: {display: Corporate Communications, category: business, aliases: [communications, internal communications, brand communications]}
+  brand-management: {display: Brand Management, category: business, aliases: [brand strategy, brand marketing, brand building, brand identity, brand development, brand positioning]}
+  product-marketing: {display: Product Marketing, category: business, aliases: [pmm, product marketing management, positioning, product launch, product launches]}
+  competitive-analysis: {display: Competitive Analysis, category: business, aliases: [competitive intelligence, competitor analysis, market intelligence, competitive research]}
+  sales-enablement: {display: Sales Enablement, category: business, aliases: [sales enablement content]}
+  go-to-market: {display: Go-to-Market, category: business, aliases: [go to market, gtm strategy, gtm, gtm engineering]}
+  revenue-operations: {display: Revenue Operations, category: business, aliases: [revops, rev ops, sales operations, sales ops, marketing operations, marketing ops, gtm operations]}
+  growth-marketing: {display: Growth Marketing, category: business, aliases: [growth, growth marketer, growth strategy, growth hacking, funnel optimization, user acquisition, acquisition marketing, customer acquisition]}
+  lead-generation: {display: Lead Generation, category: business, aliases: [lead gen, demand generation, demand gen, lead nurturing, inbound marketing]}
+  account-based-marketing: {display: Account-Based Marketing, category: business, aliases: [abm, account based marketing]}
+  market-research: {display: Market Research, category: business, aliases: [market analysis, consumer insights, customer research, survey design, surveys, qualitative research, quantitative research, industry research, desk research, competitor research]}
+  project-management: {display: Project Management, category: business, aliases: [project manager, program management, programme management, project coordination, project planning, pmp, prince2, pmo, delivery management, technical project management, it project management, project delivery]}
+  product-management: {display: Product Management, category: business, aliases: [product manager, product owner, technical product management, product strategy, product roadmap, roadmapping, product discovery, product ownership, backlog management]}
+  agile: {display: Agile, category: business, aliases: [agile methodology, agile methodologies, agile development, agile project management, safe, scaled agile]}
+  scrum: {display: Scrum, category: business, aliases: [scrum master, scrum methodology, sprint planning, sprints]}
+  kanban: {display: Kanban, category: business, aliases: [kanban boards, kanban board]}
+  six-sigma: {display: Six Sigma, category: business, aliases: [lean six sigma, lean, lean manufacturing, lean methodology]}
+  stakeholder-management: {display: Stakeholder Management, category: business, aliases: [stakeholder engagement, stakeholder communication, executive communication, cross-functional collaboration, cross functional]}
+  business-development: {display: Business Development, category: business, aliases: [bus dev, bizdev, biz dev, partnerships, partnership development, strategic partnerships, alliances, channel partnerships]}
+  affiliate-marketing: {display: Affiliate Marketing, category: business, aliases: [affiliates, affiliate management, affiliate programs]}
+  business-analysis: {display: Business Analysis, category: business, aliases: [business analyst, requirements gathering, requirements analysis, requirements, process mapping, business requirements, business process, business process modeling, bpmn]}
+  process-improvement: {display: Process Improvement, category: business, aliases: [process optimization, process optimisation, operations analysis, continuous improvement]}
+  account-management: {display: Account Management, category: business, aliases: [account manager, key account management, enterprise accounts, client services, client success, strategic accounts, customer accounts, account planning, client management, client relations, relationship management, client communication, business partnering]}
+  customer-success: {display: Customer Success, category: business, aliases: [csm, customer success management, customer onboarding, customer retention, churn reduction]}
+  customer-support: {display: Customer Support, category: business, aliases: [customer service, customer care, client support, customer support specialist, technical customer support, tier 1 support, tier 2 support, call center, call centre, contact center, inbound calls, customer inquiries, live support, chat support, email support, customer support operations, customer support & success, customer support and success]}
+  sales: {display: Sales, category: business, aliases: [client sales, sales & marketing, marketing & sales, sales and marketing, marketing and sales, b2b sales, b2c sales, enterprise sales, saas sales, inside sales, outside sales, outbound sales, sales development, sdr, bdr, sales prospecting, prospecting, cold calling, cold outreach, cold email, cold emailing, closing, deal closing, solution selling, consultative selling, sales strategy, sales management, sales forecasting, pipeline management, sales pipeline, quota, account executive, ae, retail sales, direct sales, telesales, sales representative, sales rep]}
+  sales-engineering: {display: Sales Engineering, category: business, aliases: [pre-sales, presales, solutions engineering, solution engineering, sales engineer, solutions engineer]}
+  marketing: {display: Marketing, category: business, aliases: [digital marketing, online marketing, internet marketing, marketing strategy, marketing campaigns, marketing management, marketing manager, b2b marketing, b2c marketing, integrated marketing, marketing communication, marketing and communication, marketing communications, marketing and communications, performance and analytics marketing]}
+  marketing-analytics: {display: Marketing Analytics, category: data, aliases: [marketing attribution, attribution modeling, marketing mix modeling, mmm]}
+  finance: {display: Finance, category: business, aliases: [corporate finance, finance operations, financial management, financial operations, finance and accounting, treasury management, financial controlling, business finance]}
+  negotiation: {display: Negotiation, category: business, aliases: [contract negotiation, negotiating, deal negotiation, vendor negotiation]}
+  recruiting: {display: Recruiting, category: business, aliases: [recruiter, recruitment, talent acquisition, technical recruiting, tech recruiting, it recruiting, sourcing candidates, candidate sourcing, headhunting, executive search, full cycle recruiting, candidate screening, talent sourcing, hr & recruiting, hr and recruiting]}
+  applicant-tracking: {display: Applicant Tracking Systems, category: business, aliases: [ats, applicant tracking system, applicant tracking systems]}
+  greenhouse: {display: Greenhouse, category: business, aliases: [greenhouse ats]}
+  lever: {display: Lever, category: business, aliases: [lever ats]}
+  human-resources: {display: Human Resources, category: business, aliases: [hr, human resource, hr operations, hr business partner, hrbp, people operations, people ops, employee relations, compensation and benefits, employee engagement, hr generalist, hr management]}
+  people-management: {display: People Management, category: business, aliases: [team management, managing teams, line management, team leadership, hiring and managing, performance management]}
+  learning-and-development: {display: Learning and Development, category: business, aliases: [l&d, learning & development, training and development, corporate training, training delivery]}
+  hris: {display: HRIS, category: business, aliases: [hr information systems, hr systems]}
+  accounting: {display: Accounting, category: business, aliases: [financial accounting, general ledger, accounts payable, accounts receivable, ap/ar, ap ar, month-end close, month end close, reconciliation, reconciliations, accruals, gaap, ifrs, hgb, financial reporting, financial statements, consolidation, controlling, cost accounting, management accounting, accountant, buchhaltung, bilanzbuchhalter, financial close]}
+  bookkeeping: {display: Bookkeeping, category: business, aliases: [book keeping, bookkeeper, data entry and bookkeeping]}
+  invoicing-billing: {display: Invoicing & Billing, category: business, aliases: [invoicing, invoices, billing, expense management, expense reports]}
+  payroll: {display: Payroll, category: business, aliases: [payroll processing, payroll administration, payroll management, payroll tax, benefits administration]}
+  tax: {display: Tax, category: business, aliases: [taxes, tax preparation, tax compliance, tax planning, tax accounting, vat, indirect tax, international tax, transfer pricing, steuerberatung]}
+  audit: {display: Audit, category: business, aliases: [auditing, internal audit, external audit, audit support]}
+  financial-modeling: {display: Financial Modeling, category: business, aliases: [financial modelling, financial models, financial analysis, valuation, dcf, excel financial modeling]}
+  fpa: {display: FP&A, category: business, aliases: [fp&a, fp and a, financial planning, financial planning and analysis, budgeting, forecasting, budgets, variance analysis, business planning, financial forecasting]}
+  investment-banking: {display: Investment Banking, category: business, aliases: [m&a, mergers and acquisitions, due diligence, ib]}
+  venture-capital: {display: Venture Capital, category: business, aliases: [vc, venture investing]}
+  private-equity: {display: Private Equity, category: business, aliases: [pe, buyouts]}
+  equity-research: {display: Equity Research, category: business, aliases: [investment analysis, portfolio analysis, portfolio management, asset management]}
+  quantitative-finance: {display: Quantitative Finance, category: business, aliases: [quant, quantitative analysis finance, derivatives pricing]}
+  credit-analysis: {display: Credit Analysis, category: business, aliases: [underwriting, credit underwriting]}
+  treasury: {display: Treasury, category: business, aliases: [cash management, liquidity management]}
+  risk-management: {display: Risk Management, category: business, aliases: [risk assessment, risk analysis, enterprise risk management, erm, operational risk, credit risk, market risk]}
+  fraud-prevention: {display: Fraud Prevention, category: business, aliases: [fraud detection, fraud analysis, fraud management]}
+  aml-kyc: {display: AML/KYC, category: business, aliases: [aml, anti money laundering, kyc, know your customer]}
+  compliance: {display: Compliance, category: business, aliases: [legal & compliance, legal and compliance, regulatory compliance, regulatory affairs, legal compliance, policy development, trade compliance, fintech compliance, regulatory]}
+  gdpr: {display: GDPR, category: business, aliases: [gdpr compliance, general data protection regulation]}
+  hipaa: {display: HIPAA, category: business, aliases: [hipaa compliance]}
+  sox: {display: SOX, category: business, aliases: [sox compliance, sarbanes-oxley, sarbanes oxley]}
+  pci-dss: {display: PCI DSS, category: business, aliases: [pci, pci compliance]}
+  soc-2: {display: SOC 2, category: business, aliases: [soc2, soc 2 compliance]}
+  iso-27001: {display: ISO 27001, category: business, aliases: [iso27001, iso 27001 certification]}
+  data-privacy: {display: Data Privacy, category: business, aliases: [privacy, data protection, privacy compliance]}
+  quality-management: {display: Quality Management, category: business, aliases: [quality management system, qms, iso 9001]}
+  gxp: {display: GxP, category: business, aliases: [gmp, good manufacturing practice, fda]}
+  supply-chain: {display: Supply Chain, category: business, aliases: [supply chain management, scm, supply planning, demand planning]}
+  logistics: {display: Logistics, category: business, aliases: [freight, customs, import export, warehousing, warehouse management, fulfillment, fulfilment]}
+  procurement: {display: Procurement, category: business, aliases: [purchasing, sourcing, vendor management, supplier management, category management]}
+  inventory-management: {display: Inventory Management, category: business, aliases: [inventory, inventory control]}
+  ecommerce: {display: E-commerce, category: business, aliases: [e-commerce, e commerce, online retail, online store, online shop, marketplace management, ecommerce management, ecommerce marketing]}
+  amazon-seller: {display: Amazon Seller, category: business, aliases: [amazon fba, fba, amazon marketplace, amazon seller central]}
+  data-entry: {display: Data Entry, category: business, aliases: [data input, clerical, administrative tasks]}
+  transcription: {display: Transcription, category: business, aliases: [transcribing, typing]}
+  administrative-support: {display: Administrative Support, category: business, aliases: [admin, administration, administrative, virtual assistant, virtual assistance, administrative assistant, executive assistant, personal assistant, office administration, office management, calendar management, scheduling, travel booking, email management, inbox management, appointment setting, receptionist, secretarial]}
+  translation: {display: Translation, category: business, aliases: [translator, translations, language services, cat tools, subtitling, transcreation]}
+  localization: {display: Localization, category: business, aliases: [localisation, l10n, i18n, internationalization, internationalisation]}
+  teaching: {display: Teaching, category: business, aliases: [teacher, tutoring, tutor, instruction, lecturing, esl, tefl, online teaching]}
+  instructional-design: {display: Instructional Design, category: business, aliases: [curriculum development, curriculum design, e-learning, elearning, course creation]}
+  clinical-research: {display: Clinical Research, category: business, aliases: [clinical trials, clinical operations]}
+  medical-writing: {display: Medical Writing, category: business, aliases: [regulatory writing]}
+  pharmacovigilance: {display: Pharmacovigilance, category: business, aliases: [drug safety]}
+  nursing: {display: Nursing, category: business, aliases: [registered nurse, rn nursing]}
+  patient-care: {display: Patient Care, category: business, aliases: [patient support]}
+  healthcare-administration: {display: Healthcare Administration, category: business, aliases: [healthcare management, medical administration]}
+  medical-coding: {display: Medical Coding, category: business, aliases: [medical billing, icd-10, cpt coding]}
+  ehr: {display: EHR, category: business, aliases: [emr, electronic health records, electronic medical records, epic systems]}
+  bioinformatics: {display: Bioinformatics, category: data, aliases: [computational biology]}
+
+  # ------------------------------------------------------------------ design and creative
+  figma: {display: Figma, category: design, aliases: [figma design, figjam, figma prototyping]}
+  sketch: {display: Sketch, category: design, aliases: [sketch app]}
+  adobe-xd: {display: Adobe XD, category: design, aliases: [xd]}
+  miro: {display: Miro, category: design, aliases: [miro board]}
+  invision: {display: InVision, category: design, aliases: []}
+  photoshop: {display: Photoshop, category: design, aliases: [adobe photoshop, ps]}
+  lightroom: {display: Lightroom, category: design, aliases: [adobe lightroom]}
+  photo-editing: {display: Photo Editing, category: design, aliases: [photo retouching, retouching, image editing]}
+  gimp: {display: GIMP, category: design, aliases: []}
+  illustrator: {display: Illustrator, category: design, aliases: [adobe illustrator, ai illustrator]}
+  vector-graphics: {display: Vector Graphics, category: design, aliases: [vector art]}
+  inkscape: {display: Inkscape, category: design, aliases: []}
+  indesign: {display: InDesign, category: design, aliases: [adobe indesign]}
+  print-design: {display: Print Design, category: design, aliases: [layout design, desktop publishing, dtp, editorial design, publication design, packaging design]}
+  after-effects: {display: After Effects, category: design, aliases: [adobe after effects, ae after effects]}
+  motion-graphics: {display: Motion Graphics, category: design, aliases: [motion design, motion graphic design, motion designer]}
+  animation: {display: Animation, category: design, aliases: [2d animation, 3d animation, animator]}
+  premiere-pro: {display: Premiere Pro, category: design, aliases: [adobe premiere, adobe premiere pro, premiere]}
+  final-cut-pro: {display: Final Cut Pro, category: design, aliases: [final cut]}
+  davinci-resolve: {display: DaVinci Resolve, category: design, aliases: [resolve, davinci]}
+  video-production: {display: Video Production, category: design, aliases: [video, video editing, video editor, filmmaking, youtube editing, short-form video, reels, post-production, post production, videography]}
+  canva: {display: Canva, category: design, aliases: [canva design, canva pro]}
+  blender: {display: Blender, category: design, aliases: [blender 3d]}
+  maya: {display: Maya, category: design, aliases: [autodesk maya]}
+  zbrush: {display: ZBrush, category: design, aliases: []}
+  three-d-modeling: {display: 3D Modeling, category: design, aliases: [3d modeling, 3d modelling, 3d, 3d design, 3d artist, 3d rendering, rendering, texturing, rigging, game art, cgi, environment design]}
+  vfx: {display: VFX, category: design, aliases: [visual effects]}
+  ui-design: {display: UI Design, category: design, aliases: [user interface, user interface design, ui designer, interface design, visual design, web design and ui, app design, screen design, mobile ui]}
+  ux-design: {display: UX Design, category: design, aliases: [ux, user experience, user experience design, ux designer]}
+  ui-ux-design: {display: UI/UX Design, category: design, aliases: [ui/ux, ux/ui, ui ux, ux ui, ui-ux, ui/ux design, ux/ui design, product design and ux]}
+  interaction-design: {display: Interaction Design, category: design, aliases: [ixd]}
+  information-architecture: {display: Information Architecture, category: design, aliases: [ia, site architecture]}
+  service-design: {display: Service Design, category: design, aliases: [journey mapping, customer journey, customer journey mapping]}
+  design-thinking: {display: Design Thinking, category: design, aliases: [human-centered design, human centered design]}
+  accessibility: {display: Accessibility, category: design, aliases: [wcag, a11y, web accessibility]}
+  ux-research: {display: UX Research, category: design, aliases: [user research, user testing, user interviews, usability research, usability testing, usability, design research, ux researcher]}
+  wireframing: {display: Wireframing, category: design, aliases: [wireframes, prototyping, prototypes, mockups, mock-ups, rapid prototyping, interactive prototypes]}
+  design-systems: {display: Design Systems, category: design, aliases: [design system, component libraries, component library, style guides, design tokens, atomic design, pattern libraries]}
+  graphic-design: {display: Graphic Design, category: design, aliases: [graphic designer, graphics, graphic arts, visual communication, communication design, poster design, banner design, marketing design, creative design]}
+  adobe-creative-cloud: {display: Adobe Creative Cloud, category: design, aliases: [adobe creative suite, adobe cc, creative suite, adobe, adobe suite]}
+  product-design: {display: Product Design, category: design, aliases: [product designer, digital product design]}
+  industrial-design: {display: Industrial Design, category: design, aliases: [industrial designer]}
+  branding: {display: Branding, category: design, aliases: [brand design, brand identity design, visual branding, rebranding, naming, art direction, creative direction, creative strategy, logo design, logos, visual identity]}
+  typography: {display: Typography, category: design, aliases: [type design, lettering]}
+  illustration: {display: Illustration, category: design, aliases: [digital illustration, character illustration, hand lettering]}
+  photography: {display: Photography, category: design, aliases: [photographer, product photography]}
+  audio-production: {display: Audio Production, category: design, aliases: [audio editing, audio engineering, sound design, music production, mixing, mastering, sound engineering, daw]}
+  podcasting: {display: Podcasting, category: design, aliases: [podcast production, podcast editing, podcast]}
+  voiceover: {display: Voiceover, category: design, aliases: [voice over, voice acting, voice talent]}
+
+  # ------------------------------------------------------------------ cross-cutting engineering concepts
+  oop: {display: Object-Oriented Programming, category: other, aliases: [object oriented programming, object-oriented programming, object oriented design, ood]}
+  design-patterns: {display: Design Patterns, category: other, aliases: [solid, solid principles, clean code, clean architecture]}
+  domain-driven-design: {display: Domain-Driven Design, category: other, aliases: [ddd, domain driven design]}
+  algorithms: {display: Algorithms, category: other, aliases: [data structures, algorithms and data structures, data structures and algorithms, dsa, algorithm design, competitive programming, computational thinking, algorithmic]}
+  concurrency: {display: Concurrency, category: other, aliases: [multithreading, multi-threading, parallel programming, async programming, asynchronous programming, parallel computing, threading]}
+  gpu-programming: {display: GPU Programming, category: other, aliases: [cuda, gpu, opencl, gpgpu]}
+  hpc: {display: High-Performance Computing, category: other, aliases: [high performance computing, supercomputing]}
+  performance-optimization: {display: Performance Optimization, category: other, aliases: [performance tuning, low latency, performance engineering]}
+  code-review: {display: Code Review, category: other, aliases: [peer review, pull requests, code reviews]}
+  technical-leadership: {display: Technical Leadership, category: other, aliases: [tech lead, technical lead, technical mentoring, staff engineering]}
+  engineering-management: {display: Engineering Management, category: other, aliases: [engineering manager, eng management]}
+  robotics: {display: Robotics, category: other, aliases: [ros, ros2, robot operating system, slam, mechatronics, autonomous vehicles, autonomous systems]}
+  iot: {display: IoT, category: other, aliases: [internet of things, iiot]}
+  industrial-automation: {display: Industrial Automation, category: other, aliases: [plc, scada, automation engineering]}
+  electrical-engineering: {display: Electrical Engineering, category: other, aliases: [circuit design, analog design, power electronics, electronics]}
+  pcb-design: {display: PCB Design, category: other, aliases: [pcb, altium]}
+  signal-processing: {display: Signal Processing, category: other, aliases: [dsp, digital signal processing]}
+  geospatial: {display: Geospatial, category: other, aliases: [gis, geospatial analysis, geodata, geomatics, mapping, cartography, remote sensing]}
+  arcgis: {display: ArcGIS, category: other, aliases: [esri, arcgis pro]}
+  qgis: {display: QGIS, category: other, aliases: []}
+
+drop:
+  # soft skills and filler
+  - communication
+  - communication skills
+  - strong communication
+  - excellent communication
+  - written communication
+  - verbal communication
+  - verbal and written communication
+  - interpersonal skills
+  - teamwork
+  - team player
+  - team work
+  - collaboration
+  - problem solving
+  - problem-solving
+  - analytical thinking
+  - analytical skills
+  - critical thinking
+  - creative thinking
+  - creativity
+  - self motivated
+  - self-motivated
+  - self starter
+  - self-starter
+  - motivated
+  - proactive
+  - detail oriented
+  - detail-oriented
+  - attention to detail
+  - fast learner
+  - quick learner
+  - willingness to learn
+  - eager to learn
+  - passion
+  - passionate
+  - curiosity
+  - ownership
+  - initiative
+  - adaptability
+  - flexibility
+  - flexible
+  - reliable
+  - reliability
+  - work ethic
+  - time management
+  - organization
+  - organisation
+  - organizational skills
+  - organisational skills
+  - multitasking
+  - multi-tasking
+  - leadership
+  - management
+  - decision making
+  - decision-making
+  - strategic thinking
+  - strategy
+  - planning
+  - research
+  - presentation
+  - customer focus
+  - customer oriented
+  - results oriented
+  - results driven
+  - hands on
+  - hands-on
+  - experience
+  - skills
+  - professional
+  - professionalism
+  - integrity
+  - trust
+  - empathy
+  - emotional intelligence
+  - positive attitude
+  - high school or equivalent
+  - bachelors degree
+  - degree
+  - computer science
+  # human languages (proficiency, not a skill)
+  - english
+  - native english
+  - fluent english
+  - business english
+  - english proficiency
+  - german
+  - french
+  - spanish
+  - portuguese
+  - italian
+  - dutch
+  - polish
+  - russian
+  - chinese
+  - mandarin
+  - japanese
+  - arabic
+  - hindi
+  - turkish
+  # roles and levels
+  - dev
+  - developer
+  - developers
+  - engineer
+  - engineers
+  - engineering
+  - software engineer
+  - software developer
+  - software development
+  - software engineering
+  - senior
+  - junior
+  - mid level
+  - mid-level
+  - entry level
+  - intern
+  - internship
+  - lead
+  - principal
+  - staff
+  - manager
+  - director
+  - directors
+  - executive
+  - exec
+  - chief executives
+  - ceo office
+  - ceo
+  - cto
+  - coordinator
+  - specialist
+  - supervisor
+  - team leader
+  - analyst
+  - consultant
+  - consulting
+  - technical
+  - tech
+  - it
+  - information technology
+  - information technology and services
+  - students
+  - student
+  - studenten/starters
+  - student & early professionals
+  - werkstudent
+  - working student
+  - praktikum
+  - praxissemester
+  - praktijkstage
+  - afstudeerstage
+  - full time
+  - full-time
+  - part time
+  - part-time
+  - contract
+  - freelance
+  - temporary
+  - permanent
+  - remote
+  - remote work
+  - remote job
+  - remote jobs
+  - remote first
+  - work from home
+  - wfh
+  - digital nomad
+  - nomad
+  - worldwide
+  - anywhere
+  - national
+  - international
+  - other
+  - others
+  - non tech
+  - non-tech
+  - misc
+  - general
+  - various
+  # departments and industries too broad to be a skill
+  - ops
+  - operations
+  - business operations
+  - financial services
+  - people
+  - product
+  - design
+  - development
+  - support
+  - customer
+  - consumer
+  - commercial
+  - legal
+  - law
+  - medical
+  - education
+  - travel
+  - healthcare
+  - insurance
+  - biotech
+  - fintech
+  - saas
+  - startup
+  - startups
+  - real estate
+  - hospitality
+  - nonprofit
+  - non-profit
+  - ngo
+  - government
+  - public sector
+  - media
+  - entertainment
+  - gaming
+  - music industry
+  - sports
+  - retail
+  - manufacturing
+  - energy
+  - construction
+  - automotive
+  - aerospace
+  - telecommunications
+  - telecom
+  - microsoft
+  - google
+  - apple
+  - meta
+  - facebook inc
+  - one platform
+  - designer
+  - product & operations
+  - data
+  - business consulting
+  - marketplace
+  - education & e-learning
+  - healthcare & medical
+  - engineering - developers
+  - production engineering
+  - data consulting
+  - consumer electronics
+  - technology
+  - technology product
+  - hardware engineering and software
+  - research and development
+  - r&d
+  - g&a
+  - overig
+  - offres
+  - formation
+  - informatique
+  - students and early professionals
+  - hiring
+  - job
+  - jobs
+  - career
+  - careers
+  - opportunity
+  - urgent
+  - new
+  - hot
+  - featured
+  - apply now
