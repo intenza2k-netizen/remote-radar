@@ -81,15 +81,96 @@ def test_skill_premium_ci_straddles_zero_for_an_unrelated_skill():
     assert docker["ci_low"] < 0 < docker["ci_high"]
 
 
-def test_skill_premium_filters_small_groups_and_sorts_by_diff():
+def test_skill_premium_filters_small_groups_and_sorts_by_interval_lower_bound():
     population = premium_population()
     rows = insights.skill_premium(population)
     slugs = [r["slug"] for r in rows]
     assert "rare" not in slugs  # only 5 salaried jobs
     assert "git" not in slugs  # nobody without it: no comparison group
-    diffs = [r["diff"] for r in rows]
-    assert diffs == sorted(diffs, reverse=True)
+    gaps = [insights._certain_gap(r) for r in rows]
+    assert gaps == sorted(gaps, reverse=True)
+    assert rows[0]["slug"] == "dbt"  # the clear gap leads, the noisy docker row trails
     assert insights.skill_premium([rec(1, skills=["a"])]) == []  # no salaries at all
+
+
+def clustered_population() -> list[JobRecord]:
+    """104 salaried jobs. 'big' = 18 postings of one company ("Whale", paid ~300k) plus 6
+    ordinary postings at 6 other companies; 'wide' = one ordinary posting at each of 20
+    companies. Everything else is paid about 100k."""
+    rng = np.random.default_rng(11)
+
+    def ordinary() -> int:
+        return round(100_000 + rng.normal(0, 5_000))
+
+    out: list[JobRecord] = []
+    for k in range(18):
+        out.append(rec(len(out), skills=["big"], salary=300_000 + 1_000 * k, company="Whale"))
+    for k in range(6):
+        out.append(rec(len(out), skills=["big"], salary=ordinary(), company=f"B{k}"))
+    for k in range(20):
+        out.append(rec(len(out), skills=["wide"], salary=ordinary(), company=f"W{k}"))
+    for k in range(60):
+        out.append(rec(len(out), skills=["other"], salary=ordinary(), company=f"O{k % 30}"))
+    return out
+
+
+def test_skill_premium_resamples_companies_not_postings():
+    pop = clustered_population()
+    rows = {r["slug"]: r for r in insights.skill_premium(pop)}
+    big, wide = rows["big"], rows["wide"]
+    assert big["n_with"] == 24 and big["n_companies"] == 7
+    assert wide["n_with"] == 20 and wide["n_companies"] == 20
+    assert big["diff"] > 150_000  # the point estimate is driven by one employer
+
+    # A posting-level bootstrap would call that gap rock solid ...
+    rng = np.random.default_rng(0)
+    pay = np.array([r.salary.annual_usd_mid for r in pop])
+    mask = np.array(["big" in r.skills for r in pop])
+    naive = np.median(pay[mask][rng.integers(0, 24, (1000, 24))], axis=1) - np.median(
+        pay[~mask][rng.integers(0, 80, (1000, 80))], axis=1
+    )
+    assert np.percentile(naive, 2.5) > 100_000
+    # ... the company bootstrap sees that the gap vanishes whenever "Whale" is not drawn.
+    assert big["ci_low"] < 20_000
+    assert wide["ci_low"] < 0 < wide["ci_high"]
+
+
+def test_skill_premium_needs_five_distinct_companies():
+    pop = [
+        replace(r, company="Same Co") if "big" in r.skills else r for r in clustered_population()
+    ]
+    assert "big" not in {r["slug"] for r in insights.skill_premium(pop)}  # 1 company
+    four = [
+        replace(r, company=f"Four {i % 4}") if "big" in r.skills else r
+        for i, r in enumerate(clustered_population())
+    ]
+    assert "big" not in {r["slug"] for r in insights.skill_premium(four)}  # 4 companies
+    five = [
+        replace(r, company=f"Five {i % 5}") if "big" in r.skills else r
+        for i, r in enumerate(clustered_population())
+    ]
+    rows = {r["slug"]: r for r in insights.skill_premium(five)}
+    assert rows["big"]["n_companies"] == 5
+    assert "big" in {r["slug"] for r in insights.skill_premium(four, min_companies=4)}
+
+
+def test_cluster_medians_match_numpy_on_expanded_samples():
+    rng = np.random.default_rng(5)
+    values = np.sort(rng.integers(50, 150, 30).astype(float))
+    weights = rng.integers(0, 4, (40, 30))
+    weights[3] = 0  # an empty replicate gives NaN
+    got = insights._cluster_medians(weights, values)
+    assert np.isnan(got[3])
+    for i in (0, 1, 2, 4, 5, 39):
+        expanded = np.repeat(values, weights[i])
+        assert got[i] == pytest.approx(np.median(expanded))
+
+
+def test_certain_gap_is_the_distance_of_the_interval_from_zero():
+    assert insights._certain_gap({"diff": 50, "ci_low": 20, "ci_high": 90}) == 20
+    assert insights._certain_gap({"diff": -50, "ci_low": -90, "ci_high": -20}) == 20
+    assert insights._certain_gap({"diff": 10, "ci_low": -5, "ci_high": 30}) == -5
+    assert insights._certain_gap({"diff": -10, "ci_low": -30, "ci_high": 5}) == -5
 
 
 def test_skill_premium_is_reproducible_and_independent_of_other_skills():
@@ -289,6 +370,7 @@ def test_companies_group_legal_variants_and_aggregate():
         "slug",
         "name",
         "jobs",
+        "jobs_total",
         "roles",
         "seniority",
         "top_skills",

@@ -1,0 +1,46 @@
+{
+ "author": "whoishiring",
+ "created_at": "2026-10-01T16:00:00.000Z",
+ "created_at_i": 1790870400,
+ "id": 48999999,
+ "options": [],
+ "parent_id": null,
+ "points": 300,
+ "story_id": 48999999,
+ "title": "Ask HN: Who is hiring? (October 2026)",
+ "type": "story",
+ "url": null,
+ "text": null,
+ "children": [
+  {
+   "author": "prev_a",
+   "children": [],
+   "created_at": "2026-10-01T17:30:00.000Z",
+   "created_at_i": 1790875800,
+   "id": 910000001,
+   "options": [],
+   "parent_id": 48999999,
+   "points": null,
+   "story_id": 48999999,
+   "text": "Wayne Enterprises | Data Scientist | REMOTE (US) | Full-time | $150k-$190k<p>We use Python and SQL.",
+   "title": null,
+   "type": "comment",
+   "url": null
+  },
+  {
+   "author": "prev_b",
+   "children": [],
+   "created_at": "2026-10-01T17:30:00.000Z",
+   "created_at_i": 1790875800,
+   "id": 910000002,
+   "options": [],
+   "parent_id": 48999999,
+   "points": null,
+   "story_id": 48999999,
+   "text": "Stark Industries | Mechanical Engineer | Malibu, CA | ONSITE",
+   "title": null,
+   "type": "comment",
+   "url": null
+  }
+ ]
+}

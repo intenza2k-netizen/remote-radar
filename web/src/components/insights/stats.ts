@@ -7,6 +7,23 @@
 /** True when a bootstrap interval includes zero, i.e. the difference is not distinguishable from "no effect". */
 export const crossesZero = (lo: number, hi: number) => lo <= 0 && hi >= 0;
 
+type PremiumLike = { diff: number; ci_low: number; ci_high: number };
+
+/**
+ * How far a pay-premium interval stays from zero, in the direction of its gap: `ci_low` for a positive gap,
+ * `-ci_high` for a negative one (negative when the interval crosses zero). The headline skill is the one with
+ * the largest value, not the largest point estimate, so a big but fragile estimate cannot lead.
+ */
+export const certainGap = (r: PremiumLike) => (r.diff >= 0 ? r.ci_low : -r.ci_high);
+
+/** The row whose interval excludes zero and stays furthest from it; `null` when every interval crosses zero. */
+export function headlineRow<T extends PremiumLike>(rows: T[]): { top: T; clear: number } | null {
+  const clear = rows.filter((r) => !crossesZero(r.ci_low, r.ci_high));
+  if (!clear.length) return null;
+  const top = [...clear].sort((a, b) => certainGap(b) - certainGap(a) || Math.abs(b.diff) - Math.abs(a.diff))[0];
+  return { top, clear: clear.length };
+}
+
 const Z = 1.96;
 
 /** Wilson score interval for a proportion x/n (better behaved than the Wald interval at small n and near 0/1). */

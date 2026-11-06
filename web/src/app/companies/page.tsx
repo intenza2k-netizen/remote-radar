@@ -6,7 +6,6 @@ import { Container, PageHeader } from "@/components/ui";
 import { getJobs, getMeta } from "@/lib/data";
 import { fmtInt } from "@/lib/format";
 import { companyRows, getCompanies } from "@/lib/insights";
-import { windowCaption } from "@/lib/weeks";
 
 export const metadata: Metadata = {
   title: "Companies",
@@ -40,7 +39,7 @@ export default function CompaniesPage() {
       <PageHeader
         eyebrow="Companies"
         title={`${fmtInt(companies.length)} companies hiring remotely`}
-        lede={`Companies with at least one posting ${windowCaption(meta) === "collected so far" ? "collected so far" : `in the ${windowCaption(meta)}`}; ${fmtInt(multi)} have two or more. Median salary uses only postings that state pay, and its n is shown: with 1 or 2 salaried postings it is an anecdote, not a company norm.`}
+        lede={`Companies with at least one open posting: still listed on its board and posted in the last 60 days. This is the same count as "Companies hiring" on the overview. ${fmtInt(multi)} have two or more postings. Median salary uses only postings that state pay, and its n is shown: with 1 or 2 salaried postings it is an anecdote, not a company norm.`}
       />
       <div className="mt-8">
         <CompaniesTable rows={rows} sourceNames={sourceNames} />

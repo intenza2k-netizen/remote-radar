@@ -1,0 +1,112 @@
+# Canonical remote-region names for Remote Radar (applied by radar.regions at publish time).
+#
+# regions.<canonical>: [aliases]
+#   Matching ignores case, accents, dots, hyphens, "&" vs "and" and a leading "The", so
+#   "Türkiye" / "turkiye" and "Asia-Pacific" / "Asia Pacific" need only one entry. The canonical
+#   name itself is always an alias of itself. A value that matches nothing is kept as written
+#   (all-lowercase values are title-cased), so ordinary country names need no entry.
+#   There is deliberately no hierarchy: "US" does not imply "Americas", "Germany" does not
+#   imply "EU".
+#
+# us_states: US states collapse into "United States".
+#   names           full state names; always mean the state ("Ohio").
+#   ambiguous_names full names that are also another place ("Georgia"): the state only when the
+#                   same posting lists at least two other US states.
+#   codes           two-letter codes, upper-case only. Many are also ISO country codes (IN, IL,
+#                   CA, DE ...), so they count as states only when the posting lists at least
+#                   two distinct codes/state names ("AL, AZ, IL, IN ..."); a lone "CA" or "IN"
+#                   falls through to the alias table below (Canada, India).
+
+regions:
+  worldwide: [Worldwide, anywhere, global, world, worldwide remote, anywhere in the world]
+
+  # ---- countries with several spellings
+  United States: [US, USA, U.S., U.S.A., United States, United States of America]
+  United Kingdom: [UK, U.K., GB, Great Britain, United Kingdom]
+  Canada: [CA]
+  India: [IN]
+  Israel: [IL]
+  Germany: [DE]
+  Argentina: [AR]
+  Czechia: [Czech Republic, Czechia]
+  Netherlands: [The Netherlands, Netherlands, Holland]
+  Türkiye: [Turkey, Turkiye, Türkiye]
+  Bosnia and Herzegovina: [Bosnia & Herzegovina, Bosnia and Herzegovina, Bosnia]
+  United Arab Emirates: [UAE, United Arab Emirates]
+  Saudi Arabia: [KSA, Saudi Arabia]
+  Democratic Republic of the Congo: [DRC, DR Congo, Democratic Republic of Congo, Democratic Republic of the Congo]
+  Laos: [Laos, Lao PDR, Lao People's Democratic Republic]
+  Brunei: [Brunei, Brunei Darussalam]
+  Moldova: [Moldova, Republic of Moldova]
+  South Korea: [South Korea, Republic of Korea]
+  Vietnam: [Vietnam, Viet Nam]
+  Russia: [Russia, Russian Federation]
+  Côte d'Ivoire: [Cote d'Ivoire, Ivory Coast, Côte d'Ivoire]
+  North Macedonia: [North Macedonia, Macedonia]
+  Cabo Verde: [Cabo Verde, Cape Verde]
+  Timor-Leste: [Timor-Leste, East Timor]
+
+  # ---- multi-country regions, codes spelled out
+  Americas: [AMER, AMERICAS, The Americas]
+  North America: [NAMER, NORAM, North America]
+  Latin America: [LATAM, Latin America]
+  Asia-Pacific: [APAC, Asia-Pacific, Asia Pacific]
+  EMEA: [EMEA, Europe Middle East and Africa]
+  EU: [EU, European Union]
+  EEA: [EEA, European Economic Area]
+  Western Asia: [W Asia, West Asia, Western Asia]
+
+us_states:
+  names:
+    - Alabama
+    - Alaska
+    - Arizona
+    - Arkansas
+    - California
+    - Colorado
+    - Connecticut
+    - Delaware
+    - Florida
+    - Hawaii
+    - Idaho
+    - Illinois
+    - Indiana
+    - Iowa
+    - Kansas
+    - Kentucky
+    - Louisiana
+    - Maine
+    - Maryland
+    - Massachusetts
+    - Michigan
+    - Minnesota
+    - Mississippi
+    - Missouri
+    - Montana
+    - Nebraska
+    - Nevada
+    - New Hampshire
+    - New Jersey
+    - New Mexico
+    - New York
+    - North Carolina
+    - North Dakota
+    - Ohio
+    - Oklahoma
+    - Oregon
+    - Pennsylvania
+    - Rhode Island
+    - South Carolina
+    - South Dakota
+    - Tennessee
+    - Texas
+    - Utah
+    - Vermont
+    - Virginia
+    - Washington
+    - West Virginia
+    - Wisconsin
+    - Wyoming
+  ambiguous_names:
+    - Georgia
+  codes: ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "DC"]

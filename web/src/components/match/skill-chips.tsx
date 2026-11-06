@@ -1,6 +1,7 @@
 "use client";
 
 import { SkillPicker, type PickerOption } from "@/components/skill-picker";
+import { skillLabel } from "@/lib/format";
 import type { DetectedSkill } from "@/lib/match/types";
 
 type Props = {
@@ -33,7 +34,7 @@ export function SkillChips({ skills, names, mentions, options, onAdd, onRemove, 
         <ul className="mt-3 flex flex-wrap gap-2" aria-label="Detected skills">
           {skills.map((s) => {
             const m = mentions.get(s);
-            const label = names[s] ?? s;
+            const label = skillLabel(s, names);
             return (
               <li key={s}>
                 <span

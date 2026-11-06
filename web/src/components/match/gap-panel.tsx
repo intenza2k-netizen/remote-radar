@@ -1,4 +1,5 @@
 import { BarList, type BarItem } from "@/components/charts/bar-list";
+import { skillLabel } from "@/lib/format";
 import type { GapSkill } from "@/lib/match/gap";
 
 type Props = {
@@ -14,12 +15,12 @@ const SHOWN = 8;
 export function GapPanel({ headline, gaps, total, names, linkable }: Props) {
   const items: BarItem[] = gaps.slice(0, SHOWN).map((g) => ({
     key: g.slug,
-    label: names[g.slug] ?? g.slug,
+    label: skillLabel(g.slug, names),
     value: g.jobs,
     valueLabel: `${g.jobs} of ${total}`,
     sub: `${Math.round(g.share * 100)}%`,
     href: linkable.has(g.slug) ? `/skills/${g.slug}` : undefined,
-    title: `${names[g.slug] ?? g.slug} is listed by ${g.jobs} of your ${total} best matches`,
+    title: `${skillLabel(g.slug, names)} is listed by ${g.jobs} of your ${total} best matches`,
   }));
   return (
     <section className="card p-4 sm:p-5" aria-labelledby="gap-h">

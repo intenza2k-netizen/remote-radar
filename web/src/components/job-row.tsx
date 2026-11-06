@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { employmentLabel, fmtDateShort, fmtSalaryRange, fmtUsdShort, roleLabel, seniorityLabel } from "@/lib/format";
+import { employmentLabel, fmtDateShort, fmtSalaryRange, fmtUsdShort, roleLabel, seniorityLabel, skillLabel } from "@/lib/format";
 import type { Job } from "@/lib/types";
 
 type Props = {
@@ -56,7 +56,7 @@ export function JobRow({ job, skillNames, sourceNames, maxSkills = 6, companySlu
               {shown.map((slug) => (
                 <li key={slug}>
                   <Link href={`/skills/${slug}`} className="inline-block rounded-md bg-surface-2 px-2 py-0.5 text-xs text-ink-2 no-underline hover:text-ink hover:underline">
-                    {skillNames[slug] ?? slug}
+                    {skillLabel(slug, skillNames)}
                   </Link>
                 </li>
               ))}

@@ -1,0 +1,541 @@
+{
+ "apiVersion": "1",
+ "jobs": [
+  {
+   "id": "98c030bd-a72d-4045-87aa-b8ff7d0d43fb",
+   "title": "Senior Analytics Engineer",
+   "department": "All Departments",
+   "team": "Data",
+   "employmentType": "FullTime",
+   "location": "San Francisco HQ",
+   "shouldDisplayCompensationOnJobPostings": true,
+   "secondaryLocations": [],
+   "publishedAt": "2026-10-16T17:42:25.985+00:00",
+   "isListed": true,
+   "isRemote": true,
+   "workplaceType": "Hybrid",
+   "address": {
+    "postalAddress": {
+     "postalCode": "94103",
+     "addressRegion": "California",
+     "streetAddress": "1098 Harrison Street",
+     "addressCountry": "United States",
+     "addressLocality": "San Francisco"
+    }
+   },
+   "jobUrl": "https://jobs.ashbyhq.com/plaid/98c030bd-a72d-4045-87aa-b8ff7d0d43fb",
+   "applyUrl": "https://jobs.ashbyhq.com/plaid/98c030bd-a72d-4045-87aa-b8ff7d0d43fb/application",
+   "descriptionHtml": "<p style=\"min-height:1.5em\">We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers</p>",
+   "descriptionPlain": "We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers the tools millions of",
+   "compensation": {
+    "compensationTierSummary": "$157.2K – $214.8K • Offers Equity",
+    "scrapeableCompensationSalarySummary": "$157.2K - $214.8K",
+    "compensationTiers": [
+     {
+      "id": "d4bcfcaf-e3d3-4aa4-a897-44371fd5d14b",
+      "tierSummary": "Target Base Salary $157.2K – $214.8K • Offers Equity",
+      "title": "Zone 1",
+      "additionalInformation": null,
+      "components": [
+       {
+        "id": "59441d23-be12-47ad-b874-484763c02cce",
+        "summary": "Offers Equity",
+        "compensationType": "EquityCashValue",
+        "interval": "1 YEAR",
+        "currencyCode": "USD",
+        "minValue": null,
+        "maxValue": null
+       },
+       {
+        "id": "7b553594-dc22-463c-8a69-61046e707f34",
+        "summary": "Target Base Salary $157.2K – $214.8K",
+        "compensationType": "Salary",
+        "interval": "1 YEAR",
+        "currencyCode": "USD",
+        "minValue": 157200,
+        "maxValue": 214800
+       }
+      ]
+     }
+    ],
+    "summaryComponents": [
+     {
+      "compensationType": "EquityCashValue",
+      "interval": "1 YEAR",
+      "currencyCode": "USD",
+      "minValue": null,
+      "maxValue": null
+     },
+     {
+      "compensationType": "Salary",
+      "interval": "1 YEAR",
+      "currencyCode": "USD",
+      "minValue": 157200,
+      "maxValue": 214800
+     }
+    ]
+   }
+  },
+  {
+   "id": "aaaaaaaa-0000-0000-0000-000000000001",
+   "title": "Senior Data Engineer",
+   "department": "All Departments",
+   "team": "Engineering",
+   "employmentType": "FullTime",
+   "location": "Remote - US",
+   "shouldDisplayCompensationOnJobPostings": true,
+   "secondaryLocations": [],
+   "publishedAt": "2026-09-03T00:40:25.842+00:00",
+   "isListed": true,
+   "isRemote": true,
+   "workplaceType": "Remote",
+   "address": {
+    "postalAddress": {
+     "postalCode": "94103",
+     "addressRegion": "California",
+     "streetAddress": "1098 Harrison Street",
+     "addressCountry": "United States",
+     "addressLocality": "San Francisco"
+    }
+   },
+   "jobUrl": "https://jobs.ashbyhq.com/plaid/aaaaaaaa-0000-0000-0000-000000000001",
+   "applyUrl": "https://jobs.ashbyhq.com/plaid/eeb094c3-da73-411e-8dda-b3f4ee397f97/application",
+   "descriptionHtml": "<p style=\"min-height:1.5em\">We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers</p>",
+   "descriptionPlain": "We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers the tools millions of",
+   "compensation": {
+    "compensationTierSummary": "$190.8K – $238.8K • Offers Equity",
+    "scrapeableCompensationSalarySummary": "$190.8K - $238.8K",
+    "compensationTiers": [
+     {
+      "id": "402f2c7e-493c-45d8-80b4-6b3a8d6c613b",
+      "tierSummary": "$190.8K – $238.8K • Offers Equity",
+      "title": "Zone",
+      "additionalInformation": null,
+      "components": [
+       {
+        "id": "15519cfb-cbab-4c33-a968-1a9aa373148b",
+        "summary": "$190.8K – $238.8K",
+        "compensationType": "Salary",
+        "interval": "1 YEAR",
+        "currencyCode": "USD",
+        "minValue": 190800,
+        "maxValue": 238800
+       },
+       {
+        "id": "36eb5cf8-76ab-4181-9a61-01e86f53ab86",
+        "summary": "Offers Equity",
+        "compensationType": "EquityCashValue",
+        "interval": "1 YEAR",
+        "currencyCode": "USD",
+        "minValue": null,
+        "maxValue": null
+       }
+      ]
+     }
+    ],
+    "summaryComponents": [
+     {
+      "compensationType": "Salary",
+      "interval": "1 YEAR",
+      "currencyCode": "USD",
+      "minValue": 190800,
+      "maxValue": 238800
+     },
+     {
+      "compensationType": "EquityCashValue",
+      "interval": "1 YEAR",
+      "currencyCode": "USD",
+      "minValue": null,
+      "maxValue": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "aaaaaaaa-0000-0000-0000-000000000002",
+   "title": "Data Analyst (Contract)",
+   "department": "All Departments",
+   "team": "Analytics",
+   "employmentType": "Contract",
+   "location": "Remote",
+   "shouldDisplayCompensationOnJobPostings": true,
+   "secondaryLocations": [
+    {
+     "location": "Seattle Office",
+     "address": {
+      "postalAddress": {
+       "postalCode": "98109",
+       "addressRegion": "Washington",
+       "streetAddress": "1000 Dexter Avenue North, Suite 100A",
+       "addressCountry": "United States",
+       "addressLocality": "Seattle"
+      }
+     }
+    }
+   ],
+   "publishedAt": "2026-10-21T13:44:03.505+00:00",
+   "isListed": true,
+   "isRemote": true,
+   "workplaceType": "Remote",
+   "address": {
+    "postalAddress": {
+     "postalCode": "94103",
+     "addressRegion": "California",
+     "streetAddress": "1098 Harrison Street",
+     "addressCountry": "United States",
+     "addressLocality": "San Francisco"
+    }
+   },
+   "jobUrl": "https://jobs.ashbyhq.com/plaid/aaaaaaaa-0000-0000-0000-000000000002",
+   "applyUrl": "https://jobs.ashbyhq.com/plaid/dab31ae8-1e25-4b63-8008-d6930ff72369/application",
+   "descriptionHtml": "<p style=\"min-height:1.5em\">We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers</p>",
+   "descriptionPlain": "We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers the tools millions of",
+   "compensation": {
+    "compensationTierSummary": null,
+    "scrapeableCompensationSalarySummary": null,
+    "compensationTiers": [],
+    "summaryComponents": [
+     {
+      "compensationType": "Salary",
+      "interval": "1 HOUR",
+      "currencyCode": "EUR",
+      "minValue": 40,
+      "maxValue": 55
+     }
+    ]
+   }
+  },
+  {
+   "id": "aaaaaaaa-0000-0000-0000-000000000003",
+   "title": "Analytics Engineer",
+   "department": "All Departments",
+   "team": "Engineering",
+   "employmentType": "PartTime",
+   "location": "Remote - Canada",
+   "shouldDisplayCompensationOnJobPostings": true,
+   "secondaryLocations": [
+    {
+     "location": "Seattle Office",
+     "address": {
+      "postalAddress": {
+       "postalCode": "98109",
+       "addressRegion": "Washington",
+       "streetAddress": "1000 Dexter Avenue North, Suite 100A",
+       "addressCountry": "United States",
+       "addressLocality": "Seattle"
+      }
+     }
+    }
+   ],
+   "publishedAt": "2026-07-06T20:42:37.600+00:00",
+   "isListed": true,
+   "isRemote": true,
+   "workplaceType": "Remote",
+   "address": {
+    "postalAddress": {
+     "postalCode": "94103",
+     "addressRegion": "California",
+     "streetAddress": "1098 Harrison Street",
+     "addressCountry": "United States",
+     "addressLocality": "San Francisco"
+    }
+   },
+   "jobUrl": "https://jobs.ashbyhq.com/plaid/aaaaaaaa-0000-0000-0000-000000000003",
+   "applyUrl": "https://jobs.ashbyhq.com/plaid/127d31ff-3a16-488b-ba01-6e87dbb96957/application",
+   "descriptionHtml": "<p style=\"min-height:1.5em\">We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers</p>",
+   "descriptionPlain": "We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers the tools millions of",
+   "compensation": null
+  },
+  {
+   "id": "aaaaaaaa-0000-0000-0000-000000000004",
+   "title": "Machine Learning Engineer",
+   "department": "All Departments",
+   "team": "Engineering",
+   "employmentType": "FullTime",
+   "location": "Remote - EU",
+   "shouldDisplayCompensationOnJobPostings": true,
+   "secondaryLocations": [
+    {
+     "location": "Seattle Office",
+     "address": {
+      "postalAddress": {
+       "postalCode": "98109",
+       "addressRegion": "Washington",
+       "streetAddress": "1000 Dexter Avenue North, Suite 100A",
+       "addressCountry": "United States",
+       "addressLocality": "Seattle"
+      }
+     }
+    }
+   ],
+   "publishedAt": "2026-08-20T18:24:20.118+00:00",
+   "isListed": true,
+   "isRemote": true,
+   "workplaceType": "Remote",
+   "address": {
+    "postalAddress": {
+     "postalCode": "94103",
+     "addressRegion": "California",
+     "streetAddress": "1098 Harrison Street",
+     "addressCountry": "United States",
+     "addressLocality": "San Francisco"
+    }
+   },
+   "jobUrl": "https://jobs.ashbyhq.com/plaid/aaaaaaaa-0000-0000-0000-000000000004",
+   "applyUrl": "https://jobs.ashbyhq.com/plaid/95225497-fc9b-4c5d-8df0-df98df219ae5/application",
+   "descriptionHtml": "<p style=\"min-height:1.5em\">We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers</p>",
+   "descriptionPlain": "We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers the tools millions of",
+   "compensation": {
+    "compensationTierSummary": "$3K - $4K per week",
+    "scrapeableCompensationSalarySummary": "$3K - $4K per week",
+    "compensationTiers": [],
+    "summaryComponents": [
+     {
+      "compensationType": "Salary",
+      "interval": "1 WEEK",
+      "currencyCode": "USD",
+      "minValue": 3000,
+      "maxValue": 4000
+     }
+    ]
+   }
+  },
+  {
+   "id": "aaaaaaaa-0000-0000-0000-000000000005",
+   "title": "Data Scientist",
+   "department": "All Departments",
+   "team": "Data",
+   "employmentType": "FullTime",
+   "location": "Remote - US",
+   "shouldDisplayCompensationOnJobPostings": true,
+   "secondaryLocations": [
+    {
+     "location": "Seattle Office",
+     "address": {
+      "postalAddress": {
+       "postalCode": "98109",
+       "addressRegion": "Washington",
+       "streetAddress": "1000 Dexter Avenue North, Suite 100A",
+       "addressCountry": "United States",
+       "addressLocality": "Seattle"
+      }
+     }
+    }
+   ],
+   "publishedAt": "2026-08-28T17:42:28.428+00:00",
+   "isListed": false,
+   "isRemote": true,
+   "workplaceType": "Remote",
+   "address": {
+    "postalAddress": {
+     "postalCode": "94103",
+     "addressRegion": "California",
+     "streetAddress": "1098 Harrison Street",
+     "addressCountry": "United States",
+     "addressLocality": "San Francisco"
+    }
+   },
+   "jobUrl": "https://jobs.ashbyhq.com/plaid/aaaaaaaa-0000-0000-0000-000000000005",
+   "applyUrl": "https://jobs.ashbyhq.com/plaid/172bb8e8-7dc8-4fdc-ae20-525456989ff4/application",
+   "descriptionHtml": "<p style=\"min-height:1.5em\">We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers</p>",
+   "descriptionPlain": "We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers the tools millions of",
+   "compensation": {
+    "compensationTierSummary": "$190.8K – $262.8K • Offers Equity",
+    "scrapeableCompensationSalarySummary": "$190.8K - $262.8K",
+    "compensationTiers": [
+     {
+      "id": "d692aaa6-4f2e-43e4-abf4-c7b3ffc2368c",
+      "tierSummary": "$190,800 - $262,800 $190.8K – $262.8K • Offers Equity",
+      "title": "Zone A",
+      "additionalInformation": null,
+      "components": [
+       {
+        "id": "10358287-4fb4-417e-ab23-53bb6fbd2906",
+        "summary": "$190,800 - $262,800 $190.8K – $262.8K",
+        "compensationType": "Salary",
+        "interval": "1 YEAR",
+        "currencyCode": "USD",
+        "minValue": 190800,
+        "maxValue": 262800
+       },
+       {
+        "id": "c2be6fa9-34ec-4990-9ee0-a2373245549e",
+        "summary": "Offers Equity",
+        "compensationType": "EquityCashValue",
+        "interval": "1 YEAR",
+        "currencyCode": "USD",
+        "minValue": null,
+        "maxValue": null
+       }
+      ]
+     }
+    ],
+    "summaryComponents": [
+     {
+      "compensationType": "Salary",
+      "interval": "1 YEAR",
+      "currencyCode": "USD",
+      "minValue": 190800,
+      "maxValue": 262800
+     },
+     {
+      "compensationType": "EquityCashValue",
+      "interval": "1 YEAR",
+      "currencyCode": "USD",
+      "minValue": null,
+      "maxValue": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "aaaaaaaa-0000-0000-0000-000000000006",
+   "title": "Data Platform Engineer",
+   "department": "All Departments",
+   "team": "Data",
+   "employmentType": "FullTime",
+   "location": "San Francisco HQ",
+   "shouldDisplayCompensationOnJobPostings": true,
+   "secondaryLocations": [
+    {
+     "location": "Seattle Office",
+     "address": {
+      "postalAddress": {
+       "postalCode": "98109",
+       "addressRegion": "Washington",
+       "streetAddress": "1000 Dexter Avenue North, Suite 100A",
+       "addressCountry": "United States",
+       "addressLocality": "Seattle"
+      }
+     }
+    }
+   ],
+   "publishedAt": "2026-09-10T19:33:13.989+00:00",
+   "isListed": true,
+   "isRemote": false,
+   "workplaceType": "OnSite",
+   "address": {
+    "postalAddress": {
+     "postalCode": "94103",
+     "addressRegion": "California",
+     "streetAddress": "1098 Harrison Street",
+     "addressCountry": "United States",
+     "addressLocality": "San Francisco"
+    }
+   },
+   "jobUrl": "https://jobs.ashbyhq.com/plaid/aaaaaaaa-0000-0000-0000-000000000006",
+   "applyUrl": "https://jobs.ashbyhq.com/plaid/c85370cf-7391-4307-9757-42f2ee25b98a/application",
+   "descriptionHtml": "<p style=\"min-height:1.5em\">We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers</p>",
+   "descriptionPlain": "We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers the tools millions of",
+   "compensation": {
+    "compensationTierSummary": "$190.8K – $262.8K • Offers Equity",
+    "scrapeableCompensationSalarySummary": "$190.8K - $262.8K",
+    "compensationTiers": [
+     {
+      "id": "d7be75e3-fe05-4423-a007-5252193307ff",
+      "tierSummary": "$190,800 - $262,800 $190.8K – $262.8K • Offers Equity",
+      "title": "Zone A",
+      "additionalInformation": null,
+      "components": [
+       {
+        "id": "b77ac218-e2c0-4a79-9c59-80092cff932e",
+        "summary": "$190,800 - $262,800 $190.8K – $262.8K",
+        "compensationType": "Salary",
+        "interval": "1 YEAR",
+        "currencyCode": "USD",
+        "minValue": 190800,
+        "maxValue": 262800
+       },
+       {
+        "id": "9766e8b4-6dd0-4a18-8f22-93f13bde8ef2",
+        "summary": "Offers Equity",
+        "compensationType": "EquityCashValue",
+        "interval": "1 YEAR",
+        "currencyCode": "USD",
+        "minValue": null,
+        "maxValue": null
+       }
+      ]
+     }
+    ],
+    "summaryComponents": [
+     {
+      "compensationType": "Salary",
+      "interval": "1 YEAR",
+      "currencyCode": "USD",
+      "minValue": 190800,
+      "maxValue": 262800
+     },
+     {
+      "compensationType": "EquityCashValue",
+      "interval": "1 YEAR",
+      "currencyCode": "USD",
+      "minValue": null,
+      "maxValue": null
+     }
+    ]
+   }
+  },
+  {
+   "id": "aaaaaaaa-0000-0000-0000-000000000007",
+   "title": "BI Analyst",
+   "department": "All Departments",
+   "team": "Data",
+   "employmentType": "FullTime",
+   "location": "Remote",
+   "shouldDisplayCompensationOnJobPostings": true,
+   "secondaryLocations": [
+    {
+     "location": "Seattle Office",
+     "address": {
+      "postalAddress": {
+       "postalCode": "98109",
+       "addressRegion": "Washington",
+       "streetAddress": "1000 Dexter Avenue North, Suite 100A",
+       "addressCountry": "United States",
+       "addressLocality": "Seattle"
+      }
+     }
+    }
+   ],
+   "publishedAt": "2026-09-10T19:13:03.694+00:00",
+   "isListed": true,
+   "isRemote": true,
+   "workplaceType": "Remote",
+   "address": {
+    "postalAddress": {
+     "postalCode": "10012",
+     "addressRegion": "New York",
+     "streetAddress": "85 Spring Street, 10th Floor",
+     "addressCountry": "United States",
+     "addressLocality": "New York"
+    }
+   },
+   "jobUrl": "https://jobs.ashbyhq.com/plaid/aaaaaaaa-0000-0000-0000-000000000007",
+   "applyUrl": "https://jobs.ashbyhq.com/plaid/a1db9566-d51d-495e-9e87-4d57ac307d3c/application",
+   "descriptionHtml": "<p style=\"min-height:1.5em\">We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers</p>",
+   "descriptionPlain": "We believe that the way people interact with their finances will drastically improve in the next few years. We’re dedicated to empowering this transformation by building the tools and experiences that thousands of developers use to create their own products. Plaid powers the tools millions of",
+   "compensation": {
+    "compensationTierSummary": null,
+    "scrapeableCompensationSalarySummary": null,
+    "compensationTiers": [],
+    "summaryComponents": [
+     {
+      "compensationType": "EquityCashValue",
+      "interval": "1 YEAR",
+      "currencyCode": "USD",
+      "minValue": null,
+      "maxValue": null
+     },
+     {
+      "compensationType": "Salary",
+      "interval": "1 YEAR",
+      "currencyCode": "CAD",
+      "minValue": 90000,
+      "maxValue": null
+     }
+    ]
+   }
+  }
+ ]
+}

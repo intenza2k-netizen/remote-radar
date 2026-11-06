@@ -1,6 +1,6 @@
 # Remote Radar
 
-**What do remote employers actually ask for? A nightly pipeline reads remote job postings from four public job boards, extracts skills, seniority and salary with an LLM, and publishes the results as a public dashboard.**
+**What do remote employers actually ask for? A nightly pipeline reads remote job postings from nine public sources (job boards, company career pages and Hacker News), extracts skills, seniority and salary with an LLM, and publishes the results as a public dashboard. A CV matcher runs entirely in your browser.**
 
 [![CI](https://github.com/intenza2k-netizen/remote-radar/actions/workflows/ci.yml/badge.svg)](https://github.com/intenza2k-netizen/remote-radar/actions/workflows/ci.yml)
 ![Python 3.12](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)
@@ -19,33 +19,41 @@ It also gave me a reason to build the whole chain once, end to end: collecting d
 
 ## What it does
 
-- **Collects** remote job postings every night from four public job-board APIs and keeps the raw responses so later steps can be re-run.
+- **Collects** remote job postings every night from nine public sources and keeps the raw responses so later steps can be re-run. The sources are five job-board APIs, the public job-board APIs of 44 curated companies (Greenhouse, Ashby and Lever), and the monthly Hacker News "Who is hiring" thread.
 - **Cleans and deduplicates** them: normalises titles and companies, turns HTML into text, parses free-text salaries and collapses cross-posted duplicates.
 - **Extracts structure with an LLM**: role, seniority, skills, employment type and salary, validated against a schema. The same prompt runs on the Claude API or on a local model through Ollama.
 - **Measures the models**: both backends are scored against a hand-labelled set of postings, so the choice of model rests on accuracy, latency and cost rather than a hunch.
+- **Embeds the jobs** (`radar embed`) with a small open embedding model, so the CV matcher can compare a CV with each posting.
 - **Publishes a static snapshot** (JSON files) that a Next.js dashboard renders:
   - **Overview**: most requested skills, weekly trends, role mix, advertised salary by seniority, sources.
   - **Skills**: searchable table with share of postings, four-week change and median salary.
   - **Skill detail**: weekly trend, skills it is requested with, recent matching jobs.
   - **Jobs**: filter postings by skill, seniority, role, region and salary; every result links to the original listing.
-  - **Methodology**: how it works, extraction accuracy and known limitations.
+  - **Match my CV** (`/match`): paste or upload a CV and get a ranked list of jobs with a score breakdown and the skills you are missing. Everything runs in your browser (transformers.js in a Web Worker), so the CV is never uploaded. The score mixes semantic similarity (0.4), skill overlap (0.35), seniority fit (0.15) and role fit (0.1), with a prior that stops jobs listing very few skills from floating to the top.
+  - **Insights** (`/insights`): skill pay premium with confidence intervals from a bootstrap that resamples companies, so one employer with many postings cannot drive a result (not adjusted for role), seniority lift with Newcombe intervals, a skill co-occurrence graph and the top skills per role.
+  - **Companies** (`/companies`): the companies that are hiring, with their postings.
+  - **Methodology**: how it works, extraction accuracy, how much of the data is targeted at data roles, and known limitations.
+
+Lists on the site (jobs, matcher, companies) show only active listings, meaning jobs the source still listed at its latest successful fetch. The statistics use every posting in the 8-week window, active or not.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    A["Remotive / Remote OK<br/>Arbeitnow / Jobicy"] --> B[("raw_jobs")]
+    A["9 sources<br/>job boards, company ATS boards,<br/>Hacker News"] --> B[("raw_jobs")]
     B --> C["ingest<br/>normalise + dedupe"]
     C --> D[("jobs")]
     D --> E{"extract"}
     E -- Claude API --> F["schema validation<br/>one retry"]
     E -- local Ollama --> F
     F --> G[("extractions<br/>job_skills")]
-    G --> H["aggregate + publish"]
+    G --> M["embed<br/>job vectors, cached"]
+    M --> H["aggregate + publish"]
     H --> I["web/public/data/*.json"]
     I --> J["git push"]
     J --> K["Vercel"]
     K --> L["Next.js dashboard"]
+    L --> N["Match my CV<br/>runs in the browser"]
 ```
 
 The full diagram, the SQLite schema, design decisions and known limitations are in [docs/architecture.md](docs/architecture.md).
@@ -56,6 +64,7 @@ The full diagram, the SQLite schema, design decisions and known limitations are 
 |---|---|
 | Pipeline | Python 3.12, [uv](https://docs.astral.sh/uv/), httpx, pydantic, SQLAlchemy, SQLite, Typer, Rich, selectolax, tenacity |
 | LLM backends | Anthropic Python SDK (Claude), Ollama (local model on an RTX 5090) |
+| Embeddings | `bge-small-en-v1.5`: ONNX Runtime and tokenizers in the pipeline, transformers.js in the browser |
 | Dashboard | Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, hand-written SVG charts |
 | Quality | pytest, Ruff, ESLint, GitHub Actions |
 | Operations | PowerShell and Windows Task Scheduler for the nightly run, Vercel for hosting |
@@ -81,14 +90,25 @@ Full report with confidence intervals, paired comparisons, a seniority confusion
 
 ## Data sources
 
-Job data comes from public APIs. Every posting on the dashboard links back to the board that published it, and the published snapshot contains no job descriptions, only derived fields and the link.
+Job data comes from public APIs. Every posting on the dashboard links back to the page that published it, and the published snapshot contains no job descriptions, only derived fields and the link.
 
-| Source | Notes |
-|---|---|
-| [Remotive](https://remotive.com) | Remote jobs API. |
-| [Remote OK](https://remoteok.com) | Remote OK's terms require crediting them and keeping links to them followed; both are done here. |
-| [Arbeitnow](https://www.arbeitnow.com) | Free job board API. |
-| [Jobicy](https://jobicy.com) | Remote jobs API. |
+The sources are listed in dedupe order. When the same job appears on more than one source, the copy already in the database stays canonical, and within one batch the earliest posting wins. See [docs/architecture.md](docs/architecture.md#dedupe-order-and-source-scope).
+
+| # | Source | Scope | Notes |
+|---|---|---|---|
+| 1 | [Remotive](https://remotive.com) | broad | Remote jobs API. The free API returns few jobs per request. |
+| 2 | [Remote OK](https://remoteok.com) | targeted | Remote OK's terms require crediting them and keeping links to them followed; both are done here. Also reads the data, data-science and analyst tag feeds. |
+| 3 | [Arbeitnow](https://www.arbeitnow.com) | broad | Free job board API. |
+| 4 | [Jobicy](https://jobicy.com) | targeted | Remote jobs API. Also reads the data-science industry feed. |
+| 5 | [Himalayas](https://himalayas.app) | targeted | Found by keyword searches aimed at data roles. Apply links are used unchanged, as the API terms ask. |
+| 6 | Greenhouse boards | broad | Public job-board API of a curated list of companies. Remote postings only. |
+| 7 | Ashby boards | broad | Same curated list, Ashby API. Remote postings only. |
+| 8 | Lever boards | broad | Same curated list, Lever API. Remote postings only. |
+| 9 | [Hacker News "Who is hiring"](https://news.ycombinator.com) | broad | The monthly thread, read through the Algolia API. Keeps top-level comments whose first line says remote. |
+
+The Greenhouse, Ashby and Lever sources read 44 companies listed in [`pipeline/src/radar/sources/ats_companies.yaml`](pipeline/src/radar/sources/ats_companies.yaml). The list was picked by hand, so it is not a sample of all employers.
+
+**Targeted sources over-represent data roles.** A source marked "targeted" is searched or filtered toward data roles (keywords, tags or an industry feed). Data roles are therefore deliberately over-represented, and the Methodology page on the site states the targeted share. In the snapshot of 6 November 2026 the targeted sources supply about 47% of the postings in the window, and data roles make up 35% of postings. Compare skills with each other, not with the whole remote job market.
 
 ## Run it yourself
 
@@ -113,12 +133,13 @@ Try a small run first (fetches everything, extracts only 20 jobs with a local mo
 uv run radar run-all --backend ollama --model gemma4:12b --limit 20
 ```
 
-`run-all` is `fetch -> ingest -> extract -> publish`, and it writes the snapshot to `web/public/data/`. The same stages are available one at a time:
+`run-all` is `fetch -> ingest -> extract -> embed -> publish`, and it writes the snapshot to `web/public/data/`. The same stages are available one at a time:
 
 ```bash
 uv run radar fetch                     # pull postings into raw_jobs
 uv run radar ingest                    # normalise and mark duplicates
 uv run radar extract --backend ollama  # LLM extraction (use --limit N to cap it)
+uv run radar embed                     # job vectors for the CV matcher (cached; --force re-embeds)
 uv run radar aggregate                 # print the summary, write nothing
 uv run radar publish                   # write the snapshot JSON files
 uv run radar stats                     # row counts per stage
@@ -131,14 +152,17 @@ export ANTHROPIC_API_KEY=...           # PowerShell: $env:ANTHROPIC_API_KEY = ".
 uv run radar run-all --backend claude
 ```
 
+The first `radar embed` downloads the embedding model files (a pinned revision of `Xenova/bge-small-en-v1.5`, checked against a SHA-256) from Hugging Face. Later runs embed only new or changed jobs.
+
 The SQLite database is created at `data/jobs.sqlite` (git-ignored). Defaults can be changed with environment variables:
 
 | Variable | Default | Meaning |
 |---|---|---|
 | `RADAR_BACKEND` | `ollama` | Extraction backend: `claude` or `ollama` |
-| `RADAR_OLLAMA_MODEL` | `gemma4:12b` | Local model tag |
+| `RADAR_OLLAMA_MODEL` | `gemma4:31b-it-q4_K_M` | Local model tag |
 | `RADAR_CLAUDE_MODEL` | `claude-sonnet-5-5` | Claude model id |
 | `RADAR_DATA_DIR` | `data/` in the repo root | Where the SQLite file lives |
+| `RADAR_MODEL_CACHE` | `data/models/` | Where `radar embed` stores the embedding model files |
 | `ANTHROPIC_API_KEY` | none | Required for the Claude backend |
 
 ### Run the dashboard
@@ -149,11 +173,12 @@ npm ci
 npm run dev        # http://localhost:3000
 ```
 
-The dashboard reads only `web/public/data/*.json`. The repository ships sample data so it renders before you have run anything; the site shows a "Sample data" badge while those files are in place. To regenerate the sample data:
+The dashboard reads only `web/public/data/*.json`: `meta`, `skills`, `roles`, `salary`, `jobs`, `eval`, `job_vectors`, `skill_vocab`, `insights` and `companies`. The repository ships a snapshot so it renders before you have run anything; the site shows a "Sample data" badge when the files are stand-ins. To regenerate stand-in data:
 
 ```bash
 cd web
-node scripts/make-sample-data.mjs
+node scripts/make-sample-data.mjs     # core files
+node scripts/make-sample-v2.mjs       # matcher, insights and companies files (never overwrites existing files)
 ```
 
 Running `radar publish` (or `run-all`) replaces the sample files with real ones.
@@ -191,7 +216,7 @@ remote-radar/
 ├── .github/workflows/   CI: ruff and pytest for the pipeline, eslint and build for the web app
 ├── docs/                architecture notes
 ├── pipeline/
-│   ├── src/radar/       sources, normalise, dedupe, skills, extract, aggregate, publish, CLI
+│   ├── src/radar/       sources, normalise, dedupe, skills, extract, embed, aggregate, insights, publish, CLI
 │   ├── tests/           offline unit and pipeline tests with fixtures
 │   ├── eval/            gold set and tooling for comparing extraction models
 │   ├── pyproject.toml
@@ -208,8 +233,7 @@ remote-radar/
 
 ## Roadmap
 
-- **CV matcher**: paste a CV and see which in-demand skills it covers and which it is missing.
-- **More sources**: further remote job boards and company career pages.
+- **Role-adjusted pay premium**: the skill pay premium on the Insights page is not adjusted for role, so it partly reflects which roles a skill travels with. Adjusting for role would give a fairer figure.
 - **Postgres**: move the store off SQLite if the data outgrows one machine.
 - **Alerts**: notify when a skill's share moves sharply or a matching job appears.
 

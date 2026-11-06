@@ -6,9 +6,23 @@ and a mention of "Remote OK" as the source; ``url`` is the Remote OK posting pag
 ``display_name``/``homepage`` carry the attribution.
 
 ``salary_min``/``salary_max`` are annual USD figures; ``0`` means the poster gave none.
+
+Scope: ``targeted``. Besides the default feed (``/api``) the fetch also reads the tag
+feeds ``/api?tag=<t>`` for :data:`DATA_TAGS` (``data-science``, ``data``, ``analyst``;
+checked 2026-11-06, each returns mostly data/analyst postings, ~100 rows at most;
+``machine-learning`` and ``analytics`` return under 10 rows and are not worth a request).
+All feeds are merged and deduped by id, default feed first, and every feed's leading
+legal/metadata row is skipped. The attribution terms above apply to all of them: ``url``
+stays the Remote OK posting page. Because part of the fetch is filtered toward data roles
+the source no longer reflects the market mix. The tag feeds are best-effort: if one fails
+after the default feed succeeded, it is logged and skipped. Requests are sequential, one
+per feed.
 """
 
 from __future__ import annotations
+
+import logging
+from typing import Literal
 
 import httpx
 
@@ -25,8 +39,12 @@ from radar.sources.base import (
     to_float,
 )
 
+log = logging.getLogger(__name__)
+
 API_URL = "https://remoteok.com/api"
 HOMEPAGE = "https://remoteok.com"
+# Tag feeds fetched in addition to the default feed (``tag`` query parameter).
+DATA_TAGS: tuple[str, ...] = ("data-science", "data", "analyst")
 
 
 class RemoteOKSource:
@@ -34,8 +52,20 @@ class RemoteOKSource:
     display_name = "Remote OK"
     homepage = HOMEPAGE
 
+    # Part of the fetch is filtered toward data roles (see module docstring).
+    scope: Literal["broad", "targeted"] = "targeted"
+
     def fetch(self, client: httpx.Client) -> list[SourceJob]:
-        data = get_json(client, API_URL)
+        jobs = self._fetch_feed(client, None)
+        for tag in DATA_TAGS:
+            try:
+                jobs += self._fetch_feed(client, tag)
+            except (httpx.HTTPError, ValueError) as exc:
+                log.warning("remoteok: tag=%s feed failed, keeping other jobs: %s", tag, exc)
+        return dedupe_jobs(jobs)
+
+    def _fetch_feed(self, client: httpx.Client, tag: str | None) -> list[SourceJob]:
+        data = get_json(client, API_URL, params={"tag": tag} if tag else None)
         if not isinstance(data, list):
             raise ValueError("Remote OK: unexpected response shape (expected a JSON array)")
         jobs = []
@@ -47,7 +77,7 @@ class RemoteOKSource:
             external_id = as_str(item.get("id"))
             if external_id:
                 jobs.append(SourceJob(self.name, external_id, item))
-        return dedupe_jobs(jobs)
+        return jobs
 
     def to_fields(self, payload: dict) -> JobFields:
         low = to_float(payload.get("salary_min"))

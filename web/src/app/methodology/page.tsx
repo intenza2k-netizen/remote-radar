@@ -36,6 +36,9 @@ export default function MethodologyPage() {
   const sourceTotal = meta.sources.reduce((n, x) => n + x.jobs, 0);
   const topSource = [...meta.sources].sort((a, b) => b.jobs - a.jobs)[0];
   const topSourceShare = topSource && sourceTotal ? topSource.jobs / sourceTotal : 0;
+  const targeted = meta.sources.filter((x) => x.scope === "targeted");
+  const targetedJobs = targeted.reduce((n, x) => n + x.jobs, 0);
+  const targetedShare = sourceTotal ? targetedJobs / sourceTotal : 0;
 
   return (
     <Container className="pb-8">
@@ -145,8 +148,13 @@ export default function MethodologyPage() {
         <div className="prose-lite">
           <ul>
             <li>
-              <strong>Source bias.</strong> Four boards are not the remote job market. They skew towards tech, startups, English-language postings and employers who pay to list or cross-post. Roles filled through referrals, recruiters or company career pages never appear. Read shares as &ldquo;among these boards&rdquo;, not &ldquo;in the market&rdquo;.
+              <strong>Source bias.</strong> {meta.sources.length} sources are not the remote job market. They skew towards tech, startups and English-language postings, the company career boards are a hand-picked list of remote-friendly employers, and roles filled through referrals or recruiters never appear. Read shares as &ldquo;among these sources&rdquo;, not &ldquo;in the market&rdquo;.
             </li>
+            {targeted.length ? (
+              <li>
+                <strong>Deliberately tilted towards data roles.</strong> {new Intl.ListFormat("en", { style: "long", type: "conjunction" }).format(targeted.map((x) => x.display_name))} {targeted.length === 1 ? "is" : "are"} queried with data-role filters (keywords, tags or industry), and supply {Math.round(targetedShare * 100)}% of postings ({fmtInt(targetedJobs)} of {fmtInt(sourceTotal)}). This project is built for data analysts and engineers, so data skills appear more often here than across all remote jobs. Compare skills with each other, not with the wider market.
+              </li>
+            ) : null}
             <li>
               <strong>Source mix.</strong>{" "}
               {topSource && topSourceShare >= 0.5

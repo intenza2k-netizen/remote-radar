@@ -165,5 +165,13 @@ const ROLE_LABEL: Record<string, string> = {
 };
 export const roleLabel = (s: string | null | undefined) => (s ? (ROLE_LABEL[s] ?? humanize(s)) : "Other");
 
+/**
+ * What to show for a skill slug. Uses the published name; for a slug nobody named (older snapshots)
+ * the words of the slug are title-cased rather than shown as "business-strategy".
+ */
+export function skillLabel(slug: string, names?: Record<string, string>): string {
+  return names?.[slug] ?? titleCase(slug.replace(/-/g, " "));
+}
+
 /** Regions are short free strings ("worldwide", "US", "EU", "Germany"); only all-lowercase values are capitalised. */
 export const regionLabel = (s: string) => (s === s.toLowerCase() ? humanize(s) : s);

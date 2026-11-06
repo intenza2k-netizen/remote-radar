@@ -16,7 +16,14 @@ from pathlib import Path
 
 import yaml
 
-__all__ = ["CATEGORIES", "SkillInfo", "normalize_skill", "normalize_skills", "skill_info"]
+__all__ = [
+    "CATEGORIES",
+    "SkillInfo",
+    "is_known_skill",
+    "normalize_skill",
+    "normalize_skills",
+    "skill_info",
+]
 
 CATEGORIES = frozenset(
     {
@@ -202,8 +209,17 @@ def normalize_skills(raws: Iterable[str | None]) -> list[str]:
     return out
 
 
+def is_known_skill(slug: str) -> bool:
+    """True when ``slug`` is a canonical skill of ``aliases.yaml``."""
+    return slug in _registry().infos
+
+
 def skill_info(slug: str) -> SkillInfo:
-    """Display name and category for a slug. Unknown slugs get a title-cased name, ``other``."""
+    """Display name and category for a slug. Unknown slugs get a title-cased name, ``other``.
+
+    This plain title-casing is also what the embedding passages use, so it must stay stable
+    (a change re-embeds every job); the published names come from
+    :func:`radar.skills.pick_display`, which prefers the spelling seen in postings."""
     info = _registry().infos.get(slug)
     if info is not None:
         return info

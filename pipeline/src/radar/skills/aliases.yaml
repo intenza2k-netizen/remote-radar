@@ -660,6 +660,37 @@ skills:
   arcgis: {display: ArcGIS, category: other, aliases: [esri, arcgis pro]}
   qgis: {display: QGIS, category: other, aliases: []}
 
+  # ------------------------------------------------------------------ candidates, not active
+  # Skills that show up often in the company-board data and have no entry yet. They already get
+  # a good display name from the postings (radar.skills.display), so they are left out on purpose:
+  # adding any of them changes the embedding passage text of the jobs that list them (the passage
+  # uses the display name and the merged slugs), which invalidates those jobs' cached vectors
+  # (~260 of 3,300) until `radar embed` is run. Uncomment together with a re-embed.
+  # causal-inference: {display: Causal Inference, category: data, aliases: [causal modeling, causal analysis, causal methods]}
+  # cdc: {display: CDC, category: data, aliases: [change data capture]}
+  # lakehouse: {display: Lakehouse, category: data, aliases: [lakehouse architecture]}
+  # azure-data-factory: {display: Azure Data Factory, category: data, aliases: [adf]}
+  # aws-glue: {display: AWS Glue, category: data, aliases: [glue etl]}
+  # microsoft-fabric: {display: Microsoft Fabric, category: data, aliases: [ms fabric]}
+  # mcp: {display: MCP, category: ai_ml, aliases: [model context protocol]}
+  # oauth: {display: OAuth, category: devops, aliases: [oauth2, oauth 2.0]}
+  # oidc: {display: OIDC, category: devops, aliases: [openid connect]}
+  # saml: {display: SAML, category: devops, aliases: []}
+  # osint: {display: OSINT, category: devops, aliases: [open source intelligence]}
+  # fedramp: {display: FedRAMP, category: business, aliases: [fedramp compliance]}
+  # ccpa: {display: CCPA, category: business, aliases: [california consumer privacy act]}
+  # cursor: {display: Cursor, category: tool, aliases: [cursor ide]}
+  # cpaas: {display: CPaaS, category: tool, aliases: []}
+  # erp: {display: ERP, category: business, aliases: [erp systems, enterprise resource planning]}
+  # bom-modeling: {display: BOM Modeling, category: business, aliases: [bom modelling, bill of materials modeling]}
+  # business-strategy: {display: Business Strategy, category: business, aliases: [corporate strategy]}
+  # b2b-saas: {display: B2B SaaS, category: business, aliases: [b2b software, enterprise saas]}
+  # meddpicc: {display: MEDDPICC, category: business, aliases: []}
+  # meddic: {display: MEDDIC, category: business, aliases: []}
+  # command-of-the-message: {display: Command of the Message, category: business, aliases: [command of message]}
+  # lqa: {display: LQA, category: other, aliases: [linguistic quality assurance, language quality assurance]}
+  # open-source: {display: Open Source, category: other, aliases: [open source software, open-source software, oss]}
+
 drop:
   # soft skills and filler
   - communication

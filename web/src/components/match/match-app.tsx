@@ -9,7 +9,7 @@ import { PrivacyNote } from "./privacy-note";
 import { ResultsList } from "./results-list";
 import { SkillChips } from "./skill-chips";
 import type { PickerOption } from "@/components/skill-picker";
-import { humanize, roleLabel, seniorityLabel } from "@/lib/format";
+import { roleLabel, seniorityLabel, skillLabel } from "@/lib/format";
 import { TOP_N } from "@/lib/match/constants";
 import { loadJobVectors, loadVocab } from "@/lib/match/data-client";
 import type { Embedder, ModelState } from "@/lib/match/embedder";
@@ -27,13 +27,15 @@ type Props = {
   jobs: Job[];
   /** Skills that exist in the market snapshot (skills.json): names, counts, and which slugs have a /skills page. */
   skills: PickerOption[];
+  /** Display name of every skill slug used by `jobs` (skills.json only has the top 300). */
+  skillNames?: Record<string, string>;
   sourceNames: Record<string, string>;
 };
 
 type Analysis = { text: string; detected: DetectedSkill[]; guess: SeniorityGuess; fallbackVocab: boolean };
 type JobVecs = Awaited<ReturnType<typeof loadJobVectors>>;
 
-export function MatchApp({ jobs, skills: marketSkills, sourceNames }: Props) {
+export function MatchApp({ jobs, skills: marketSkills, skillNames, sourceNames }: Props) {
   const [text, setText] = useState("");
   const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
   const [parsing, setParsing] = useState(false);
@@ -81,11 +83,12 @@ export function MatchApp({ jobs, skills: marketSkills, sourceNames }: Props) {
   const names = useMemo(() => {
     const m: Record<string, string> = {};
     for (const v of vocab ?? []) m[v.slug] = v.name;
+    Object.assign(m, skillNames); // published names for every skill in jobs.json
     for (const s of marketSkills) m[s.slug] = s.name; // curated names win
-    // Rare skills that are in neither list: "exploratory-data-analysis" -> "Exploratory data analysis".
-    for (const j of jobs) for (const s of j.skills) if (!m[s]) m[s] = humanize(s.replace(/-/g, " "));
+    // Only reached with an older snapshot that has no skill_names: "exploratory-data-analysis" -> "Exploratory Data Analysis".
+    for (const j of jobs) for (const s of j.skills) if (!m[s]) m[s] = skillLabel(s);
     return m;
-  }, [vocab, marketSkills, jobs]);
+  }, [vocab, marketSkills, skillNames, jobs]);
   const pickerOptions = useMemo<PickerOption[]>(() => {
     const base = vocab ? vocab.map((v) => ({ slug: v.slug, name: v.name, category: v.category, count: countOf.get(v.slug) ?? 0 })) : marketSkills;
     return [...base].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
@@ -134,7 +137,7 @@ export function MatchApp({ jobs, skills: marketSkills, sourceNames }: Props) {
     let cancelled = false;
     const run = async () => {
       const s = summaryText(
-        skills.map((x) => names[x] ?? x),
+        skills.map((x) => skillLabel(x, names)),
         prefs.roles.map(roleLabel),
         level ? seniorityLabel(level) : null,
       );
@@ -224,7 +227,7 @@ export function MatchApp({ jobs, skills: marketSkills, sourceNames }: Props) {
   );
   const top = useMemo(() => scored.slice(0, TOP_N), [scored]);
   const gaps = useMemo(() => rankGaps(top, (s) => countOf.get(s) ?? 0), [top, countOf]);
-  const headline = useMemo(() => gapHeadline(gaps, top.length, (s) => names[s] ?? s), [gaps, top.length, names]);
+  const headline = useMemo(() => gapHeadline(gaps, top.length, (s) => skillLabel(s, names)), [gaps, top.length, names]);
   const stale = analysis != null && analysis.text !== text;
 
   return (

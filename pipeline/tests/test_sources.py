@@ -83,7 +83,19 @@ def by_id(jobs: list[SourceJob]) -> dict[str, SourceJob]:
 
 
 def test_registry():
-    assert [s.name for s in ALL_SOURCES] == ["remotive", "remoteok", "arbeitnow", "jobicy"]
+    # Job boards first, then company ATS boards, then Hacker News (dedupe keeps the first copy).
+    assert [s.name for s in ALL_SOURCES] == [
+        "remotive",
+        "remoteok",
+        "arbeitnow",
+        "jobicy",
+        "himalayas",
+        "greenhouse",
+        "ashby",
+        "lever",
+        "hackernews",
+    ]
+    assert all(getattr(s, "scope", "broad") in {"broad", "targeted"} for s in ALL_SOURCES)
     assert get_source("remoteok").display_name == "Remote OK"
     assert get_source("remotive") is ALL_SOURCES[0]
     with pytest.raises(KeyError, match="nope"):
@@ -285,7 +297,9 @@ def test_remoteok_fetch_skips_metadata_row():
     assert "legal" in data[0] and "id" not in data[0]
     client, seen = make_client(json_handler(data))
     jobs = source.fetch(client)
-    assert len(seen) == 1 and str(seen[0].url) == "https://remoteok.com/api"
+    default = [r for r in seen if "tag" not in r.url.params]
+    assert len(default) == 1 and str(default[0].url) == "https://remoteok.com/api"
+    assert len(seen) > len(default)  # the filtered tag feeds were requested too
     assert seen[0].headers["user-agent"] == USER_AGENT
     assert len(jobs) == len(data) - 1 == 8
     assert all(isinstance(j.external_id, str) and j.external_id.isdigit() for j in jobs)
@@ -504,7 +518,9 @@ def test_jobicy_fetch_follows_cursor_until_has_more_is_false():
     source = get_source("jobicy")
     client, seen = make_client(jobicy_pages(pages=2))
     jobs = source.fetch(client)
-    assert len(seen) == 2  # stopped by hasMore=false, not by JOBICY_PAGES (3)
+    default = [r for r in seen if "industry" not in r.url.params]
+    assert any("industry" in r.url.params for r in seen)  # filtered feed requested too
+    assert len(default) == 2  # stopped by hasMore=false, not by JOBICY_PAGES (3)
     assert "cursor" not in seen[0].url.params
     assert seen[0].url.params["count"] == str(jobicy_mod.PAGE_SIZE)
     assert seen[1].url.params["cursor"] == "cursor-2"
@@ -520,21 +536,27 @@ def test_jobicy_fetch_caps_at_configured_pages():
     assert JOBICY_PAGES == 3
     client, seen = make_client(jobicy_pages(always_more=True))
     jobs = get_source("jobicy").fetch(client)
-    assert len(seen) == JOBICY_PAGES
+    default = [r for r in seen if "industry" not in r.url.params]
+    assert len(default) == JOBICY_PAGES
+    assert any("industry" in r.url.params for r in seen)  # filtered feed requested too
     assert len(jobs) == 8 * JOBICY_PAGES
 
 
 def test_jobicy_fetch_single_page_when_no_more():
     client, seen = make_client(jobicy_pages(pages=1))
     jobs = get_source("jobicy").fetch(client)
-    assert len(seen) == 1 and len(jobs) == 8
+    default = [r for r in seen if "industry" not in r.url.params]
+    assert len(default) == 1 and len(jobs) == 8
+    assert any("industry" in r.url.params for r in seen)  # filtered feed requested too
 
 
 def test_jobicy_fetch_stops_without_cursor_even_if_has_more():
     data = {**load("jobicy"), "hasMore": True, "nextCursor": None}
     client, seen = make_client(json_handler(data))
     get_source("jobicy").fetch(client)
-    assert len(seen) == 1
+    default = [r for r in seen if "industry" not in r.url.params]
+    assert len(default) == 1
+    assert any("industry" in r.url.params for r in seen)  # filtered feed requested too
 
 
 def test_jobicy_fetch_rejects_bad_shape():

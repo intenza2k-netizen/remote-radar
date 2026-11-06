@@ -77,12 +77,12 @@ export default function InsightsPage() {
           headline={premiumHeadline(skill_premium) ?? "Not enough salaried postings yet to compare pay by skill."}
           howTo={
             <>
-              Each row compares the median advertised yearly salary (USD) of postings that mention the skill with postings that do not. The dot is the difference; the line is a 95% bootstrap interval (1,000 resamples). Where the line crosses $0 the row is greyed: the data cannot distinguish it from no difference.
-              {premiumTested ? ` With ${premiumTested} skills tested, about ${chance} "clear" rows would appear from luck alone.` : ""} Only skills with at least 15 salaried postings are tested, and this describes advertised pay, not what learning a skill would add to yours: skills travel with role and seniority.
+              Each row compares the median advertised yearly salary (USD) of postings that mention the skill with postings that do not. The dot is the difference; the line is a 95% bootstrap interval. Postings from one company are not independent (a company board can bring dozens at similar pay), so each of the 1,000 resamples draws whole <em>companies</em> with replacement and keeps all of a drawn company&rsquo;s salaried postings; a skill that rests on one or two employers gets a wide line. Where the line crosses $0 the row is greyed: the data cannot distinguish it from no difference.
+              {premiumTested ? ` With ${premiumTested} skills tested, about ${chance} "clear" rows would appear from luck alone.` : ""} Only skills with at least 15 salaried postings from at least 5 different companies are tested, and the headline is the skill whose interval stays furthest from $0, not the one with the biggest dot. This is not adjusted for role or seniority, and it describes advertised pay, not what learning a skill would add to yours: skills travel with role and seniority.
             </>
           }
         >
-          {skill_premium.length ? <PremiumChart rows={skill_premium} /> : <EmptyNote>No skill has 15 or more postings with a stated salary yet.</EmptyNote>}
+          {skill_premium.length ? <PremiumChart rows={skill_premium} /> : <EmptyNote>No skill has 15 or more salaried postings from at least 5 companies yet.</EmptyNote>}
         </InsightSection>
 
         <InsightSection
@@ -91,7 +91,7 @@ export default function InsightsPage() {
           headline={liftHeadline(lift) ?? "Not enough senior and junior postings yet to compare skills."}
           howTo={
             <>
-              Pick a role. Each row shows the share of senior postings (senior, lead, principal) and of junior postings (intern, junior, mid-level) that mention a skill; postings with unspecified seniority are left out. Lift is the senior share divided by the junior share. Greyed rows have a 95% interval (Newcombe) for the share difference that includes zero, so they could be noise. Only the ten skills with the largest lift are listed, so even clear rows probably overstate the real gap.
+              Pick a role. Each row shows the share of senior postings (senior, lead, principal) and of junior postings (intern, junior, mid-level) that mention a skill; postings with unspecified seniority are left out. Lift is the senior share divided by the junior share. Greyed rows have a 95% interval (Newcombe) for the share difference that includes zero, so they could be noise. Only the ten skills with the largest lift are listed, so even clear rows probably overstate the real gap. Postings are counted one by one here (unlike the pay premium above), so a company that posts many similar roles can sway a share.
             </>
           }
         >

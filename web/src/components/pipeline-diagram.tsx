@@ -1,7 +1,7 @@
 type Node = { title: string; lines: [string, string]; accent?: boolean };
 
 const NODES: Node[] = [
-  { title: "1  Sources", lines: ["Remotive, Remote OK,", "Arbeitnow, Jobicy APIs"] },
+  { title: "1  Sources", lines: ["5 job boards, 3 career-page", "APIs, Hacker News"] },
   { title: "2  Normalize", lines: ["HTML to text, salary parse,", "company + title dedupe"] },
   { title: "3  LLM extraction", lines: ["skills, seniority, role, pay", "Claude or local Gemma"], accent: true },
   { title: "4  Aggregate", lines: ["weekly trends, co-occurrence,", "salary percentiles in USD"] },
@@ -41,7 +41,7 @@ export function PipelineDiagram() {
       <svg className="mx-auto hidden w-full max-w-3xl md:block" viewBox={`-2 -2 ${3 * bw + 2 * gap + 4} ${2 * bh + 74}`} role="img" aria-labelledby="pipe-title pipe-desc">
         <title id="pipe-title">Remote Radar data pipeline</title>
         <desc id="pipe-desc">
-          Postings are fetched from four public job boards, normalized and deduplicated, passed through an LLM that extracts skills, seniority, role and salary, aggregated into weekly statistics, published as a static JSON snapshot and rendered by this site. The pipeline runs nightly.
+          Postings are fetched from remote job boards, company career pages and Hacker News, normalized and deduplicated, passed through an LLM that extracts skills, seniority, role and salary, aggregated into weekly statistics, published as a static JSON snapshot and rendered by this site. The pipeline runs nightly.
         </desc>
         <defs>
           <marker id="arrow-h" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">

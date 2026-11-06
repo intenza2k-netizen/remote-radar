@@ -9,6 +9,10 @@ export type SourceInfo = {
   display_name: string;
   homepage: string;
   jobs: number;
+  /** "targeted" when the fetch is filtered toward data roles (v3); absent in older snapshots. */
+  scope?: "broad" | "targeted";
+  /** Postings from this source still listed in the latest fetch (v3). */
+  active?: number;
 };
 
 export type Meta = {
@@ -19,9 +23,21 @@ export type Meta = {
   window_days: number;
   backend: string;
   model: string;
-  totals: { jobs: number; companies: number; with_salary: number; skills: number };
+  totals: {
+    jobs: number;
+    /** Open postings listed in jobs.json (v3). */
+    active?: number;
+    /** Companies with at least one open posting: exactly the rows of companies.json (v3.1). */
+    companies: number;
+    /** Companies that posted inside the window, open or not (v3.1). */
+    companies_window?: number;
+    with_salary: number;
+    skills: number;
+  };
   sources: SourceInfo[];
   weekly: { week: string; jobs: number }[];
+  /** Display name of every skill slug used in jobs.json, including the ones without a skills.json row (v3.1). */
+  skill_names?: Record<string, string>;
 };
 
 export type TrendPoint = { week: string; count: number; share: number };

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { JobsExplorer } from "@/components/jobs-explorer";
 import { Container, PageHeader } from "@/components/ui";
-import { getJobs, getMeta, getSkills } from "@/lib/data";
+import { getJobs, getMeta, getSkillNames, getSkills } from "@/lib/data";
 import { fmtInt } from "@/lib/format";
 import { getCompanySlugMap } from "@/lib/insights";
 
@@ -34,7 +34,7 @@ export default function JobsPage() {
       />
       <div className="mt-8">
         <Suspense fallback={<ExplorerFallback />}>
-          <JobsExplorer jobs={jobs} skills={skills} sourceNames={sourceNames} companySlugs={getCompanySlugMap()} />
+          <JobsExplorer jobs={jobs} skills={skills} skillNames={getSkillNames()} sourceNames={sourceNames} companySlugs={getCompanySlugMap()} />
         </Suspense>
       </div>
     </Container>

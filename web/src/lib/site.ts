@@ -1,7 +1,7 @@
 export const SITE_NAME = "Remote Radar";
 export const SITE_TAGLINE = "What remote employers actually ask for";
 export const SITE_DESCRIPTION =
-  "A nightly-updated snapshot of the remote job market: which skills, seniority levels and salaries show up in postings from Remotive, Remote OK, Arbeitnow and Jobicy, extracted with an LLM.";
+  "A nightly-updated snapshot of the remote job market: which skills, seniority levels and salaries show up in postings from remote job boards, company career pages and Hacker News, extracted with an LLM.";
 
 export const GITHUB_URL = "https://github.com/intenza2k-netizen/remote-radar";
 
@@ -12,7 +12,10 @@ export const ATTRIBUTION = [
   { name: "Remotive", homepage: "https://remotive.com", note: "Remote jobs API" },
   { name: "Remote OK", homepage: "https://remoteok.com", note: "Remote jobs API; links must stay followed and credit Remote OK" },
   { name: "Arbeitnow", homepage: "https://www.arbeitnow.com", note: "Free job board API" },
-  { name: "Jobicy", homepage: "https://jobicy.com", note: "Remote jobs API" },
+  { name: "Jobicy", homepage: "https://jobicy.com", note: "Remote jobs API, default feed plus its data-science industry feed" },
+  { name: "Himalayas", homepage: "https://himalayas.app", note: "Remote jobs API, searched with data-role keywords; apply links are used unchanged" },
+  { name: "Greenhouse, Ashby and Lever boards", homepage: "https://boards.greenhouse.io", note: "Public career-page APIs of a curated list of remote-friendly companies; remote postings only" },
+  { name: "Hacker News: Who is hiring", homepage: "https://news.ycombinator.com", note: "Monthly hiring threads; top-level posts marked remote" },
 ] as const;
 
 export const NAV = [

@@ -44,6 +44,17 @@ export function getSkill(slug: string): Skill | undefined {
   return getSkills().find((s) => s.slug === slug);
 }
 
+/**
+ * Display name for every skill slug in the snapshot: the published `meta.skill_names` (all slugs that
+ * appear in jobs.json) overlaid with the `skills.json` names. Pages should render skill slugs only
+ * through this map (see `skillLabel`), never the raw slug.
+ */
+export function getSkillNames(): Record<string, string> {
+  const names: Record<string, string> = { ...(getMeta().skill_names ?? {}) };
+  for (const s of getSkills()) names[s.slug] = s.name;
+  return names;
+}
+
 export function getSkillIndex(): Map<string, Skill> {
   return new Map(getSkills().map((s) => [s.slug, s]));
 }

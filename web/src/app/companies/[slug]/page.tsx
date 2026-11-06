@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { BarList, type BarItem } from "@/components/charts/bar-list";
 import { JobRow } from "@/components/job-row";
 import { Container, Kpi, Section } from "@/components/ui";
-import { getJobs, getMeta, getSkillIndex } from "@/lib/data";
+import { getJobs, getMeta, getSkillNames } from "@/lib/data";
 import { fmtInt, fmtShare, fmtUsdShort, roleLabel, seniorityLabel, seniorityRank } from "@/lib/format";
 import { getCompanies, getCompany, salaryOf } from "@/lib/insights";
 
@@ -78,8 +78,7 @@ async function CompanyContent({ params }: { params: PageProps<"/companies/[slug]
   if (!jobs.length) jobs = allJobs.filter((j) => j.company === company.name);
   jobs = [...jobs].sort((a, b) => b.posted_at.localeCompare(a.posted_at));
 
-  const index = getSkillIndex();
-  const skillNames = Object.fromEntries([...index.values()].map((s) => [s.slug, s.name]));
+  const skillNames = getSkillNames();
   const sourceNames = Object.fromEntries(meta.sources.map((s) => [s.name, s.display_name]));
 
   const pay = salaryOf(jobs);

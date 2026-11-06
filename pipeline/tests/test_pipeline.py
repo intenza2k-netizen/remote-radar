@@ -45,6 +45,9 @@ from radar.sources import base as base_mod
 from radar.sources.base import SourceJob
 
 FIXTURES = Path(__file__).parent / "fixtures"
+# These tests exercise the stages, not individual adapters (each source has its own test
+# file), so they run against the four original sources whose fixtures this module serves.
+CLASSIC = [s for s in ALL_SOURCES if s.name in {"remotive", "remoteok", "arbeitnow", "jobicy"}]
 NOW = datetime(2026, 11, 7, 12, 0)  # a Saturday, ISO week 2026-W45; fixtures end 2026-11-06
 
 
@@ -93,6 +96,8 @@ def mock_client(handler=None) -> httpx.Client:
 @pytest.fixture(autouse=True)
 def _fast_and_isolated(monkeypatch):
     monkeypatch.setattr(base_mod, "RETRY_WAIT_SECONDS", 0)
+    monkeypatch.setattr("radar.ingest.ALL_SOURCES", CLASSIC)
+    monkeypatch.setattr("radar.aggregate.ALL_SOURCES", CLASSIC)
     monkeypatch.setattr(config, "DEFAULT_BACKEND", "ollama")
     monkeypatch.setattr(config, "OLLAMA_MODEL", "fake-current")
     monkeypatch.setattr(config, "CLAUDE_MODEL", "fake-claude")
@@ -206,7 +211,7 @@ def test_make_client_uses_config():
 
 def test_fetch_stores_raw_jobs_and_records_run(db):
     stats = fetch_sources(db, client=mock_client())
-    assert set(stats["sources"]) == {s.name for s in ALL_SOURCES}
+    assert set(stats["sources"]) == {s.name for s in CLASSIC}
     assert stats["errors"] == 0
     assert stats["new"] == count(db, select(func.count()).select_from(RawJob))
     assert all(e["new"] > 0 for e in stats["sources"].values())
@@ -247,7 +252,7 @@ def test_all_sources_failing_is_fatal(db):
     with session_scope(db) as s:
         run = s.scalars(select(Run).where(Run.stage == "fetch")).one()
         assert run.status == "failed"
-        assert run.stats["errors"] == len(ALL_SOURCES)
+        assert run.stats["errors"] == len(CLASSIC)
 
 
 # --------------------------------------------------------------------------- ingest
@@ -752,7 +757,7 @@ def test_skills_cooccurrence_roles_and_totals():
     assert [r["role"] for r in snap["roles"]] == ["data", "design"]
     assert snap["meta"]["totals"]["companies"] == 1 + 3 + 1  # six jobs share company "A"
     assert snap["meta"]["totals"]["skills"] == len(snap["skills"])
-    assert [s["name"] for s in snap["meta"]["sources"]] == [s.name for s in ALL_SOURCES]
+    assert [s["name"] for s in snap["meta"]["sources"]] == [s.name for s in CLASSIC]
 
 
 def test_enum_strings_are_used_verbatim():
@@ -785,9 +790,26 @@ SCHEMAS = {
         "window_days": int,
         "backend": str,
         "model": str,
-        "totals": {"jobs": int, "companies": int, "with_salary": int, "skills": int},
-        "sources": [{"name": str, "display_name": str, "homepage": str, "jobs": int}],
+        "totals": {
+            "jobs": int,
+            "active": int,
+            "companies": int,
+            "companies_window": int,
+            "with_salary": int,
+            "skills": int,
+        },
+        "sources": [
+            {
+                "name": str,
+                "display_name": str,
+                "homepage": str,
+                "scope": str,
+                "jobs": int,
+                "active": int,
+            }
+        ],
         "weekly": [{"week": str, "jobs": int}],
+        "skill_names": {str: str},
     },
     "skills": [
         {
@@ -836,7 +858,13 @@ SCHEMAS = {
 def check_schema(value, spec, path="$"):
     """Tiny structural validator: dict spec = exact keys, list spec = homogeneous list,
     tuple spec = any of the alternatives, otherwise an isinstance check."""
-    if isinstance(spec, dict):
+    if isinstance(spec, dict) and len(spec) == 1 and isinstance(next(iter(spec)), type):
+        (key_type, value_spec), = spec.items()
+        assert isinstance(value, dict), f"{path}: expected object, got {type(value).__name__}"
+        for key, item in value.items():
+            assert isinstance(key, key_type), f"{path}: key {key!r} is not {key_type}"
+            check_schema(item, value_spec, f"{path}.{key}")
+    elif isinstance(spec, dict):
         assert isinstance(value, dict), f"{path}: expected object, got {type(value).__name__}"
         assert set(value) == set(spec), f"{path}: keys {sorted(value)} != {sorted(spec)}"
         for key, sub in spec.items():
@@ -900,7 +928,7 @@ def test_publish_writes_files_matching_the_contract(extracted, tmp_path):
     assert docs["meta"]["last_run_at"].endswith("Z")
     assert docs["meta"]["totals"]["jobs"] == canonical_remote_count(extracted) == result["jobs"]
     assert sum(s["jobs"] for s in docs["meta"]["sources"]) == docs["meta"]["totals"]["jobs"]
-    assert [s["name"] for s in docs["meta"]["sources"]] == [s.name for s in ALL_SOURCES]
+    assert [s["name"] for s in docs["meta"]["sources"]] == [s.name for s in CLASSIC]
 
     # skills: sorted by count, canonical slugs, fractions
     counts = [s["count"] for s in docs["skills"]]

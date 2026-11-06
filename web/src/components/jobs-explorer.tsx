@@ -5,12 +5,15 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 import { JobRow } from "./job-row";
 import { SkillPicker, type PickerOption } from "./skill-picker";
-import { fmtInt, regionLabel, roleLabel, seniorityLabel, seniorityRank } from "@/lib/format";
+import { fmtInt, roleLabel, seniorityLabel, seniorityRank, skillLabel } from "@/lib/format";
+import { regionOptions } from "@/lib/regions";
 import type { Job } from "@/lib/types";
 
 type Props = {
   jobs: Job[];
   skills: PickerOption[];
+  /** Display names for every skill slug used by `jobs` (the picker list only has the published top skills). */
+  skillNames?: Record<string, string>;
   sourceNames: Record<string, string>;
   companySlugs?: Record<string, string>;
 };
@@ -56,7 +59,7 @@ function serialize(f: Filters): string {
   return sp.toString();
 }
 
-export function JobsExplorer({ jobs, skills, sourceNames, companySlugs }: Props) {
+export function JobsExplorer({ jobs, skills, skillNames: publishedNames, companySlugs, sourceNames }: Props) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const filters = useMemo(() => parse(new URLSearchParams(searchParams.toString())), [searchParams]);
@@ -64,23 +67,22 @@ export function JobsExplorer({ jobs, skills, sourceNames, companySlugs }: Props)
   const [qText, setQText] = useState(filters.q);
   const qTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const skillNames = useMemo(() => Object.fromEntries(skills.map((s) => [s.slug, s.name])), [skills]);
+  const skillNames = useMemo(() => ({ ...publishedNames, ...Object.fromEntries(skills.map((s) => [s.slug, s.name])) }), [publishedNames, skills]);
 
   const options = useMemo(() => {
     const seniority = new Set<string>();
     const roles = new Set<string>();
-    const regions = new Set<string>();
     for (const j of jobs) {
       if (j.seniority) seniority.add(j.seniority);
       if (j.role) roles.add(j.role);
-      for (const r of j.remote_regions) regions.add(r);
     }
     return {
       seniority: [...seniority].sort((a, b) => seniorityRank(a) - seniorityRank(b)),
       roles: [...roles].sort((a, b) => roleLabel(a).localeCompare(roleLabel(b))),
-      regions: [...regions].sort(),
     };
   }, [jobs]);
+  // Worldwide first, then by number of postings; regions with under 3 postings are hidden.
+  const regions = useMemo(() => regionOptions(jobs, { keep: filters.region }), [jobs, filters.region]);
 
   function commit(next: Filters) {
     const qs = serialize(next);
@@ -178,9 +180,9 @@ export function JobsExplorer({ jobs, skills, sourceNames, companySlugs }: Props)
           </label>
           <select id="f-region" className="field w-full text-ellipsis" value={filters.region} onChange={(e) => update({ region: e.target.value })}>
             <option value="">Anywhere</option>
-            {options.regions.map((r) => (
-              <option key={r} value={r}>
-                {regionLabel(r)}
+            {regions.map((r) => (
+              <option key={r.value} value={r.value}>
+                {r.label} ({fmtInt(r.count)})
               </option>
             ))}
           </select>
@@ -227,12 +229,12 @@ export function JobsExplorer({ jobs, skills, sourceNames, companySlugs }: Props)
             <li key={s}>
               <span className="inline-flex items-center gap-1 rounded-full border border-line-strong bg-surface py-1 pl-3 pr-1 text-sm">
                 <Link href={`/skills/${s}`} className="text-ink no-underline hover:underline">
-                  {skillNames[s] ?? s}
+                  {skillLabel(s, skillNames)}
                 </Link>
                 <button
                   type="button"
                   className="grid h-6 w-6 place-items-center rounded-full text-ink-3 hover:bg-surface-2 hover:text-ink"
-                  aria-label={`Remove ${skillNames[s] ?? s} filter`}
+                  aria-label={`Remove ${skillLabel(s, skillNames)} filter`}
                   onClick={() => update({ skills: filters.skills.filter((x) => x !== s) })}
                 >
                   <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">

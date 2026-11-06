@@ -8,7 +8,7 @@ import { JobRow } from "@/components/job-row";
 import { Container, Delta, Kpi, Section } from "@/components/ui";
 import { TrendEmptyState } from "@/components/trend-empty";
 import { reliableTrend, reliableWeeks, trendReady, windowClause } from "@/lib/weeks";
-import { getJobs, getMeta, getSkill, getSkillIndex, getSkills } from "@/lib/data";
+import { getJobs, getMeta, getSkill, getSkillIndex, getSkillNames, getSkills } from "@/lib/data";
 import { categoryLabel, fmtInt, fmtShare, fmtUsdShort } from "@/lib/format";
 import { getCompanySlugMap } from "@/lib/insights";
 
@@ -68,7 +68,7 @@ async function SkillContent({ params }: { params: PageProps<"/skills/[slug]">["p
   const matching = jobs.filter((j) => j.skills.includes(skill.slug)).sort((a, b) => b.posted_at.localeCompare(a.posted_at));
   const recent = matching.slice(0, 8);
 
-  const skillNames = Object.fromEntries([...index.values()].map((s) => [s.slug, s.name]));
+  const skillNames = getSkillNames();
   const sourceNames = Object.fromEntries(meta.sources.map((s) => [s.name, s.display_name]));
 
   const co = skill.cooccurring

@@ -1,7 +1,7 @@
 import "server-only";
 import fs from "node:fs";
 import path from "node:path";
-import { crossesZero, fmtSignedUsd, groupIdOf, median, newcombeDiff } from "@/components/insights/stats";
+import { crossesZero, fmtSignedUsd, groupIdOf, headlineRow, median, newcombeDiff } from "@/components/insights/stats";
 import { fmtInt, fmtShare, roleLabel } from "./format";
 import type { Job } from "./types";
 
@@ -19,6 +19,8 @@ export type SkillPremium = {
   name: string;
   n_with: number;
   n_without: number;
+  /** Distinct companies behind `n_with` (v3.1); absent in older snapshots. */
+  n_companies?: number;
   median_with: number;
   median_without: number;
   diff: number;
@@ -169,16 +171,16 @@ export function prepareLift(roles: RoleLift[]): RoleLiftPrepared[] {
 
 export function premiumHeadline(rows: SkillPremium[]): string | null {
   if (!rows.length) return null;
-  const clear = rows.filter((r) => !crossesZero(r.ci_low, r.ci_high));
-  if (!clear.length) {
+  const pick = headlineRow(rows);
+  if (!pick) {
     return `At this sample size no skill shows a pay difference we can tell apart from zero (${rows.length} skills tested).`;
   }
-  const top = [...clear].sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff))[0];
+  const { top, clear } = pick;
   const gap = `${fmtSignedUsd(top.diff)} a year in median advertised salary (95% interval ${fmtSignedUsd(top.ci_low)} to ${fmtSignedUsd(top.ci_high)})`;
   // Raw comparison, not adjusted for role or seniority: say so in the headline itself.
   const caveat = "Postings that list it pay differently, mostly because of which roles ask for it, not because of the skill itself.";
-  if (clear.length === 1) return `${top.name} is the only skill of ${rows.length} tested with a pay gap we can tell apart from zero: ${gap}. ${caveat}`;
-  return `${clear.length} of ${rows.length} skills show a pay gap we can tell apart from zero; the largest is ${top.name} at ${gap}. ${caveat}`;
+  if (clear === 1) return `${top.name} is the only skill of ${rows.length} tested with a pay gap we can tell apart from zero: ${gap}. ${caveat}`;
+  return `${clear} of ${rows.length} skills show a pay gap we can tell apart from zero; the most solid is ${top.name} at ${gap}. ${caveat}`;
 }
 
 export function liftHeadline(roles: RoleLiftPrepared[]): string | null {

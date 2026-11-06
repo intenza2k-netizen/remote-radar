@@ -39,3 +39,10 @@ EMBED_DESCRIPTION_CHARS = 1500
 EMBED_TOP_SKILLS = 8
 # Model files go here (never the C: drive default). Read at call time by radar.embed.
 EMBED_CACHE_ENV = "RADAR_MODEL_CACHE"
+
+# Active listing (PLAN.md v3): a job is published only while its source still lists it, i.e.
+# its raw last_seen_at is within ACTIVE_DAYS of that source's latest successful fetch.
+ACTIVE_DAYS = 3
+# Source scope used when a source class does not declare one.
+DEFAULT_SOURCE_SCOPE = "broad"
+SOURCE_SCOPES = ("broad", "targeted")

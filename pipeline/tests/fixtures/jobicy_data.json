@@ -1,0 +1,169 @@
+{
+ "apiVersion": "2.2.19",
+ "documentationUrl": "https://jobi.cy/apidocs",
+ "friendlyNotice": "Thanks for using Jobicy API! Please ensure Jobicy is clearly credited with a direct link to the source, and all application buttons redirect to the original job URL provided in this feed. That’s all! You might be building something amazing, we wish you the best of luck!",
+ "jobCount": 7,
+ "lastUpdate": "2026-11-06T06:17:17+00:00",
+ "nextCursor": "AgAAAABq7aweAAAAAGrtR2kAAAAAAAJcUpGStyjVOt7ULMvdFdHp_0xjGsH--7hP_G6cSgT0AUpIBnFpKbty0hIEXFdWD6oEWHEbLmtVhwQ3IUFSK2UDNSA",
+ "hasMore": true,
+ "appliedFilters": {
+  "count": 100,
+  "industry": "data-science"
+ },
+ "statusCode": 200,
+ "success": true,
+ "jobs": [
+  {
+   "id": 159265,
+   "url": "https://jobicy.com/jobs/159265-data-scientist-7",
+   "jobSlug": "159265-data-scientist-7",
+   "jobTitle": "Data Scientist",
+   "companyName": "Solace",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2025/06/4e37a66b-221.png",
+   "jobIndustry": [
+    "Data Science & Analytics"
+   ],
+   "jobType": [
+    "Full-Time"
+   ],
+   "jobGeo": "USA",
+   "jobLevel": "Director",
+   "jobExcerpt": "About Solace Healthcare in the U.S. is fundamentally broken. The system is so complex that 88% of U.S. adults do not have the health literacy necessary to navigate it without help. Solace cuts through the red tape of healthcare by pairing patients with expert advocates and giving them the tools to m",
+   "jobDescription": "<h3><strong>About <a href=\"https://jobicy.com/company/solace\" target=\"_blank\" rel=\"noopener\">Solace</a></strong></h3>\n<p>Healthcare in the U.S. is fundamentally broken. The system is so complex that 88% of U.S. adults do not have the health literacy necessary to navigate it without help. Solace cuts through the red tape of healthcare by pairing patients with expert advocates and giving them the tools to make better decisions—and get better outcomes.</p>\n<p>We're a Series C startup, founded in 2022 and backed by Inspired Capital, Craft Ventures, Torch Capital, Menlo Ventures, Signalfire, and IVP. Our U.S. based team is lean, mission-driven, and growing quickly.</p>\n<p>Solace isn't a place to ",
+   "pubDate": "2026-11-06T06:17:17+00:00",
+   "salaryMin": 160000,
+   "salaryMax": 200000,
+   "salaryCurrency": "USD",
+   "salaryPeriod": "yearly"
+  },
+  {
+   "id": 154739,
+   "url": "https://jobicy.com/jobs/154739-commercial-data-scientist",
+   "jobSlug": "154739-commercial-data-scientist",
+   "jobTitle": "Commercial Data Scientist",
+   "companyName": "Doximity",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2025/06/e71c16d6-221.jpg",
+   "jobIndustry": [
+    "Data Science & Analytics"
+   ],
+   "jobType": [
+    "Full-Time"
+   ],
+   "jobGeo": "USA",
+   "jobLevel": "Any",
+   "jobExcerpt": "Commercial Data Scientist Doximity is the leading clinical AI company with the largest network of U.S. clinicians. Doximity’s AI-powered workflow platform is trusted by over 85% of U.S. physicians and 300+ health systems. Doximity's mission is to help clinicians be more productive so they can provid",
+   "jobDescription": "<h3><strong>Commercial Data Scientist</strong></h3>\n<p><a href=\"https://jobicy.com/company/doximity\" target=\"_blank\" rel=\"noopener\">Doximity</a> is the leading clinical AI company with the largest network of U.S. clinicians. Doximity’s AI-powered workflow platform is trusted by over 85% of U.S. physicians and 300+ health systems. Doximity's mission is to help clinicians be more productive so they can provide better care for their patients. </p>\n<p>At Doximity, we value curiosity, ownership, inclusion, and a commitment to making a meaningful impact. If you're excited about solving complex problems that improve healthcare, we'd love to hear from you.</p>\n<p><em>This role can be filled in the N",
+   "pubDate": "2026-11-06T03:20:12+00:00",
+   "salaryMin": 119333,
+   "salaryMax": 172800,
+   "salaryCurrency": "USD",
+   "salaryPeriod": "yearly"
+  },
+  {
+   "id": 152541,
+   "url": "https://jobicy.com/jobs/152541-director-of-strategy-analytics",
+   "jobSlug": "152541-director-of-strategy-analytics",
+   "jobTitle": "Director of Strategy & Analytics",
+   "companyName": "Beyond Finance",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2022/01/68cd015e123539d873279c7b82f1ca6a.jpg",
+   "jobIndustry": [
+    "Data Science & Analytics"
+   ],
+   "jobType": [
+    "Full-Time"
+   ],
+   "jobGeo": "USA",
+   "jobLevel": "Director",
+   "jobExcerpt": "At Beyond Finance, we've made it our mission to help everyday Americans escape the endless cycle of crippling debt and step into a brighter financial future. Through compassionate, individualized care, a culture focused on compliance and ethics, supportive user-centric technology, and customized fin",
+   "jobDescription": "<p>At <a href=\"https://jobicy.com/company/beyond-finance\" target=\"_blank\" rel=\"noopener\">Beyond Finance</a>, we've made it our mission to help everyday Americans escape the endless cycle of crippling debt and step into a brighter financial future. Through compassionate, individualized care,<strong> </strong>a culture focused on compliance and ethics, supportive user-centric technology, and customized financial solutions, we've helped over 1 million clients on their path to a brighter future.</p>\n<p>While we're proud of what we've already accomplished, we're searching for new collaborators to help us get to the next level! If you're looking to join a forward-thinking, rapidly growing organiza",
+   "pubDate": "2026-11-06T03:10:10+00:00",
+   "salaryMin": 146810,
+   "salaryMax": 203084,
+   "salaryCurrency": "USD",
+   "salaryPeriod": "yearly"
+  },
+  {
+   "id": 159097,
+   "url": "https://jobicy.com/jobs/159097-brazilian-subject-matter-expert-in-religion-or-philosophy",
+   "jobSlug": "159097-brazilian-subject-matter-expert-in-religion-or-philosophy",
+   "jobTitle": "Brazilian Subject Matter Expert in Religion or Philosophy",
+   "companyName": "Welo Global",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2026/06/83c40f94-221.webp",
+   "jobIndustry": [
+    "Data Science & Analytics"
+   ],
+   "jobType": [
+    "Contract"
+   ],
+   "jobGeo": "Anywhere",
+   "jobLevel": "Any",
+   "jobExcerpt": "About Welo Global Welo Global is a leader in multilingual AI, technology, and content solutions serving over 2,000 clients in 300 languages. The company combines globally scaled multilingual infrastructure, including a network of over 500,000 linguists and domain experts, with advanced NLP, computat",
+   "jobDescription": "<p><strong>About <a href=\"https://jobicy.com/company/welo-global\" target=\"_blank\" rel=\"noopener\">Welo Global</a></strong> </p>\r\n<p>Welo Global is a leader in multilingual AI, technology, and content solutions serving over 2,000 clients in 300 languages. The company combines globally scaled multilingual infrastructure, including a network of over 500,000 linguists and domain experts, with advanced NLP, computational linguistics, and best-in-class compliance backed by seven ISO certifications. Welo Global’s five brands—Welocalize (multilingual content and localization services for global enterprises), Park IP (intellectual property and patent translation services for law firms and corporate le",
+   "pubDate": "2026-11-05T04:54:04+00:00"
+  },
+  {
+   "id": 152472,
+   "url": "https://jobicy.com/jobs/152472-marketing-data-scientist",
+   "jobSlug": "152472-marketing-data-scientist",
+   "jobTitle": "Marketing Data Scientist",
+   "companyName": "Vonage",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2025/06/1bac058d-221.jpg",
+   "jobIndustry": [
+    "Data Science & Analytics"
+   ],
+   "jobType": [
+    "Full-Time"
+   ],
+   "jobGeo": "Mexico",
+   "jobLevel": "Director",
+   "jobExcerpt": "Join Vonage and help us innovate cloud communications for businesses worldwide! Why this role matters: We are looking for a Data Scientist to own our demand and revenue intelligence capabilities. You will sit at the intersection of marketing strategy and commercial outcomes, building the predictive ",
+   "jobDescription": "<h3><strong>Join <a href=\"https://jobicy.com/company/vonage\" target=\"_blank\" rel=\"noopener\">Vonage</a> and help us innovate cloud communications for businesses worldwide!</strong></h3>\n<p><strong>Why this role matters: </strong></p>\n<p>We are looking for a Data Scientist to own our demand and revenue intelligence capabilities. You will sit at the intersection of marketing strategy and commercial outcomes, building the predictive models and analytical frameworks that tell us where growth is coming from before it arrives. Your work will directly shape how we reach the right audiences, invest in the right channels, and accelerate pipeline - turning marketing activity into a measurable, forward-",
+   "pubDate": "2026-11-05T03:10:10+00:00"
+  },
+  {
+   "id": 158882,
+   "url": "https://jobicy.com/jobs/158882-audio-recording-project-cantonese-hong-kong",
+   "jobSlug": "158882-audio-recording-project-cantonese-hong-kong",
+   "jobTitle": "Audio Recording Project - Cantonese (Hong Kong)",
+   "companyName": "Welo Global",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2026/06/83c40f94-221.webp",
+   "jobIndustry": [
+    "Data Science & Analytics"
+   ],
+   "jobType": [
+    "Contract"
+   ],
+   "jobGeo": "Hong Kong",
+   "jobLevel": "Any",
+   "jobExcerpt": "We are looking for fluent Cantonese (Hong Kong) speakers to participate in a scripted audio data collection project. This is a remote, freelance opportunity that's simple, flexible, and a great way to earn extra money while contributing to future AI and voice technology. PROJECT OVERVIEW Language: C",
+   "jobDescription": "<p>We are looking for fluent Cantonese (Hong Kong) speakers to participate in a scripted audio data collection project. This is a remote, freelance opportunity that's simple, flexible, and a great way to earn extra money while contributing to future AI and voice technology.</p>\n\n<p><b>PROJECT OVERVIEW</b></p>\n<p><b>Language: </b>Cantonese (Hong Kong)</p>\n<p><b>Duration:</b> Approx. 50 minutes of total recorded audio</p>\n<p><b>Hourly Rate:</b> $18 - <i>Based on tasks completed</i></p>\n<p><b>Work Type:</b> Remote, Freelance</p>\n<p><b>Equipment Required:</b> Laptop or desktop + mobile phone</p>\n<p><b>Why Join This Project?</b></p>\n<p>Quick and easy way to earn extra money from home.</p>\n<p>Flex",
+   "pubDate": "2026-11-04T12:33:17+00:00",
+   "salaryMin": 18,
+   "salaryMax": 18,
+   "salaryPeriod": "hourly"
+  },
+  {
+   "id": 159087,
+   "url": "https://jobicy.com/jobs/159087-principal-data-scientist-ads",
+   "jobSlug": "159087-principal-data-scientist-ads",
+   "jobTitle": "Principal Data Scientist, Ads",
+   "companyName": "Reddit",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2020/10/Reddit.jpg",
+   "jobIndustry": [
+    "Data Science & Analytics"
+   ],
+   "jobType": [
+    "Contract"
+   ],
+   "jobGeo": "USA",
+   "jobLevel": "Senior",
+   "jobExcerpt": "Reddit is a community of communities. It’s built on shared interests, passion, and trust, and is home to the most open and authentic conversations on the internet. Every day, Reddit users submit, vote, and comment on the topics they care most about. With 100,000+ active communities and approximately",
+   "jobDescription": "<p><a href=\"https://jobicy.com/company/reddit\" target=\"_blank\" rel=\"noopener\">Reddit</a> is a community of communities. It’s built on shared interests, passion, and trust, and is home to the most open and authentic conversations on the internet. Every day, Reddit users submit, vote, and comment on the topics they care most about. With 100,000+ active communities and approximately 130 million daily active unique visitors, Reddit is one of the internet’s largest sources of information. For more information, visit <a href=\"http://www.redditinc.com/\" rel=\"nofollow ugc noopener\" target=\"_blank\">www.redditinc.com</a>.</p>\n<p>Reddit's Ads Data Science team is seeking a highly motivated Principal Da",
+   "pubDate": "2026-11-05T04:47:17+00:00",
+   "salaryMin": 268000,
+   "salaryMax": 365100,
+   "salaryCurrency": "USD",
+   "salaryPeriod": "yearly"
+  }
+ ]
+}

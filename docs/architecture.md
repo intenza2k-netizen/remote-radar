@@ -1,10 +1,15 @@
 # Architecture
 
 Remote Radar is a small batch pipeline plus a static website. Once a night a Python CLI
-(`radar`) pulls remote job postings from four public APIs, turns the free text into
-structured fields with an LLM, aggregates the result and writes a handful of JSON files.
-Those files are committed to the repository, which triggers a Vercel build of a Next.js
-dashboard that does nothing but read them.
+(`radar`) pulls remote job postings from nine public sources, turns the free text into
+structured fields with an LLM, computes a vector for each listed job, aggregates the
+result and writes a handful of JSON files. Those files are committed to the repository,
+which triggers a Vercel build of a Next.js dashboard that does nothing but read them.
+
+The nine sources are five job-board APIs, the public job-board APIs of 44 curated
+companies (Greenhouse, Ashby and Lever) and the monthly Hacker News "Who is hiring"
+thread. One page on the site, Match my CV, also does real work in the visitor's browser
+(see [The in-browser matcher](#the-in-browser-matcher)). Everything else is read-only.
 
 There is no server, no API and no database in production. The only stateful thing is a
 SQLite file on the machine that runs the pipeline.
@@ -13,14 +18,25 @@ SQLite file on the machine that runs the pipeline.
 
 ```mermaid
 flowchart LR
-    subgraph SRC["Public job APIs"]
-        S1["Remotive"]
-        S2["Remote OK"]
-        S3["Arbeitnow"]
-        S4["Jobicy"]
+    subgraph SRC["Nine public sources"]
+        subgraph BOARDS["Job boards"]
+            S1["Remotive"]
+            S2["Remote OK"]
+            S3["Arbeitnow"]
+            S4["Jobicy"]
+            S5["Himalayas"]
+        end
+        subgraph ATS["Company ATS boards<br/>44 curated companies"]
+            S6["Greenhouse"]
+            S7["Ashby"]
+            S8["Lever"]
+        end
+        subgraph HNG["Hacker News"]
+            S9["Who is hiring<br/>monthly thread"]
+        end
     end
 
-    S1 & S2 & S3 & S4 --> FETCH["radar fetch<br/>one request per page"]
+    S1 & S2 & S3 & S4 & S5 & S6 & S7 & S8 & S9 --> FETCH["radar fetch<br/>sources in dedupe order"]
     FETCH --> RAW[("raw_jobs<br/>payload as returned")]
     RAW --> INGEST["radar ingest<br/>normalise + dedupe"]
     INGEST --> JOBS[("jobs<br/>one row per posting")]
@@ -34,10 +50,14 @@ flowchart LR
     EXT --> ALIAS["Skill alias map<br/>aliases.yaml"]
     ALIAS --> SKILLS[("job_skills<br/>canonical slugs")]
 
-    SKILLS --> AGG["aggregate<br/>shares, trends, salary percentiles"]
+    SKILLS --> EMBED["radar embed<br/>bge-small, fp32 ONNX"]
+    EMBED --> VECS[("job_embeddings<br/>cached by text hash")]
+
+    SKILLS --> AGG["aggregate<br/>shares, trends, salary percentiles,<br/>active listings, insights, companies"]
     JOBS --> AGG
     AGG --> PUB["radar publish<br/>atomic write"]
-    PUB --> JSON["web/public/data/*.json"]
+    VECS --> PUB
+    PUB --> JSON["web/public/data/*.json<br/>meta, skills, roles, salary, jobs, eval,<br/>job_vectors, skill_vocab, insights, companies"]
 
     GOLD[("pipeline/eval<br/>hand-labelled gold set")] --> EVAL["Eval harness"]
     CLAUDE -.-> EVAL
@@ -48,19 +68,115 @@ flowchart LR
     JSON --> GIT["git commit + push<br/>scripts/nightly.ps1"]
     GIT --> VERCEL["Vercel build"]
     VERCEL --> NEXT["Next.js static dashboard"]
+    NEXT --> MATCH["Match my CV<br/>runs in the visitor's browser"]
 ```
 
-Fetch, ingest, extract and publish run as one command, `radar run-all`. Committing and
-pushing the snapshot to GitHub (which triggers Vercel) is the nightly script's job
+Fetch, ingest, extract, embed and publish run as one command, `radar run-all`. Committing
+and pushing the snapshot to GitHub (which triggers Vercel) is the nightly script's job
 (`scripts/nightly.ps1`).
 
 | Stage | Command | What it does |
 |---|---|---|
-| Fetch | `radar fetch` | Calls each source once per page and upserts the untouched JSON into `raw_jobs`. A failing source is logged and skipped; the stage only fails if every source fails. |
+| Fetch | `radar fetch` | Calls each source in turn (one request per page where the API is paged) and upserts the untouched JSON into `raw_jobs`. A failing source is logged and skipped; the stage only fails if every source fails. The run records which sources succeeded, which the active-listing rule needs. |
 | Ingest | `radar ingest` | Maps each raw payload to the common `jobs` shape: cleans title and company, converts HTML to text, parses free-text salaries, and marks cross-posted duplicates with a company + title hash. |
 | Extract | `radar extract` | Sends each canonical remote job that has no successful extraction for the current backend, model and prompt version to the LLM and stores every attempt. |
+| Embed | `radar embed` | Turns each listed job into a 384-number vector with the same embedding model the browser uses, and caches it by a hash of the embedded text. Only new or changed jobs are embedded. |
 | Aggregate | `radar aggregate` | Computes the snapshot in memory over an 8-week window and prints a summary (writes nothing). |
-| Publish | `radar publish` | Writes `meta`, `skills`, `roles`, `salary` and `jobs` JSON files via temp files and renames, so a crash cannot leave a half-written snapshot. |
+| Publish | `radar publish` | Writes `meta`, `skills`, `roles`, `salary`, `jobs`, `job_vectors`, `skill_vocab`, `insights` and `companies` JSON files via temp files and renames, so a crash cannot leave a half-written snapshot. |
+
+## Dedupe order and source scope
+
+The sources are fetched in a fixed order (`ALL_SOURCES` in
+`pipeline/src/radar/sources/__init__.py`):
+
+1. Remotive
+2. Remote OK
+3. Arbeitnow
+4. Jobicy
+5. Himalayas
+6. Greenhouse boards
+7. Ashby boards
+8. Lever boards
+9. Hacker News "Who is hiring"
+
+Public job boards come first, then company ATS boards, then Hacker News. The order only
+matters for the dedupe step. A job already in the database keeps its canonical copy, and a
+new posting with the same company + title key becomes a duplicate of it. Within one ingest
+batch the posting with the earliest `posted_at` wins, and ties go to the lower raw id,
+which follows this fetch order.
+
+Each source also has a `scope`:
+
+| Scope | Meaning | Sources |
+|---|---|---|
+| `targeted` | Searched or filtered toward data roles. | Himalayas (keyword searches), Jobicy (also reads the data-science industry feed), Remote OK (also reads the data, data-science and analyst tag feeds) |
+| `broad` | Read without a data-role filter. | Remotive, Arbeitnow, Greenhouse, Ashby, Lever, Hacker News |
+
+"Broad" means the source is not filtered by role. It does not mean the source covers the
+market. The Greenhouse, Ashby and Lever sources read the public job-board APIs of the 44
+companies listed in `pipeline/src/radar/sources/ats_companies.yaml` and keep remote
+postings only. The Hacker News source reads the latest "Who is hiring" thread (and the
+previous month's while the latest is under 10 days old) through the Algolia API and keeps top-level
+comments whose first line says remote. The published `meta.json` carries each source's
+scope, and the Methodology page uses it to state how much of the data comes from targeted
+sources.
+
+## Active listings
+
+A job counts as active if its source still listed it recently. The rule is in
+`pipeline/src/radar/aggregate.py` (`active_listings`), with the constant in
+`pipeline/src/radar/config.py`:
+
+- For each source, the reference time is the finish time of its latest successful fetch.
+  Wall-clock time is not used, so a pipeline that has not run for a week keeps what it has.
+- A posting is listed if it was last seen within `ACTIVE_DAYS` (3 days) of that reference.
+- A canonical job is active if its own posting or any of its duplicates is listed. The
+  published link comes from the most recently seen listed copy, so it is not a dead link.
+- Postings from a source that is no longer fetched are never active.
+
+The lists on the site (jobs, matcher, companies) show only active jobs posted in the last
+60 days. The statistics (skill shares, trends, salary percentiles) still use every posting
+in the 8-week window (56 days), active or not. In the snapshot of 6 November 2026 that was
+3,129 postings in the window and 3,268 active listings. The two numbers are not
+comparable as a share: the window counts postings by posting date whether or not they are
+still open, while the jobs list keeps only active jobs and reaches back 60 days.
+
+## The in-browser matcher
+
+The `/match` page ("Match my CV") ranks jobs for a pasted or uploaded CV without sending the
+CV anywhere. The code is in `web/src/lib/match/`.
+
+1. The pipeline embeds each listed job with `Xenova/bge-small-en-v1.5` (fp32 ONNX, through
+   `radar embed`, `pipeline/src/radar/embed.py`). The text is the title, role, seniority,
+   top skills and the first 1,500 characters of the description. Descriptions are never
+   published, only the vectors.
+2. Vectors go into `job_vectors.json` as int8 with one scale per vector. The notes in
+   `embed.py` say this round trip keeps cosine similarity above 0.999.
+3. In the browser, a Web Worker loads the same model with transformers.js (q8, WebAssembly)
+   and embeds the CV in chunks. The model files (about 30 MB) are downloaded once from
+   Hugging Face and cached by the browser. This is the only third-party request. The CV text
+   stays in the page and the worker.
+4. CV skills are found by matching the CV text against `skill_vocab.json`, built from the
+   same alias map the pipeline uses. The user can edit the detected skills.
+5. Each job gets a hybrid score. The weights are in `web/src/lib/match/constants.ts`:
+
+| Component | Weight | What it measures |
+|---|---|---|
+| Semantic similarity | 0.40 | Cosine similarity between the CV and the posting, stretched between 0.55 and 0.80 |
+| Skill overlap | 0.35 | Share of the job's listed skills that the CV has, pulled toward a prior |
+| Seniority fit | 0.15 | Distance between the CV's level and the posting's level |
+| Role fit | 0.10 | 1 if the job's role is one the user picked, otherwise 0 |
+
+The skill overlap uses a coverage prior, so a posting that lists one skill does not outrank
+a posting that lists ten and matches eight. A component that cannot be computed (no role
+chosen, no skills listed) is dropped and the other weights are rescaled, so the score
+stays on one 0 to 100% scale.
+
+The browser uses the q8 model and the pipeline uses fp32. The notes in `embed.py` measured
+a cosine of 0.9935 or higher between the two on five test sentences, so the vectors are in
+the same space but not identical. Cosines between a CV and a posting also sit in a narrow
+band with this small model, which is why the score stretches the range between 0.55 and
+0.80. The page shows the raw cosine in the score breakdown.
 
 ## SQLite schema
 
@@ -88,6 +204,7 @@ erDiagram
     }
     JOBS ||--o{ EXTRACTIONS : "has attempts"
     JOBS ||--o{ JOB_SKILLS : "has"
+    JOBS ||--o{ JOB_EMBEDDINGS : "has vectors"
     JOBS |o--o{ JOBS : "is_duplicate_of"
     JOBS {
         int id PK
@@ -128,6 +245,15 @@ erDiagram
         int extraction_id FK
         string skill
     }
+    JOB_EMBEDDINGS {
+        int id PK
+        int job_id FK
+        string model
+        string text_hash
+        int dim
+        blob vector
+        datetime created_at
+    }
 ```
 
 | Table | Purpose | Key constraints |
@@ -137,6 +263,7 @@ erDiagram
 | `jobs` | Normalised, source-agnostic posting. Duplicates point at the canonical row. | `raw_job_id` unique; `dedupe_key` indexed; `is_duplicate_of` self-reference. |
 | `extractions` | One LLM attempt per job, tagged with backend, model and prompt version, including cost, latency, raw output and parsed data. | Indexed on `job_id` and `backend`. |
 | `job_skills` | Canonical skill slugs for a job, derived from its current extraction. | Unique on (`job_id`, `skill`). |
+| `job_embeddings` | Cached embedding of a job's passage text for the CV matcher, as a normalised float32 vector. | Unique on (`job_id`, `model`, `text_hash`); a changed text gets a new hash and is embedded again. |
 
 ## Published snapshot
 
@@ -144,12 +271,16 @@ Everything the website reads lives in `web/public/data/`:
 
 | File | Content |
 |---|---|
-| `meta.json` | Generation time, backend and model used, totals, per-source counts, weekly volume. |
+| `meta.json` | Generation time, backend and model used, totals (window postings, active listings, companies, skills), per-source counts and scope, weekly volume. |
 | `skills.json` | Per skill: count, share of jobs, 4-week change, median salary, weekly trend, co-occurring skills. |
 | `roles.json` | Role mix with median salary. |
 | `salary.json` | Percentiles by seniority and by role (only where at least 5 postings state a salary). |
-| `jobs.json` | Postings from the last 60 days without descriptions, each linking to the original board. |
+| `jobs.json` | Active postings from the last 60 days without descriptions, each linking to the original page (the most recently seen copy). |
 | `eval.json` | Per-model accuracy, latency and cost from the eval harness. Written by the eval step, not by `publish`. |
+| `job_vectors.json` | One int8 vector per listed job with a per-vector scale, plus the model name and the query prefix the browser must use. Read by the CV matcher. |
+| `skill_vocab.json` | Skill names, aliases and match patterns the browser uses to read skills out of a CV. |
+| `insights.json` | Skill pay premium with company-cluster bootstrap intervals (at least 5 companies per skill), seniority lift, skill co-occurrence graph (PMI) with a force layout computed at build time, role-skill profiles. |
+| `companies.json` | One row per hiring company with its postings, for `/companies` and `/companies/[slug]`. |
 
 All salaries are annualised and converted to USD.
 
@@ -168,13 +299,38 @@ All salaries are annualised and converted to USD.
 | **Static FX table for salary conversion** | Salaries only need to be comparable across postings, not priced to the cent, so a dated table of rounded rates avoids an extra API dependency and keeps runs reproducible. |
 | **Whole-ISO-week window with minimum sample sizes** | Eight Monday-aligned weeks make weekly buckets comparable, and skills, salary percentiles and 4-week changes are only published when enough postings back them. |
 | **Atomic publish and a refusal to publish an empty window** | The previous good snapshot stays live if a run dies halfway or a source returns nothing. |
+| **Fixed source order for dedupe (job boards, then company ATS boards, then Hacker News)** | The same role is often on a board and on the company's own career page. Boards are fetched first, so the copy already in the database stays canonical on later runs and ids stay stable. Within one batch the earliest posting wins and the fetch order breaks ties. The order is a convention, not a ranking of quality. |
+| **Active listings for the lists, the full 8-week window for statistics** | A visitor should not be sent to a job that is gone, so lists show only jobs a source still listed within 3 days of its latest successful fetch. Statistics need history, including jobs that have since closed, so they use the whole window. Measuring against each source's own last fetch, not the wall clock, means a pipeline that stops for a week does not empty the site. |
+| **Match CVs in the browser, not on a server** | A CV is personal data. Matching in the browser means it is never uploaded, logged or stored, and there is no backend to build, secure or pay for, which suits free static hosting. The cost is a one-time download of about 30 MB of model files and slower first use on weak devices. |
+| **Job vectors computed by the pipeline and published as int8** | Embedding thousands of jobs in each visitor's browser would be slow. The pipeline does it once per night, caches by text hash, and ships compact vectors with a scale per vector. The browser only embeds one CV. |
+| **A hybrid match score with visible parts** | Semantic similarity alone is vague and skill overlap alone ignores seniority and role. The score is a fixed weighted mix, with every weight in one file and the breakdown shown for each job, so a result can be checked rather than trusted. |
 
 ## Known limitations
 
-- **Four boards are not the market.** The sources skew towards tech roles and towards
-  employers that pay to advertise on job boards. Percentages describe these postings only.
+- **Nine sources are not the market, and part of the data is aimed at data roles.**
+  Himalayas, Jobicy and Remote OK are searched or filtered toward data roles (marked
+  `targeted` in `meta.json`), so data roles are deliberately over-represented. In the
+  snapshot of 6 November 2026 those three sources supply about 47% of the postings in the
+  window and data roles are 35% of all postings. The skill shares are therefore not the share
+  of all remote jobs. Compare skills with each other, not with the wider market. The
+  Methodology page states the targeted share for the current snapshot.
+- **The company list is curated, not sampled.** Greenhouse, Ashby and Lever are read for 44
+  companies picked by hand, remote postings only. Companies that use other systems, or that
+  I did not list, are absent. Hacker News adds only employers who post there and write
+  "remote" in the first line. All sources skew towards tech roles and towards employers
+  that publish openly. Percentages describe these postings only.
 - **Remotive limits the free API to a small number of jobs per request,** so it contributes
   fewer postings per run than the other sources.
+- **"Active" is only as good as each source.** A job counts as active if a source still
+  listed it within 3 days of that source's last successful fetch. A source can keep a filled
+  job listed, and a source whose fetch failed keeps its older reference time.
+- **The CV matcher is a ranking aid, not a judgement.** Skills are found by pattern
+  matching against a vocabulary, so a skill written in an unusual way is missed (the user
+  can add it). Seniority is guessed from title words and years of experience. Similarity
+  comes from a small model, and its scores are compressed into a narrow band.
+- **The skill pay premium is not adjusted for role.** The Insights page compares median pay
+  with and without a skill. Skills travel with seniority and role, so the number is an
+  association, not the pay a skill adds. The site says so.
 - **History starts at the first run.** Postings are only seen when they are published
   while the pipeline runs (or are still listed), so early trend lines are short and the
   latest week is always partial.

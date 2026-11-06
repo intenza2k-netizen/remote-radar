@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { employmentLabel, fmtDateShort, fmtSalaryRange, fmtUsdShort, roleLabel, seniorityLabel } from "@/lib/format";
+import { employmentLabel, fmtDateShort, fmtSalaryRange, fmtUsdShort, roleLabel, seniorityLabel, skillLabel } from "@/lib/format";
 import type { ScoredJob } from "@/lib/match/types";
 
 type Props = {
@@ -22,7 +22,7 @@ export function MatchBar({ value, label }: { value: number; label: string }) {
 }
 
 function SkillTag({ slug, names, linkable, variant }: { slug: string; names: Record<string, string>; linkable: Set<string>; variant: "have" | "missing" }) {
-  const label = names[slug] ?? slug;
+  const label = skillLabel(slug, names);
   const cls =
     variant === "have"
       ? "bg-accent-wash text-ink"

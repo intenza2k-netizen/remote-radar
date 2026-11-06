@@ -4,9 +4,20 @@ Cursor-paginated JSON. Each response carries ``nextCursor`` and ``hasMore``; the
 passed back unchanged as the ``cursor`` query parameter (see https://jobi.cy/apidocs).
 Jobicy's terms require crediting Jobicy and sending applicants to the original job URL,
 which is what ``url`` holds.
+
+Scope: ``targeted``. Besides the default feed (``JOBICY_PAGES`` pages, unfiltered) the
+fetch also pulls the category feed ``industry=data-science`` (``INDUSTRY_PAGES`` pages,
+same cursor logic) and merges both, deduped by job id with the default feed first. The
+unfiltered feed is unchanged, but because part of the fetch is now filtered toward data
+roles the source no longer reflects the market mix, so counts must not be read as a
+share of all Jobicy postings. The extra feed is best-effort: if it fails after the
+default feed succeeded, the failure is logged and the default jobs are still returned.
 """
 
 from __future__ import annotations
+
+import logging
+from typing import Literal
 
 import httpx
 
@@ -24,8 +35,13 @@ from radar.sources.base import (
     to_float,
 )
 
+log = logging.getLogger(__name__)
+
 API_URL = "https://jobicy.com/api/v2/remote-jobs"
 PAGE_SIZE = 100  # documented maximum per page
+# Category slugs fetched in addition to the default feed (``industry`` query parameter).
+DATA_INDUSTRIES: tuple[str, ...] = ("data-science",)
+INDUSTRY_PAGES = 2  # pages per extra industry feed
 
 _PERIODS = {
     "yearly": "year",
@@ -47,12 +63,29 @@ class JobicySource:
     name = "jobicy"
     display_name = "Jobicy"
     homepage = "https://jobicy.com"
+    # Part of the fetch is filtered toward data roles (see module docstring).
+    scope: Literal["broad", "targeted"] = "targeted"
 
     def fetch(self, client: httpx.Client) -> list[SourceJob]:
+        jobs = self._fetch_feed(client, max_pages=JOBICY_PAGES)
+        for industry in DATA_INDUSTRIES:
+            try:
+                jobs += self._fetch_feed(client, max_pages=INDUSTRY_PAGES, industry=industry)
+            except (httpx.HTTPError, ValueError) as exc:
+                log.warning(
+                    "jobicy: industry=%s feed failed, keeping other jobs: %s", industry, exc
+                )
+        return dedupe_jobs(jobs)
+
+    def _fetch_feed(
+        self, client: httpx.Client, *, max_pages: int, industry: str | None = None
+    ) -> list[SourceJob]:
         jobs: list[SourceJob] = []
         cursor: str | None = None
-        for _ in range(JOBICY_PAGES):
+        for _ in range(max_pages):
             params: dict[str, object] = {"count": PAGE_SIZE}
+            if industry:
+                params["industry"] = industry
             if cursor:
                 params["cursor"] = cursor
             data = get_json(client, API_URL, params=params)
@@ -65,7 +98,7 @@ class JobicySource:
             cursor = as_str(data.get("nextCursor"))
             if not data["jobs"] or not data.get("hasMore") or not cursor:
                 break
-        return dedupe_jobs(jobs)
+        return jobs
 
     def to_fields(self, payload: dict) -> JobFields:
         low = to_float(payload.get("salaryMin"))

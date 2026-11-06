@@ -5,7 +5,7 @@ import type { SkillPremium } from "@/lib/insights";
 
 /**
  * Dot-and-interval chart: dot = difference in median advertised salary (with the skill minus
- * without), line = 95% bootstrap interval, one shared linear axis centred on $0. Rows whose
+ * without), line = 95% company-cluster bootstrap interval, one shared linear axis centred on $0. Rows whose
  * interval crosses zero are muted and drawn hollow (a second channel besides colour) and say so in words.
  * Pure HTML/CSS positioning, so it needs no JS; each row is focusable and shows its numbers on hover/focus,
  * and a table twin sits underneath.
@@ -40,7 +40,7 @@ export function PremiumChart({ rows }: { rows: SkillPremium[] }) {
         {data.map((r) => {
           const flat = crossesZero(r.ci_low, r.ci_high);
           const color = flat ? "var(--muted)" : r.diff > 0 ? "var(--s1)" : "var(--s2)";
-          const summary = `${r.name}: median ${fmtUsd(r.median_with)} with the skill (${r.n_with} postings) against ${fmtUsd(r.median_without)} without (${r.n_without}); difference ${fmtSignedUsd(r.diff)}, 95% interval ${fmtSignedUsd(r.ci_low)} to ${fmtSignedUsd(r.ci_high)}${flat ? ", not distinguishable from zero at this sample size" : ""}`;
+          const summary = `${r.name}: median ${fmtUsd(r.median_with)} with the skill (${r.n_with} postings${r.n_companies ? ` from ${r.n_companies} companies` : ""}) against ${fmtUsd(r.median_without)} without (${r.n_without}); difference ${fmtSignedUsd(r.diff)}, 95% interval ${fmtSignedUsd(r.ci_low)} to ${fmtSignedUsd(r.ci_high)}${flat ? ", not distinguishable from zero at this sample size" : ""}`;
           return (
             <li key={r.slug} className={`group relative grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-0.5 border-t border-line py-2.5 first:border-t-0 ${COLS}`}>
               <div className="min-w-0 sm:order-1">
@@ -48,7 +48,7 @@ export function PremiumChart({ rows }: { rows: SkillPremium[] }) {
                   {r.name}
                 </Link>
                 <span className="tnum block text-xs text-ink-3">
-                  n = {fmtInt(r.n_with)} with &middot; {fmtInt(r.n_without)} without
+                  n = {fmtInt(r.n_with)} with{r.n_companies ? ` (${fmtInt(r.n_companies)} companies)` : ""} &middot; {fmtInt(r.n_without)} without
                 </span>
               </div>
 
@@ -88,7 +88,7 @@ export function PremiumChart({ rows }: { rows: SkillPremium[] }) {
 
               <div className="chart-tip !pointer-events-none absolute -top-1 left-0 hidden max-w-[19rem] -translate-y-full group-focus-within:block group-hover:block sm:left-[10.5rem]" role="presentation">
                 <span className="tnum block">
-                  With <strong>{r.name}</strong>: median {fmtUsd(r.median_with)} (n = {r.n_with})
+                  With <strong>{r.name}</strong>: median {fmtUsd(r.median_with)} (n = {r.n_with}{r.n_companies ? `, ${r.n_companies} companies` : ""})
                 </span>
                 <span className="tnum block">
                   Without: median {fmtUsd(r.median_without)} (n = {r.n_without})

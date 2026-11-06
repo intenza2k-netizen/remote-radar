@@ -1,0 +1,295 @@
+[
+ {
+  "additionalPlain": "Compensation\nThe US base salary range for this role is $95.4K–$190K annually, plus equity and benefits.",
+  "additional": "<div><strong>Compensation</strong><br>The US base salary range for this role is <strong>$95.4K–$190K annually</strong>, plus equity and benefits.</div>",
+  "categories": {
+   "commitment": "Full-time (remote)",
+   "location": "Remote-North & South America",
+   "team": "Engineering",
+   "allLocations": [
+    "Remote-North & South America"
+   ]
+  },
+  "createdAt": 1605753685375,
+  "descriptionPlain": "Metabase is the easiest way for people to get insights from their data, from tiny startups who get up and running quickly to major corporations with tens of thousands of users. That's why people love us.\n \nWe bring data tools with the elegance and simplicity",
+  "description": "<div>Metabase is the easiest way for people to get insights from their data, from tiny startups who get up and running quickly to major corporations with tens of thousands of users. That's why people</div>",
+  "id": "5eca795c-48dd-496a-be23-2181068a5450",
+  "lists": [],
+  "text": "Analytics Engineer",
+  "country": "US",
+  "workplaceType": "remote",
+  "opening": "<div>Metabase is the easiest way for people to get insights from their data, from tiny startups who get up and running quickly to major corporations with tens of thousands of users. That's why people</div>",
+  "openingPlain": "Metabase is the easiest way for people to get insights from their data, from tiny startups who get up and running quickly to major corporations with tens of thousands of users. That's why people love us.\n \nWe bring data tools with the elegance and simplicity",
+  "descriptionBody": "<div>Metabase is looking for an Analytics Engineer to support our team.</div>\n<div>&nbsp;</div>\n<div>This role will be a key part of the operations team, using the disparate data sources we have on our customer base, customer onboarding, and community</div>",
+  "descriptionBodyPlain": "Metabase is looking for an Analytics Engineer to support our team.\n \nThis role will be a key part of the operations team, using the disparate data sources we have on our customer base, customer onboarding, and community intelligence to better understand our",
+  "hostedUrl": "https://jobs.lever.co/metabase/5eca795c-48dd-496a-be23-2181068a5450",
+  "applyUrl": "https://jobs.lever.co/metabase/5eca795c-48dd-496a-be23-2181068a5450/apply"
+ },
+ {
+  "additionalPlain": "We're a global team (50% outside the US), fully distributed (from Thailand to California), who get things done asynchronously, with plenty of uninterrupted time, supporting each other to do the best work of our careers. We offer flexibility (define your own",
+  "additional": "<div>We're a global team (50% outside the US), fully distributed (from Thailand to California), who get things done asynchronously, with plenty of uninterrupted time, supporting each other to do the best work of our careers. We offer flexibility (define your</div>",
+  "categories": {
+   "commitment": "Full-time (remote)",
+   "location": "Global Remote",
+   "team": "Success Engineering",
+   "allLocations": [
+    "Global Remote"
+   ]
+  },
+  "createdAt": 1589928178039,
+  "descriptionPlain": "Metabase is the easiest way for people to get insights from their data, from tiny startups who get up and running quickly to major corporations with tens of thousands of users. That's why people love us.\n \nWe bring data tools with the elegance and simplicity",
+  "description": "<div>Metabase is the easiest way for people to get insights from their data, from tiny startups who get up and running quickly to major corporations with tens of thousands of users. That's why people</div>",
+  "id": "20d0af01-5532-4c22-bf64-474f15b1df05",
+  "lists": [
+   {
+    "text": "What you’ll do",
+    "content": "<li>Talk to our users to understand their goals and challenges</li>\n<li>Help customers design and optimize their Metabase implementation</li>"
+   },
+   {
+    "text": "About you",
+    "content": "<li>Enjoy helping people and solving their problems</li>\n<li>Strong technical background with 3+ years of experience writing production code, administering systems, and/or managing databases</li>"
+   }
+  ],
+  "salaryRange": {
+   "min": 90000,
+   "max": 190000,
+   "currency": "USD",
+   "interval": "per-year-salary"
+  },
+  "salaryDescription": "<div><strong><em>Compensation</em></strong><br aria-hidden=\"true\"><em>The US base salary range for this role is </em><strong><em>listed above</em></strong><em>, plus equity and benefits.</em><br aria-hidden=\"true\"><em>Compensation is determined by role,</div>",
+  "salaryDescriptionPlain": "Compensation\nThe US base salary range for this role is listed above, plus equity and benefits.\nCompensation is determined by role, level, location, and individual qualifications, including skills, experience, and scope of responsibility. Pay may vary by",
+  "text": "Success Engineer (Global)",
+  "country": "US",
+  "workplaceType": "remote",
+  "opening": "<div>Metabase is the easiest way for people to get insights from their data, from tiny startups who get up and running quickly to major corporations with tens of thousands of users. That's why people</div>",
+  "openingPlain": "Metabase is the easiest way for people to get insights from their data, from tiny startups who get up and running quickly to major corporations with tens of thousands of users. That's why people love us.\n \nWe bring data tools with the elegance and simplicity",
+  "descriptionBody": "<div>Metabase is looking for a customer-focused, highly technical <strong>Success Engineer</strong> to join our growing global team. We are looking for someone who loves data, enjoys helping others, and is excited to work for a startup to help our customers</div>",
+  "descriptionBodyPlain": "Metabase is looking for a customer-focused, highly technical Success Engineer to join our growing global team. We are looking for someone who loves data, enjoys helping others, and is excited to work for a startup to help our customers get the most out of",
+  "hostedUrl": "https://jobs.lever.co/metabase/20d0af01-5532-4c22-bf64-474f15b1df05",
+  "applyUrl": "https://jobs.lever.co/metabase/20d0af01-5532-4c22-bf64-474f15b1df05/apply"
+ },
+ {
+  "additionalPlain": "Spotify is an equal opportunity employer. You are welcome at Spotify for who you are, no matter where you come from, what you look like, or what’s playing in your headphones. Our platform is for everyone, and so is our workplace. The more voices we have",
+  "additional": "<div><span style=\"font-size: 11pt;\">Spotify is an equal opportunity employer. You are welcome at Spotify for who you are, no matter where you come from, what you look like, or what’s playing in your headphones. Our platform is for everyone, and so is our</div>",
+  "categories": {
+   "commitment": "Permanent",
+   "department": "Engineering",
+   "location": "London",
+   "team": "Platform",
+   "allLocations": [
+    "London"
+   ]
+  },
+  "createdAt": 1784642220362,
+  "descriptionPlain": "Within the Data Platform studio, we own two critical pillars: our event delivery platform that collects trillions of events per day from producers to consumers, and another, which handles the pseudonymisation of data so Spotify can use data responsibly and in",
+  "description": "<div>\n<p>Within the Data Platform studio, we own two critical pillars: our event delivery platform that collects trillions of events per day from producers to consumers, and another, which handles the pseudonymisation of data so Spotify can use data</div>",
+  "id": "abcc8b41-7553-4054-b5eb-8d3e49e00e25",
+  "lists": [
+   {
+    "text": "What You’ll Do",
+    "content": "<div>\n\n<li>Lead and develop a team of six experienced engineers, with a strong focus on coaching, career development, and creating an environment where people do the best work of their careers.</li>\n<li>Take accountability for the team's delivery, ensuring clear priorities, healthy execution, and measurable outcomes.</li>"
+   },
+   {
+    "text": "Who You Are",
+    "content": "<div>\n\n<li>You have experience managing teams of senior/experienced engineers and understand that people leadership is your primary craft, not a side responsibility.</li>\n<li>You have a track record of investing in engineers' careers - running meaningful development conversations, helping people grow into new roles, and creating clarity around expectations and progression.</li>"
+   }
+  ],
+  "text": "Engineering Manager - Data Platform",
+  "country": "GB",
+  "workplaceType": "remote",
+  "opening": "",
+  "openingPlain": "",
+  "descriptionBody": "<div>\n<p>Within the Data Platform studio, we own two critical pillars: our event delivery platform that collects trillions of events per day from producers to consumers, and another, which handles the pseudonymisation of data so Spotify can use data</div>",
+  "descriptionBodyPlain": "Within the Data Platform studio, we own two critical pillars: our event delivery platform that collects trillions of events per day from producers to consumers, and another, which handles the pseudonymisation of data so Spotify can use data responsibly and in",
+  "hostedUrl": "https://jobs.lever.co/spotify/abcc8b41-7553-4054-b5eb-8d3e49e00e25",
+  "applyUrl": "https://jobs.lever.co/spotify/abcc8b41-7553-4054-b5eb-8d3e49e00e25/apply"
+ },
+ {
+  "additional": "",
+  "additionalPlain": "",
+  "categories": {
+   "department": "Data and Analytics",
+   "location": "London",
+   "team": "Platform",
+   "allLocations": [
+    "London"
+   ]
+  },
+  "createdAt": 1776160237237,
+  "descriptionPlain": "Spotify’s mission is to unlock the potential of human creativity by giving a million creative artists the opportunity to live off their art and billions of fans the chance to enjoy and be passionate about these creators.\nData is a means to an end, and Spotify",
+  "description": "<div>\n<p>Spotify’s mission is to unlock the potential of human creativity by giving a million creative artists the opportunity to live off their art and billions of fans the chance to enjoy and be passionate about these creators.</p>\n<p>Data is a means to an</div>",
+  "id": "03437e2a-2d5e-4593-9e97-11271014932e",
+  "lists": [
+   {
+    "text": "What You'll Do",
+    "content": "<div>\n\n<li>Develop and own the product strategy and roadmap for Spotify's data catalogue, metadata, and data lineage domain.</li>\n<li>Diagnose and deeply understand the needs of Spotify's data community, including data engineers, data scientists, analysts, ML engineers, and increasingly AI agents.</li>"
+   },
+   {
+    "text": "Who You Are",
+    "content": "<div>\n\n<li>You have 2+ years of Product Management experience, ideally working on platform products, developer tools, data infrastructure, analytics platforms, or data governance systems.</li>\n<li>You have a technical foundation through a degree in Computer Science, Engineering, a related field, and/or prior experience in engineering or technical roles.</li>"
+   }
+  ],
+  "text": "Product Manager - Data Platform",
+  "country": "GB",
+  "workplaceType": "remote",
+  "opening": "",
+  "openingPlain": "",
+  "descriptionBody": "<div>\n<p>Spotify&rsquo;s mission is to unlock the potential of human creativity by giving a million creative artists the opportunity to live off their art and billions of fans the chance to enjoy and be passionate about these creators.</p>\n<p>Data is a means</div>",
+  "descriptionBodyPlain": "Spotify’s mission is to unlock the potential of human creativity by giving a million creative artists the opportunity to live off their art and billions of fans the chance to enjoy and be passionate about these creators.\nData is a means to an end, and Spotify",
+  "hostedUrl": "https://jobs.lever.co/spotify/03437e2a-2d5e-4593-9e97-11271014932e",
+  "applyUrl": "https://jobs.lever.co/spotify/03437e2a-2d5e-4593-9e97-11271014932e/apply"
+ },
+ {
+  "additionalPlain": "Spotify is an equal opportunity employer. You are welcome at Spotify for who you are, no matter where you come from, what you look like, or what’s playing in your headphones. Our platform is for everyone, and so is our workplace. The more voices we have",
+  "additional": "<div><span style=\"font-size: 11pt;\">Spotify is an equal opportunity employer. You are welcome at Spotify for who you are, no matter where you come from, what you look like, or what’s playing in your headphones. Our platform is for everyone, and so is our</div>",
+  "categories": {
+   "commitment": "Permanent",
+   "department": "Engineering",
+   "location": "Stockholm",
+   "team": "Platform",
+   "allLocations": [
+    "Stockholm",
+    "London"
+   ]
+  },
+  "createdAt": 1790590791162,
+  "descriptionPlain": "Every dataset at Spotify, from the data behind creator royalties to the signals powering recommendations, is registered, published and traced through systems our team builds. We're the source of truth for what data exists at Spotify, where it lives, who owns",
+  "description": "<div>\n<p>Every dataset at Spotify, from the data behind creator royalties to the signals powering recommendations, is registered, published and traced through systems our team builds. We're the source of truth for what data exists at Spotify, where it lives,</div>",
+  "id": "186b763a-2a61-4563-8813-ff6b40c9c8a7",
+  "lists": [
+   {
+    "text": "What You'll Do",
+    "content": "<div>\n\n<li>Build and Evolve Core Services: Design, build and operate the backend services and APIs behind our data catalog, lineage and publishing systems, and evolve them as the platform adopts new storage technologies and new kinds of data. Hold them to a high bar for correctness, performance and reliability.</li>\n<li>Build Data Pipelines: Develop and run the batch and streaming pipelines that keep our metadata current, processing platform events and audit logs to capture how data is created and changed, and turning lineage and metadata into data products other teams build on.</li>"
+   },
+   {
+    "text": "Who You Are",
+    "content": "<div>\n\n<li>You have solid experience building and running backend services and APIs in production with Java, and you care about API design, versioning and backward compatibility.</li>\n<li>You're comfortable with SQL and have worked with data pipelines or a cloud data warehouse such as BigQuery, Snowflake or Databricks. Hands-on experience with batch or streaming frameworks like Beam, Flink or Spark is a plus.</li>"
+   }
+  ],
+  "text": "Backend Engineer - Data Platform",
+  "country": "SE",
+  "workplaceType": "hybrid",
+  "opening": "",
+  "openingPlain": "",
+  "descriptionBody": "<div>\n<p>Every dataset at Spotify, from the data behind creator royalties to the signals powering recommendations, is registered, published and traced through systems our team builds. We're the source of truth for what data exists at Spotify, where it lives,</div>",
+  "descriptionBodyPlain": "Every dataset at Spotify, from the data behind creator royalties to the signals powering recommendations, is registered, published and traced through systems our team builds. We're the source of truth for what data exists at Spotify, where it lives, who owns",
+  "hostedUrl": "https://jobs.lever.co/spotify/186b763a-2a61-4563-8813-ff6b40c9c8a7",
+  "applyUrl": "https://jobs.lever.co/spotify/186b763a-2a61-4563-8813-ff6b40c9c8a7/apply"
+ },
+ {
+  "additionalPlain": "Spotify is an equal opportunity employer. You are welcome at Spotify for who you are, no matter where you come from, what you look like, or what’s playing in your headphones. Our platform is for everyone, and so is our workplace. The more voices we have",
+  "additional": "<div><span style=\"font-size: 11pt;\">Spotify is an equal opportunity employer. You are welcome at Spotify for who you are, no matter where you come from, what you look like, or what’s playing in your headphones. Our platform is for everyone, and so is our</div>",
+  "categories": {
+   "commitment": "Permanent",
+   "department": "Markets and Subscriber Growth",
+   "location": "London",
+   "team": "Operations and Strategy",
+   "allLocations": [
+    "London"
+   ]
+  },
+  "createdAt": 1792668514701,
+  "descriptionPlain": "We are looking for a Data Scientist to join the Business Analytics team within Spotify’s Business Strategy and Insights organization. Our team tackles some of Spotify’s most consequential strategic questions, shaping the trajectory of our business and",
+  "description": "<p>We are looking for a Data Scientist to join the Business Analytics team within Spotify’s Business Strategy and Insights organization. Our team tackles some of Spotify’s most consequential strategic questions, shaping the trajectory of our business and</p>",
+  "id": "b4f6cd01-1d5d-41a9-b287-6d10416da03c",
+  "lists": [
+   {
+    "text": "What You'll Do",
+    "content": "<li>Develop data-driven strategies to support the growth of Spotify’s active users and subscribers</li>\n<li>Create and communicate impactful findings and recommendations that improve the</li>"
+   },
+   {
+    "text": "Who You Are",
+    "content": "<div>\n\n<li>You have 5+ years of professional experience in data science or analytics, ideally at a consumer tech company or top-tier consulting firm.</li>\n<li>You are fluent in SQL and Python or R, and have a strong grasp of statistical methods and causal inference. Direct experience with product analytics, experimentation, or payments is a plus.</li>"
+   }
+  ],
+  "text": "Data Scientist  - Business Analytics",
+  "country": "GB",
+  "workplaceType": "onsite",
+  "opening": "",
+  "openingPlain": "",
+  "descriptionBody": "<p>We are looking for a Data Scientist to join the Business Analytics team within Spotify&rsquo;s Business Strategy and Insights organization. Our team tackles some of Spotify&rsquo;s most consequential strategic questions, shaping the trajectory of our</p>",
+  "descriptionBodyPlain": "We are looking for a Data Scientist to join the Business Analytics team within Spotify’s Business Strategy and Insights organization. Our team tackles some of Spotify’s most consequential strategic questions, shaping the trajectory of our business and",
+  "hostedUrl": "https://jobs.lever.co/spotify/b4f6cd01-1d5d-41a9-b287-6d10416da03c",
+  "applyUrl": "https://jobs.lever.co/spotify/b4f6cd01-1d5d-41a9-b287-6d10416da03c/apply"
+ },
+ {
+  "additionalPlain": "Spotify is an equal opportunity employer. You are welcome at Spotify for who you are, no matter where you come from, what you look like, or what’s playing in your headphones. Our platform is for everyone, and so is our workplace. The more voices we have",
+  "additional": "<div>\n<p data-pm-slice=\"1 1 []\">The United States base range for this position is 184,049–262,928 USD, plus equity. The benefits available for this position include health insurance, six-month paid parental leave, 401(k) retirement plan, monthly meal</div>",
+  "categories": {
+   "commitment": "Permanent",
+   "department": "Engineering",
+   "location": "New York, NY",
+   "team": "Personalization",
+   "allLocations": [
+    "New York, NY"
+   ]
+  },
+  "createdAt": 1791995310066,
+  "descriptionPlain": "",
+  "description": "<div>\n<p style=\"line-height: 1.2; margin-top: 12pt; margin-bottom: 12pt;\"><span style=\"font-size: 10pt; font-family: Poppins, sans-serif;\">The Personalization team makes deciding what to play next easier and more enjoyable for every listener. From Blend to</div>",
+  "id": "bbbbbbbb-0000-0000-0000-000000000001",
+  "lists": [
+   {
+    "text": "What You'll Do",
+    "content": ""
+   },
+   {
+    "text": "Who You Are",
+    "content": "<div>\n\n<li>You have experience building, deploying, and improving machine learning systems in production environments.</li>\n<li>You have a strong understanding of machine learning approaches for information retrieval, search ranking, recommendation systems, or personalization.</li>"
+   }
+  ],
+  "text": "Data Analyst, Contract",
+  "country": "US",
+  "workplaceType": "remote",
+  "opening": "",
+  "openingPlain": "",
+  "descriptionBody": "<div>\n<p style=\"line-height: 1.2; margin-top: 12pt; margin-bottom: 12pt;\"><span style=\"font-size: 10pt; font-family: Poppins, sans-serif;\">The Personalization team makes deciding what to play next easier and more enjoyable for every listener. From Blend to</div>",
+  "descriptionBodyPlain": "",
+  "hostedUrl": "https://jobs.lever.co/spotify/bbbbbbbb-0000-0000-0000-000000000001",
+  "applyUrl": "https://jobs.lever.co/spotify/05b8d6ee-0773-4255-b8b9-ae73d74a5ee5/apply",
+  "salaryRange": {
+   "min": 38,
+   "max": 52.5,
+   "currency": "usd",
+   "interval": "per-hour-wage"
+  },
+  "salaryDescriptionPlain": "$38 - $52.50 per hour"
+ },
+ {
+  "additionalPlain": "The United States base range for this position is $281,196 - $401,709 plus equity. The benefits available for this position include health insurance, six month paid parental leave, 401(k) retirement plan, monthly meal allowance, 23 paid days off, 13 paid",
+  "additional": "<div><span style=\"font-size: 16px;\">The United States base range for this position is $281,196 - $401,709 plus equity. The benefits available for this position include health insurance, six month paid parental leave, 401(k) retirement plan, monthly meal</div>",
+  "categories": {
+   "commitment": "Permanent",
+   "department": "Engineering",
+   "location": "New York, NY",
+   "team": "Experience",
+   "allLocations": [
+    "New York, NY"
+   ]
+  },
+  "createdAt": 1777466429525,
+  "descriptionPlain": "We design Spotify’s consumer experience—end to end, moment to moment, across every screen, platform, and partner integration. Our mission is to make listening feel effortless, personal, and joyful for billions of users around the world. That means turning",
+  "description": "<div>\n<p>We design Spotify’s consumer experience—end to end, moment to moment, across every screen, platform, and partner integration. Our mission is to make listening feel effortless, personal, and joyful for billions of users around the world. That means</div>",
+  "id": "bbbbbbbb-0000-0000-0000-000000000002",
+  "lists": [
+   {
+    "text": "What You Will Do",
+    "content": "<div>\n\n<li>Define and drive machine learning strategy across content understanding, safety, policy enforcement, and platform-level decisioning</li>\n<li>Build and scale production ML systems for classification, moderation, ranking, risk detection, and content evaluation</li>"
+   },
+   {
+    "text": "Who You Are",
+    "content": "<div>\n\n<li>You have significant experience designing and building production-grade machine learning systems at scale</li>\n<li>You have deep experience with modern ML frameworks such as PyTorch, TensorFlow, JAX, or similar</li>"
+   }
+  ],
+  "text": "Business Intelligence Analyst",
+  "country": "US",
+  "workplaceType": "remote",
+  "opening": "",
+  "openingPlain": "",
+  "descriptionBody": "<div>\n<p>We design Spotify&rsquo;s consumer experience&mdash;end to end, moment to moment, across every screen, platform, and partner integration. Our mission is to make listening feel effortless, personal, and joyful for billions of users around the world.</div>",
+  "descriptionBodyPlain": "We design Spotify’s consumer experience—end to end, moment to moment, across every screen, platform, and partner integration. Our mission is to make listening feel effortless, personal, and joyful for billions of users around the world. That means turning",
+  "hostedUrl": "https://jobs.lever.co/spotify/bbbbbbbb-0000-0000-0000-000000000002",
+  "applyUrl": "https://jobs.lever.co/spotify/47d4eabf-8d5a-4dab-ac72-de7b5b56841c/apply",
+  "salaryDescriptionPlain": "The salary range for this role is $70,000 - $90,000 USD per year."
+ }
+]

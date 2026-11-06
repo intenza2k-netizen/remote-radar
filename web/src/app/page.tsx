@@ -68,7 +68,7 @@ export default function OverviewPage() {
                   Among the {fmtInt(meta.totals.with_salary)} postings that state pay, the median is {fmtUsdShort(headline.medianSalary)} a year.
                 </>
               ) : null}{" "}
-              Every figure below is extracted by an LLM from {fmtInt(total)} postings on {meta.sources.length} public job boards.
+              Every figure below is extracted by an LLM from {fmtInt(total)} postings across {meta.sources.length} public sources.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link href="/match" className="btn no-underline">
@@ -89,7 +89,7 @@ export default function OverviewPage() {
           <Kpi label="Jobs tracked" value={fmtInt(total)} sub={windowCaption(meta)} />
         </div>
         <div role="listitem">
-          <Kpi label="Companies hiring" value={fmtInt(meta.totals.companies)} sub={`${fmtInt(meta.totals.skills)} distinct skills seen`} />
+          <Kpi label="Companies hiring" value={fmtInt(meta.totals.companies)} sub="with open remote listings" />
         </div>
         <div role="listitem">
           <Kpi label="With salary" value={fmtShare(withSalaryPct)} sub={`${fmtInt(meta.totals.with_salary)} postings state pay`} />
@@ -182,7 +182,7 @@ export default function OverviewPage() {
         title="Where the postings come from"
         lede={
           <>
-            Four public job boards, deduplicated by company and title. Every job on this site links to the original posting on the board that published it.{" "}
+            Remote job boards, company career pages and Hacker News, deduplicated by company and title. Some sources are searched for data roles, so data jobs are deliberately over-represented. Every job on this site links to the original posting.{" "}
             <Link href="/methodology#attribution" className="link">
               Attribution and caveats
             </Link>

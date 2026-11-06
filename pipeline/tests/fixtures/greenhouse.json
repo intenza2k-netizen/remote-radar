@@ -1,0 +1,524 @@
+{
+ "jobs": [
+  {
+   "absolute_url": "https://job-boards.greenhouse.io/reddit/jobs/8282760",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "requires_processing_consent": false,
+     "requires_retention_consent": false,
+     "retention_period": null,
+     "demographic_data_consent_applies": true
+    }
+   ],
+   "internal_job_id": 3582596,
+   "location": {
+    "name": "Remote - United States"
+   },
+   "metadata": [
+    {
+     "id": 944668,
+     "name": "Position ID",
+     "value": "P-107420",
+     "value_type": "short_text"
+    },
+    {
+     "id": 956352,
+     "name": "Recruiting Start Date",
+     "value": "2026-10-16",
+     "value_type": "date"
+    }
+   ],
+   "id": 8282760,
+   "updated_at": "2026-11-06T07:22:05-05:00",
+   "requisition_id": "R-105951",
+   "title": "Analytics Engineer",
+   "company_name": "Reddit",
+   "first_published": "2026-10-14T18:03:16-04:00",
+   "language": "en",
+   "application_deadline": null,
+   "content": "&lt;div class=&quot;content-intro&quot;&gt;&lt;p&gt;About the team and the role.&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;content-pay-transparency&quot;&gt;&lt;div class=&quot;pay-input&quot;&gt;&lt;div class=&quot;description&quot;&gt;&lt;p&gt;To provide greater transparency to candidates, we share base salary ranges for all US-based job postings.&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;title&quot;&gt;The base salary range for this position is:&lt;/div&gt;&lt;div class=&quot;pay-range&quot;&gt;&lt;span&gt;$164,200&lt;/span&gt;&lt;span class=&quot;divider&quot;&gt;&amp;mdash;&lt;/span&gt;&lt;span&gt;$229,990 USD&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;",
+   "departments": [
+    {
+     "id": 71092,
+     "name": "Data Science",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "offices": [
+    {
+     "id": 10167,
+     "name": "San Francisco",
+     "location": "San Francisco, CA, United States",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "ai_disclaimer": null,
+   "include_ai_disclaimer": null,
+   "ai_opt_out_request_url": null
+  },
+  {
+   "absolute_url": "https://job-boards.greenhouse.io/reddit/jobs/8349916",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "requires_processing_consent": false,
+     "requires_retention_consent": false,
+     "retention_period": null,
+     "demographic_data_consent_applies": true
+    }
+   ],
+   "education": "education_required",
+   "internal_job_id": 3609066,
+   "location": {
+    "name": "San Francisco, CA"
+   },
+   "metadata": [
+    {
+     "id": 944668,
+     "name": "Position ID",
+     "value": null,
+     "value_type": "short_text"
+    },
+    {
+     "id": 956352,
+     "name": "Recruiting Start Date",
+     "value": "",
+     "value_type": "date"
+    }
+   ],
+   "id": 8349916,
+   "updated_at": "2026-11-05T11:13:17-05:00",
+   "requisition_id": "1016.298.4",
+   "title": "Machine Learning Engineer",
+   "company_name": "Reddit",
+   "first_published": "2026-11-05T11:13:17-05:00",
+   "language": "en",
+   "application_deadline": null,
+   "content": "&lt;div class=&quot;content-intro&quot;&gt;&lt;p&gt;About the team and the role.&lt;/p&gt;&lt;/div&gt;",
+   "departments": [
+    {
+     "id": 16253,
+     "name": "Engineering and Product",
+     "child_ids": [
+      79647,
+      86224,
+      70580,
+      81518,
+      406944,
+      406943,
+      312998,
+      81517,
+      70548,
+      77934,
+      70553
+     ],
+     "parent_id": null
+    }
+   ],
+   "offices": [
+    {
+     "id": 10167,
+     "name": "San Francisco",
+     "location": "San Francisco, CA, United States",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "ai_disclaimer": null,
+   "include_ai_disclaimer": null,
+   "ai_opt_out_request_url": null
+  },
+  {
+   "absolute_url": "https://job-boards.greenhouse.io/reddit/jobs/7131932",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "requires_processing_consent": false,
+     "requires_retention_consent": false,
+     "retention_period": null,
+     "demographic_data_consent_applies": true
+    }
+   ],
+   "internal_job_id": 3210132,
+   "location": {
+    "name": "Remote - United States"
+   },
+   "metadata": [
+    {
+     "id": 944668,
+     "name": "Position ID",
+     "value": null,
+     "value_type": "short_text"
+    },
+    {
+     "id": 956352,
+     "name": "Recruiting Start Date",
+     "value": "2025-08-04",
+     "value_type": "date"
+    }
+   ],
+   "id": 7131932,
+   "updated_at": "2026-10-23T10:06:06-04:00",
+   "requisition_id": "283",
+   "title": "Machine Learning Engineer",
+   "company_name": "Reddit",
+   "first_published": "2025-08-14T14:51:26-04:00",
+   "language": "en",
+   "application_deadline": null,
+   "content": "&lt;div class=&quot;content-intro&quot;&gt;&lt;p&gt;About the team and the role.&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;content-pay-transparency&quot;&gt;&lt;div class=&quot;pay-input&quot;&gt;&lt;div class=&quot;description&quot;&gt;&lt;p&gt;To provide greater transparency to candidates, we share base salary ranges for all US-based job postings.&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;title&quot;&gt;The base salary range for this position is:&lt;/div&gt;&lt;div class=&quot;pay-range&quot;&gt;&lt;span&gt;$185,800&lt;/span&gt;&lt;span class=&quot;divider&quot;&gt;&amp;mdash;&lt;/span&gt;&lt;span&gt;$260,100 USD&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;",
+   "departments": [
+    {
+     "id": 70548,
+     "name": "Ads Product & Engineering",
+     "child_ids": [],
+     "parent_id": 16253
+    }
+   ],
+   "offices": [
+    {
+     "id": 88237,
+     "name": "Remote - United States",
+     "location": null,
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "ai_disclaimer": null,
+   "include_ai_disclaimer": null,
+   "ai_opt_out_request_url": null
+  },
+  {
+   "absolute_url": "https://job-boards.greenhouse.io/reddit/jobs/7131934",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "requires_processing_consent": false,
+     "requires_retention_consent": false,
+     "retention_period": null,
+     "demographic_data_consent_applies": true
+    }
+   ],
+   "internal_job_id": 3210132,
+   "location": {
+    "name": "Remote - Ontario, Canada"
+   },
+   "metadata": [
+    {
+     "id": 944668,
+     "name": "Position ID",
+     "value": null,
+     "value_type": "short_text"
+    },
+    {
+     "id": 956352,
+     "name": "Recruiting Start Date",
+     "value": "2025-08-04",
+     "value_type": "date"
+    }
+   ],
+   "id": 7131934,
+   "updated_at": "2026-10-23T10:06:06-04:00",
+   "requisition_id": "283",
+   "title": "Machine Learning Engineer",
+   "company_name": "Reddit",
+   "first_published": "2025-08-14T14:51:26-04:00",
+   "language": "en",
+   "application_deadline": null,
+   "content": "&lt;div class=&quot;content-intro&quot;&gt;&lt;p&gt;About the team and the role.&lt;/p&gt;&lt;/div&gt;",
+   "departments": [
+    {
+     "id": 70548,
+     "name": "Ads Product & Engineering",
+     "child_ids": [],
+     "parent_id": 16253
+    }
+   ],
+   "offices": [
+    {
+     "id": 88237,
+     "name": "Remote - United States",
+     "location": null,
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "ai_disclaimer": null,
+   "include_ai_disclaimer": null,
+   "ai_opt_out_request_url": null
+  },
+  {
+   "absolute_url": "https://job-boards.greenhouse.io/reddit/jobs/8023563",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "requires_processing_consent": false,
+     "requires_retention_consent": false,
+     "retention_period": null,
+     "demographic_data_consent_applies": true
+    }
+   ],
+   "internal_job_id": 3478437,
+   "location": {
+    "name": "Remote - United States"
+   },
+   "metadata": [
+    {
+     "id": 944668,
+     "name": "Position ID",
+     "value": "P-108602",
+     "value_type": "short_text"
+    },
+    {
+     "id": 956352,
+     "name": "Recruiting Start Date",
+     "value": "2026-10-01",
+     "value_type": "date"
+    }
+   ],
+   "id": 8023563,
+   "updated_at": "2026-11-06T07:22:00-05:00",
+   "requisition_id": "R-105614",
+   "title": "Senior Business Analyst, Revenue Analytics",
+   "company_name": "Reddit",
+   "first_published": "2026-06-23T11:46:19-04:00",
+   "language": "en",
+   "application_deadline": null,
+   "content": "&lt;div class=&quot;content-intro&quot;&gt;&lt;p&gt;About the team and the role.&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;content-pay-transparency&quot;&gt;&lt;div class=&quot;pay-input&quot;&gt;&lt;div class=&quot;description&quot;&gt;&lt;p&gt;To provide greater transparency to candidates, we share base salary ranges for all US-based job postings.&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;title&quot;&gt;The base salary range for this position is:&lt;/div&gt;&lt;div class=&quot;pay-range&quot;&gt;&lt;span&gt;$167,500&lt;/span&gt;&lt;span class=&quot;divider&quot;&gt;&amp;mdash;&lt;/span&gt;&lt;span&gt;$234,500 USD&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;",
+   "departments": [
+    {
+     "id": 15691,
+     "name": "Sales",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "offices": [
+    {
+     "id": 88237,
+     "name": "Remote - United States",
+     "location": null,
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "ai_disclaimer": null,
+   "include_ai_disclaimer": null,
+   "ai_opt_out_request_url": null
+  },
+  {
+   "absolute_url": "https://job-boards.greenhouse.io/reddit/jobs/9000001",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "requires_processing_consent": false,
+     "requires_retention_consent": false,
+     "retention_period": null,
+     "demographic_data_consent_applies": true
+    }
+   ],
+   "internal_job_id": 3582596,
+   "location": {
+    "name": "Anywhere in EMEA"
+   },
+   "metadata": [
+    {
+     "id": 944668,
+     "name": "Position ID",
+     "value": "P-107420",
+     "value_type": "short_text"
+    },
+    {
+     "id": 956352,
+     "name": "Recruiting Start Date",
+     "value": "2026-10-16",
+     "value_type": "date"
+    }
+   ],
+   "id": 9000001,
+   "updated_at": "2026-11-06T07:22:05-05:00",
+   "requisition_id": "R-105951",
+   "title": "Data Engineer",
+   "company_name": "Reddit",
+   "first_published": null,
+   "language": "en",
+   "application_deadline": null,
+   "content": "&lt;p&gt;Our compensation philosophy is simple. Backed by $100 - $200 million in funding, we hire widely.&lt;/p&gt;",
+   "departments": [
+    {
+     "id": 71092,
+     "name": "Data Science",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "offices": [],
+   "ai_disclaimer": null,
+   "include_ai_disclaimer": null,
+   "ai_opt_out_request_url": null
+  },
+  {
+   "absolute_url": "https://job-boards.greenhouse.io/reddit/jobs/9000002",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "requires_processing_consent": false,
+     "requires_retention_consent": false,
+     "retention_period": null,
+     "demographic_data_consent_applies": true
+    }
+   ],
+   "internal_job_id": 3582596,
+   "location": {
+    "name": "New York, NY"
+   },
+   "metadata": [
+    {
+     "id": 944668,
+     "name": "Position ID",
+     "value": "P-107420",
+     "value_type": "short_text"
+    },
+    {
+     "id": 956352,
+     "name": "Recruiting Start Date",
+     "value": "2026-10-16",
+     "value_type": "date"
+    }
+   ],
+   "id": 9000002,
+   "updated_at": "2026-11-06T07:22:05-05:00",
+   "requisition_id": "R-105951",
+   "title": "Analytics Lead",
+   "company_name": "Reddit",
+   "first_published": "2026-10-14T18:03:16-04:00",
+   "language": "en",
+   "application_deadline": null,
+   "content": "&lt;p&gt;Lead analytics.&lt;/p&gt;",
+   "departments": [
+    {
+     "id": 71092,
+     "name": "Data Science",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "offices": [
+    {
+     "id": 1,
+     "name": "Remote - US",
+     "location": "Remote",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "ai_disclaimer": null,
+   "include_ai_disclaimer": null,
+   "ai_opt_out_request_url": null
+  },
+  {
+   "absolute_url": "https://job-boards.greenhouse.io/reddit/jobs/9000003",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "requires_processing_consent": false,
+     "requires_retention_consent": false,
+     "retention_period": null,
+     "demographic_data_consent_applies": true
+    }
+   ],
+   "internal_job_id": 3582596,
+   "location": {
+    "name": "London, UK"
+   },
+   "metadata": [
+    {
+     "id": 5,
+     "name": "Location Type",
+     "value": "Remote (UK)",
+     "value_type": "short_text"
+    }
+   ],
+   "id": 9000003,
+   "updated_at": "2026-11-06T07:22:05-05:00",
+   "requisition_id": "R-105951",
+   "title": "BI Developer",
+   "company_name": "Reddit",
+   "first_published": "2026-10-14T18:03:16-04:00",
+   "language": "en",
+   "application_deadline": null,
+   "content": "&lt;p&gt;Build dashboards.&lt;/p&gt;",
+   "departments": [
+    {
+     "id": 71092,
+     "name": "Data Science",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "offices": [],
+   "ai_disclaimer": null,
+   "include_ai_disclaimer": null,
+   "ai_opt_out_request_url": null
+  },
+  {
+   "absolute_url": "https://job-boards.greenhouse.io/reddit/jobs/9000004",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "requires_processing_consent": false,
+     "requires_retention_consent": false,
+     "retention_period": null,
+     "demographic_data_consent_applies": true
+    }
+   ],
+   "internal_job_id": 3582596,
+   "location": {
+    "name": "Hybrid - London"
+   },
+   "metadata": [
+    {
+     "id": 6,
+     "name": "Remote eligible",
+     "value": "No",
+     "value_type": "short_text"
+    }
+   ],
+   "id": 9000004,
+   "updated_at": "2026-11-06T07:22:05-05:00",
+   "requisition_id": "R-105951",
+   "title": "Data Analyst",
+   "company_name": "Reddit",
+   "first_published": "2026-10-14T18:03:16-04:00",
+   "language": "en",
+   "application_deadline": null,
+   "content": "&lt;p&gt;Analyse things.&lt;/p&gt;",
+   "departments": [
+    {
+     "id": 71092,
+     "name": "Data Science",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "offices": [],
+   "ai_disclaimer": null,
+   "include_ai_disclaimer": null,
+   "ai_opt_out_request_url": null
+  }
+ ],
+ "meta": {
+  "total": 9
+ }
+}

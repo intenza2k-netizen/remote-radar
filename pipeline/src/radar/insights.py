@@ -7,10 +7,17 @@ browser uses to read skills out of a CV.
 
 insights.json
     ``skill_premium``  For every skill with at least ``MIN_PREMIUM_WITH`` salaried postings
-        (and ``MIN_PREMIUM_WITHOUT`` salaried postings without it): median annual USD with and
-        without the skill, the difference of medians, and a 95% bootstrap interval for that
-        difference (``BOOTSTRAPS`` resamples of each group, fixed seed ``SEED``, one RNG
-        stream per skill so results do not shift when other skills appear or disappear).
+        from at least ``MIN_PREMIUM_COMPANIES`` distinct companies (and ``MIN_PREMIUM_WITHOUT``
+        salaried postings without it): median annual USD with and without the skill, the
+        difference of medians, and a 95% interval for that difference. Postings of one company
+        are not independent (a company board brings dozens of near-identical roles and pay
+        bands), so the interval is a *cluster* bootstrap: each of the ``BOOTSTRAPS`` resamples
+        draws companies with replacement and keeps all of a drawn company's salaried postings.
+        The draws come from one RNG seeded with ``SEED`` and depend only on the set of
+        companies, so results are deterministic and do not shift when other skills appear or
+        disappear. Rows carry ``n_companies`` (distinct companies behind ``n_with``) and are
+        sorted by the interval's lower bound (the distance of the interval from zero for a
+        negative gap), so a fragile large estimate cannot lead.
         This is an association, not a causal effect: skills travel with seniority and role.
     ``seniority_lift``  Per role with at least ``MIN_ROLE_POSTINGS`` postings: how much more
         often each skill appears in senior (senior, lead, principal) than in junior (intern,
@@ -59,9 +66,8 @@ from __future__ import annotations
 import math
 import re
 import unicodedata
-import zlib
 from collections import Counter
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from itertools import combinations
 from typing import TYPE_CHECKING, Any
 
@@ -79,6 +85,7 @@ SEED = 20261106
 BOOTSTRAPS = 1000
 MIN_PREMIUM_WITH = 15
 MIN_PREMIUM_WITHOUT = 10
+MIN_PREMIUM_COMPANIES = 5  # distinct companies among the with-skill salaried postings
 MIN_ROLE_POSTINGS = 30
 MIN_GROUP = 5
 MIN_LIFT_SUPPORT = 3
@@ -94,7 +101,13 @@ SENIOR = frozenset({"senior", "lead", "principal"})
 JUNIOR = frozenset({"intern", "junior", "mid"})
 
 
-def _skill_name(slug: str) -> str:
+Names = Mapping[str, str]
+
+
+def _skill_name(slug: str, names: Names | None = None) -> str:
+    """Display name: the publish step's derived name when given, else the registry's."""
+    if names is not None and slug in names:
+        return names[slug]
     return skill_info(slug).display
 
 
@@ -105,6 +118,24 @@ def _median(values: Sequence[float]) -> int:
 # --------------------------------------------------------------------------- skill premium
 
 
+def _company_key(rec: JobRecord) -> str:
+    return normalize_company(rec.company) or rec.company.strip().lower()
+
+
+def _cluster_medians(weights: np.ndarray, sorted_values: np.ndarray) -> np.ndarray:
+    """Weighted median per row. ``weights`` is (replicates, postings) in ascending value order;
+    a posting with weight w counts w times. Equals ``np.median`` of the expanded sample (the
+    mean of the two middle values when the total is even). Rows with no weight give NaN."""
+    cum = np.cumsum(weights, axis=1)
+    total = cum[:, -1]
+    lower = (total + 1) // 2  # rank of the lower middle value
+    upper = total // 2 + 1  # rank of the upper middle value
+    i_lower = (cum >= lower[:, None]).argmax(axis=1)
+    i_upper = (cum >= upper[:, None]).argmax(axis=1)
+    out = (sorted_values[i_lower] + sorted_values[i_upper]) / 2
+    return np.where(total > 0, out, np.nan)
+
+
 def skill_premium(
     population: Sequence[JobRecord],
     *,
@@ -112,32 +143,52 @@ def skill_premium(
     n_boot: int = BOOTSTRAPS,
     min_with: int = MIN_PREMIUM_WITH,
     min_without: int = MIN_PREMIUM_WITHOUT,
+    min_companies: int = MIN_PREMIUM_COMPANIES,
+    names: Names | None = None,
 ) -> list[dict[str, Any]]:
-    """Median salary with vs without each skill, with a bootstrap 95% CI on the difference."""
+    """Median salary with vs without each skill, with a company-cluster bootstrap 95% CI on
+    the difference. Sorted by the interval's lower bound (see the module docstring)."""
     salaried = [r for r in population if r.salary is not None]
     if not salaried:
         return []
+    # Ascending salary order, so weighted medians are a cumulative-sum lookup.
+    salaried.sort(key=lambda r: (r.salary.annual_usd_mid, r.id))
     values = np.array([r.salary.annual_usd_mid for r in salaried], dtype=np.float64)
+    companies = sorted({_company_key(r) for r in salaried})
+    company_index = {c: i for i, c in enumerate(companies)}
+    posting_company = np.array([company_index[_company_key(r)] for r in salaried])
+
     counts = Counter(slug for r in salaried for slug in set(r.skills))
+    candidates = sorted(s for s, c in counts.items() if c >= min_with)
+    if not candidates:
+        return []
+    # One set of company resamples for every skill: draws depend only on the company list.
+    rng = np.random.default_rng([seed, len(companies)])
+    draws = rng.multinomial(len(companies), np.full(len(companies), 1 / len(companies)), n_boot)
+    weights = draws[:, posting_company].astype(np.int64)  # (replicates, postings)
+
     rows: list[dict[str, Any]] = []
-    for slug in sorted(s for s, c in counts.items() if c >= min_with):
+    for slug in candidates:
         mask = np.array([slug in r.skills for r in salaried])
         with_, without = values[mask], values[~mask]
-        if len(without) < min_without:
+        n_companies = len({_company_key(r) for r, m in zip(salaried, mask, strict=True) if m})
+        if len(without) < min_without or n_companies < min_companies:
             continue
-        rng = np.random.default_rng([seed, zlib.crc32(slug.encode("utf-8"))])
-        boot_with = np.median(with_[rng.integers(0, len(with_), (n_boot, len(with_)))], axis=1)
-        boot_without = np.median(
-            without[rng.integers(0, len(without), (n_boot, len(without)))], axis=1
+        boot_diff = _cluster_medians(weights * mask, values) - _cluster_medians(
+            weights * ~mask, values
         )
-        low, high = np.percentile(boot_with - boot_without, [2.5, 97.5])
+        diffs = boot_diff[np.isfinite(boot_diff)]
+        if len(diffs) < n_boot // 2:  # the skill vanished from most resamples: no interval
+            continue
+        low, high = np.percentile(diffs, [2.5, 97.5])
         median_with, median_without = _median(with_), _median(without)
         rows.append(
             {
                 "slug": slug,
-                "name": _skill_name(slug),
+                "name": _skill_name(slug, names),
                 "n_with": int(len(with_)),
                 "n_without": int(len(without)),
+                "n_companies": n_companies,
                 "median_with": median_with,
                 "median_without": median_without,
                 "diff": median_with - median_without,
@@ -145,14 +196,22 @@ def skill_premium(
                 "ci_high": round(float(high)),
             }
         )
-    rows.sort(key=lambda r: (-r["diff"], r["slug"]))
+    rows.sort(key=lambda r: (-_certain_gap(r), -r["diff"], r["slug"]))
     return rows
+
+
+def _certain_gap(row: dict[str, Any]) -> float:
+    """How far the interval stays from zero in the direction of the gap: ``ci_low`` for a
+    positive gap, ``-ci_high`` for a negative one (negative when the interval crosses zero)."""
+    return row["ci_low"] if row["diff"] >= 0 else -row["ci_high"]
 
 
 # --------------------------------------------------------------------------- seniority lift
 
 
-def seniority_lift(population: Sequence[JobRecord]) -> list[dict[str, Any]]:
+def seniority_lift(
+    population: Sequence[JobRecord], *, names: Names | None = None
+) -> list[dict[str, Any]]:
     """Per role: skills that are much more common in senior than in junior postings."""
     by_role: dict[str, list[JobRecord]] = {}
     for rec in population:
@@ -175,7 +234,7 @@ def seniority_lift(population: Sequence[JobRecord]) -> list[dict[str, Any]]:
                 skills.append(
                     {
                         "slug": slug,
-                        "name": _skill_name(slug),
+                        "name": _skill_name(slug, names),
                         "share_senior": round(c_senior[slug] / len(senior), 4),
                         "share_junior": round(c_junior[slug] / len(junior), 4),
                         "lift": round(share_senior / share_junior, 2),
@@ -192,7 +251,9 @@ def seniority_lift(population: Sequence[JobRecord]) -> list[dict[str, Any]]:
 # --------------------------------------------------------------------------- skill graph
 
 
-def skill_graph(population: Sequence[JobRecord]) -> dict[str, list[dict[str, Any]]]:
+def skill_graph(
+    population: Sequence[JobRecord], *, names: Names | None = None
+) -> dict[str, list[dict[str, Any]]]:
     """Top skills as nodes, co-occurring pairs ranked by PMI as edges."""
     n = len(population)
     counts = Counter(slug for r in population for slug in set(r.skills))
@@ -203,7 +264,7 @@ def skill_graph(population: Sequence[JobRecord]) -> dict[str, list[dict[str, Any
     nodes = [
         {
             "slug": slug,
-            "name": _skill_name(slug),
+            "name": _skill_name(slug, names),
             "category": skill_info(slug).category,
             "count": count,
         }
@@ -227,7 +288,9 @@ def skill_graph(population: Sequence[JobRecord]) -> dict[str, list[dict[str, Any
 # --------------------------------------------------------------------------- role skills
 
 
-def role_skills(population: Sequence[JobRecord]) -> list[dict[str, Any]]:
+def role_skills(
+    population: Sequence[JobRecord], *, names: Names | None = None
+) -> list[dict[str, Any]]:
     by_role: dict[str, list[JobRecord]] = {}
     for rec in population:
         by_role.setdefault(rec.role, []).append(rec)
@@ -242,7 +305,7 @@ def role_skills(population: Sequence[JobRecord]) -> list[dict[str, Any]]:
                 "role": role,
                 "n": len(recs),
                 "top": [
-                    {"slug": s, "name": _skill_name(s), "share": round(c / len(recs), 4)}
+                    {"slug": s, "name": _skill_name(s, names), "share": round(c / len(recs), 4)}
                     for s, c in top
                 ],
             }
@@ -250,13 +313,15 @@ def role_skills(population: Sequence[JobRecord]) -> list[dict[str, Any]]:
     return out
 
 
-def compute_insights(population: Sequence[JobRecord]) -> dict[str, Any]:
-    """The ``insights.json`` document."""
+def compute_insights(
+    population: Sequence[JobRecord], *, names: Names | None = None
+) -> dict[str, Any]:
+    """The ``insights.json`` document. ``names`` overrides skill display names (slug -> name)."""
     return {
-        "skill_premium": skill_premium(population),
-        "seniority_lift": seniority_lift(population),
-        "skill_graph": skill_graph(population),
-        "role_skills": role_skills(population),
+        "skill_premium": skill_premium(population, names=names),
+        "seniority_lift": seniority_lift(population, names=names),
+        "skill_graph": skill_graph(population, names=names),
+        "role_skills": role_skills(population, names=names),
     }
 
 
@@ -270,17 +335,36 @@ def company_slug(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", ascii_text).strip("-") or "company"
 
 
-def compute_companies(population: Sequence[JobRecord]) -> list[dict[str, Any]]:
-    """The ``companies.json`` document: one row per company, most postings first."""
+def compute_companies(
+    population: Sequence[JobRecord],
+    listed: Sequence[JobRecord] | None = None,
+    *,
+    names: Names | None = None,
+) -> list[dict[str, Any]]:
+    """The ``companies.json`` document: one row per company with at least one listed job,
+    most listed postings first.
+
+    ``listed`` is the published job list (default: the active records of ``population``).
+    ``jobs`` and everything derived from the job list (``job_ids``, roles, seniority, top
+    skills, salary, sources) cover those jobs only; ``jobs_total`` is the company's posting
+    count over the window plus the list, expired ones included.
+    """
+    if listed is None:
+        listed = [r for r in population if r.active]
     groups: dict[str, list[JobRecord]] = {}
-    for rec in population:
+    seen: dict[str, set[str]] = {}
+    for rec in [*population, *listed]:
+        key = normalize_company(rec.company) or rec.company.strip().lower()
+        seen.setdefault(key, set()).add(rec.id)
+    for rec in listed:
         key = normalize_company(rec.company) or rec.company.strip().lower()
         groups.setdefault(key, []).append(rec)
+    totals = {key: len(ids) for key, ids in seen.items()}
 
     rows: list[dict[str, Any]] = []
-    for recs in groups.values():
-        names = Counter(r.company.strip() for r in recs)
-        name = sorted(names.items(), key=lambda kv: (-kv[1], len(kv[0]), kv[0]))[0][0]
+    for key, recs in groups.items():
+        spellings = Counter(r.company.strip() for r in recs)
+        name = sorted(spellings.items(), key=lambda kv: (-kv[1], len(kv[0]), kv[0]))[0][0]
         ordered = sorted(recs, key=lambda r: (r.posted_at, r.id), reverse=True)
         skill_counts = Counter(s for r in recs for s in set(r.skills))
         top_skills = sorted(skill_counts.items(), key=lambda kv: (-kv[1], kv[0]))
@@ -290,6 +374,7 @@ def compute_companies(population: Sequence[JobRecord]) -> list[dict[str, Any]]:
                 "slug": "",
                 "name": name,
                 "jobs": len(recs),
+                "jobs_total": totals[key],
                 "roles": dict(
                     sorted(Counter(r.role for r in recs).items(), key=lambda kv: (-kv[1], kv[0]))
                 ),
@@ -299,12 +384,12 @@ def compute_companies(population: Sequence[JobRecord]) -> list[dict[str, Any]]:
                     )
                 ),
                 "top_skills": [
-                    {"slug": s, "name": _skill_name(s), "count": c}
+                    {"slug": s, "name": _skill_name(s, names), "count": c}
                     for s, c in top_skills[:COMPANY_TOP_SKILLS]
                 ],
                 "median_salary_usd": _median(salaries) if salaries else None,
                 "salary_n": len(salaries),
-                "sources": sorted({r.source for r in recs}),
+                "sources": sorted({r.listed_source for r in recs}),
                 "job_ids": [r.id for r in ordered],
             }
         )

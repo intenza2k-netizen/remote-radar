@@ -1,0 +1,54 @@
+# Curated company job boards read through public applicant-tracking-system APIs.
+# Each entry: ats (greenhouse | ashby | lever), token (the board slug in the ATS URL),
+# company (display name; the APIs do not always carry one), careers_url (public careers page).
+# Loaded and validated when radar.sources.ats_boards is imported.
+
+# ---- Greenhouse
+- {ats: greenhouse, token: reddit, company: Reddit, careers_url: "https://job-boards.greenhouse.io/reddit"}
+- {ats: greenhouse, token: affirm, company: Affirm, careers_url: "https://job-boards.greenhouse.io/affirm"}
+- {ats: greenhouse, token: coinbase, company: Coinbase, careers_url: "https://job-boards.greenhouse.io/coinbase"}
+- {ats: greenhouse, token: samsara, company: Samsara, careers_url: "https://job-boards.greenhouse.io/samsara"}
+- {ats: greenhouse, token: pinterest, company: Pinterest, careers_url: "https://job-boards.greenhouse.io/pinterest"}
+- {ats: greenhouse, token: monzo, company: Monzo, careers_url: "https://job-boards.greenhouse.io/monzo"}
+- {ats: greenhouse, token: mercury, company: Mercury, careers_url: "https://job-boards.greenhouse.io/mercury"}
+- {ats: greenhouse, token: twilio, company: Twilio, careers_url: "https://job-boards.greenhouse.io/twilio"}
+- {ats: greenhouse, token: grafanalabs, company: Grafana Labs, careers_url: "https://job-boards.greenhouse.io/grafanalabs"}
+- {ats: greenhouse, token: mozilla, company: Mozilla, careers_url: "https://job-boards.greenhouse.io/mozilla"}
+- {ats: greenhouse, token: gitlab, company: GitLab, careers_url: "https://job-boards.greenhouse.io/gitlab"}
+- {ats: greenhouse, token: airbnb, company: Airbnb, careers_url: "https://job-boards.greenhouse.io/airbnb"}
+- {ats: greenhouse, token: toast, company: Toast, careers_url: "https://job-boards.greenhouse.io/toast"}
+- {ats: greenhouse, token: gemini, company: Gemini, careers_url: "https://job-boards.greenhouse.io/gemini"}
+- {ats: greenhouse, token: anthropic, company: Anthropic, careers_url: "https://job-boards.greenhouse.io/anthropic"}
+- {ats: greenhouse, token: fivetran, company: Fivetran, careers_url: "https://job-boards.greenhouse.io/fivetran"}
+- {ats: greenhouse, token: discord, company: Discord, careers_url: "https://job-boards.greenhouse.io/discord"}
+- {ats: greenhouse, token: wikimedia, company: Wikimedia Foundation, careers_url: "https://job-boards.greenhouse.io/wikimedia"}
+- {ats: greenhouse, token: dropbox, company: Dropbox, careers_url: "https://job-boards.greenhouse.io/dropbox"}
+- {ats: greenhouse, token: databricks, company: Databricks, careers_url: "https://job-boards.greenhouse.io/databricks"}
+- {ats: greenhouse, token: datadog, company: Datadog, careers_url: "https://job-boards.greenhouse.io/datadog"}
+- {ats: greenhouse, token: cloudflare, company: Cloudflare, careers_url: "https://job-boards.greenhouse.io/cloudflare"}
+- {ats: greenhouse, token: gusto, company: Gusto, careers_url: "https://job-boards.greenhouse.io/gusto"}
+- {ats: greenhouse, token: instacart, company: Instacart, careers_url: "https://job-boards.greenhouse.io/instacart"}
+- {ats: greenhouse, token: stripe, company: Stripe, careers_url: "https://job-boards.greenhouse.io/stripe"}
+
+# ---- Ashby
+- {ats: ashby, token: wealthsimple, company: Wealthsimple, careers_url: "https://jobs.ashbyhq.com/wealthsimple"}
+- {ats: ashby, token: cohere, company: Cohere, careers_url: "https://jobs.ashbyhq.com/cohere"}
+- {ats: ashby, token: snowflake, company: Snowflake, careers_url: "https://jobs.ashbyhq.com/snowflake"}
+- {ats: ashby, token: clickhouse, company: ClickHouse, careers_url: "https://jobs.ashbyhq.com/clickhouse"}
+- {ats: ashby, token: zapier, company: Zapier, careers_url: "https://jobs.ashbyhq.com/zapier"}
+- {ats: ashby, token: linear, company: Linear, careers_url: "https://jobs.ashbyhq.com/linear"}
+- {ats: ashby, token: prefect, company: Prefect, careers_url: "https://jobs.ashbyhq.com/prefect"}
+- {ats: ashby, token: lightdash, company: Lightdash, careers_url: "https://jobs.ashbyhq.com/lightdash"}
+- {ats: ashby, token: close, company: Close, careers_url: "https://jobs.ashbyhq.com/close"}
+- {ats: ashby, token: hex, company: Hex, careers_url: "https://jobs.ashbyhq.com/hex"}
+- {ats: ashby, token: supabase, company: Supabase, careers_url: "https://jobs.ashbyhq.com/supabase"}
+- {ats: ashby, token: posthog, company: PostHog, careers_url: "https://jobs.ashbyhq.com/posthog"}
+- {ats: ashby, token: airbyte, company: Airbyte, careers_url: "https://jobs.ashbyhq.com/airbyte"}
+- {ats: ashby, token: plaid, company: Plaid, careers_url: "https://jobs.ashbyhq.com/plaid"}
+- {ats: ashby, token: openai, company: OpenAI, careers_url: "https://jobs.ashbyhq.com/openai"}
+- {ats: ashby, token: vanta, company: Vanta, careers_url: "https://jobs.ashbyhq.com/vanta"}
+
+# ---- Lever
+- {ats: lever, token: metabase, company: Metabase, careers_url: "https://jobs.lever.co/metabase"}
+- {ats: lever, token: spotify, company: Spotify, careers_url: "https://jobs.lever.co/spotify"}
+- {ats: lever, token: outreach, company: Outreach, careers_url: "https://jobs.lever.co/outreach"}
