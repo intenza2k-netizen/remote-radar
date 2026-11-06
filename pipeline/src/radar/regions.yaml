@@ -110,3 +110,261 @@ us_states:
   ambiguous_names:
     - Georgia
   codes: ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "DC"]
+
+# memberships: which countries a macro region covers, for the "open to applicants in" rule
+# (radar.geo, geo.json). Unlike `regions:` above this IS a hierarchy: a posting open to "EU" is
+# open to a candidate in Estonia. Spellings are the canonical names of this file.
+#   countries  every country or territory the site knows, one canonical spelling each. A typo in
+#              a macro list that is not in this list fails validation.
+#   macros     macro region -> members. A member is a country or another macro of this block
+#              (expanded when loaded, so the published lists are flat). Overlaps are allowed
+#              (Cyprus is in Europe and in Western Asia; Egypt is in Africa and the Middle East).
+# Definitions are the usual ones; the judgement calls: Europe includes the UK, Switzerland,
+# Ukraine, Russia and Belarus but not Türkiye or the South Caucasus (those sit in Western Asia,
+# and everything is inside EMEA); North America is the UN "Northern America" (United States,
+# Canada, Bermuda, Greenland, Saint Pierre and Miquelon), so Mexico is Latin America;
+# Asia-Pacific is Asia without Western Asia and the Middle East, plus Oceania; Sub-Saharan Africa
+# follows the UN split (Sudan is North Africa).
+memberships:
+  countries:
+    - Afghanistan
+    - Albania
+    - Algeria
+    - American Samoa
+    - Andorra
+    - Angola
+    - Anguilla
+    - Antigua and Barbuda
+    - Argentina
+    - Armenia
+    - Aruba
+    - Australia
+    - Austria
+    - Azerbaijan
+    - Bahamas
+    - Bahrain
+    - Bangladesh
+    - Barbados
+    - Belarus
+    - Belgium
+    - Belize
+    - Benin
+    - Bermuda
+    - Bhutan
+    - Bolivia
+    - Bosnia and Herzegovina
+    - Botswana
+    - Brazil
+    - British Indian Ocean Territory
+    - Brunei
+    - Bulgaria
+    - Burkina Faso
+    - Burundi
+    - Cabo Verde
+    - Cambodia
+    - Cameroon
+    - Canada
+    - Central African Republic
+    - Chad
+    - Chile
+    - China
+    - Colombia
+    - Comoros
+    - Congo
+    - Costa Rica
+    - "Côte d'Ivoire"
+    - Crimea
+    - Croatia
+    - Cuba
+    - Cyprus
+    - Czechia
+    - Democratic Republic of the Congo
+    - Denmark
+    - Djibouti
+    - Donetsk
+    - Dominica
+    - Dominican Republic
+    - Ecuador
+    - Egypt
+    - El Salvador
+    - Equatorial Guinea
+    - Eritrea
+    - Estonia
+    - Eswatini
+    - Ethiopia
+    - Fiji
+    - Finland
+    - France
+    - Gabon
+    - Gambia
+    - Georgia
+    - Germany
+    - Ghana
+    - Greece
+    - Greenland
+    - Grenada
+    - Guatemala
+    - Guinea
+    - Guinea-Bissau
+    - Guyana
+    - Haiti
+    - Honduras
+    - Hong Kong
+    - Hungary
+    - Iceland
+    - India
+    - Indonesia
+    - Iran
+    - Iraq
+    - Ireland
+    - Israel
+    - Italy
+    - Jamaica
+    - Japan
+    - Jordan
+    - Kazakhstan
+    - Kenya
+    - Kiribati
+    - Kosovo
+    - Kuwait
+    - Kyrgyzstan
+    - Laos
+    - Latvia
+    - Lebanon
+    - Lesotho
+    - Liberia
+    - Libya
+    - Liechtenstein
+    - Lithuania
+    - Luhansk
+    - Luxembourg
+    - Macao
+    - Madagascar
+    - Malawi
+    - Malaysia
+    - Maldives
+    - Mali
+    - Malta
+    - Marshall Islands
+    - Mauritania
+    - Mauritius
+    - Mexico
+    - Micronesia
+    - Moldova
+    - Monaco
+    - Mongolia
+    - Montenegro
+    - Morocco
+    - Mozambique
+    - Myanmar
+    - Namibia
+    - Nauru
+    - Nepal
+    - Netherlands
+    - New Zealand
+    - Nicaragua
+    - Niger
+    - Nigeria
+    - North Korea
+    - North Macedonia
+    - Norway
+    - Oman
+    - Pakistan
+    - Palau
+    - Palestine
+    - Panama
+    - Papua New Guinea
+    - Paraguay
+    - Peru
+    - Philippines
+    - Poland
+    - Portugal
+    - Puerto Rico
+    - Qatar
+    - Romania
+    - Russia
+    - Rwanda
+    - Saint Kitts and Nevis
+    - Saint Lucia
+    - Saint Pierre and Miquelon
+    - Saint Vincent and the Grenadines
+    - Samoa
+    - San Marino
+    - Sao Tome and Principe
+    - Saudi Arabia
+    - Senegal
+    - Serbia
+    - Seychelles
+    - Sierra Leone
+    - Singapore
+    - Slovakia
+    - Slovenia
+    - Solomon Islands
+    - Somalia
+    - South Africa
+    - South Korea
+    - South Sudan
+    - Spain
+    - Sri Lanka
+    - Sudan
+    - Suriname
+    - Sweden
+    - Switzerland
+    - Syria
+    - Taiwan
+    - Tajikistan
+    - Tanzania
+    - Thailand
+    - Timor-Leste
+    - Togo
+    - Tonga
+    - Trinidad and Tobago
+    - Tunisia
+    - Türkiye
+    - Turkmenistan
+    - Tuvalu
+    - Uganda
+    - Ukraine
+    - United Arab Emirates
+    - United Kingdom
+    - United States
+    - Uruguay
+    - Uzbekistan
+    - Vanuatu
+    - Vatican City
+    - Venezuela
+    - Vietnam
+    - Yemen
+    - Zambia
+    - Zimbabwe
+
+  # Places under comprehensive sanctions. "worldwide" is NOT counted as open to them: only a
+  # posting that names the place (or a macro region containing it) is. Crimea, Donetsk and
+  # Luhansk are listed so such postings are recognised; they belong to no macro region.
+  sanctioned: [Cuba, Iran, North Korea, Syria, Crimea, Donetsk, Luhansk]
+
+  macros:
+    EU: [Austria, Belgium, Bulgaria, Croatia, Cyprus, Czechia, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Ireland, Italy, Latvia, Lithuania, Luxembourg, Malta, Netherlands, Poland, Portugal, Romania, Slovakia, Slovenia, Spain, Sweden]
+    EEA: [EU, Iceland, Liechtenstein, Norway]
+    Europe: [EEA, Albania, Andorra, Belarus, Bosnia and Herzegovina, Kosovo, Moldova, Monaco, Montenegro, North Macedonia, Russia, San Marino, Serbia, Switzerland, Ukraine, United Kingdom, Vatican City]
+    # Common usage rather than the strict UN list: the UK and Ireland are included.
+    Western Europe: [Austria, Belgium, France, Germany, Ireland, Liechtenstein, Luxembourg, Monaco, Netherlands, Switzerland, United Kingdom]
+
+    North America: [United States, Canada, Bermuda, Greenland, Saint Pierre and Miquelon]
+    South America: [Argentina, Bolivia, Brazil, Chile, Colombia, Ecuador, Guyana, Paraguay, Peru, Suriname, Uruguay, Venezuela]
+    # UN "Latin America and the Caribbean": Mexico, Central America, the Caribbean, South America.
+    Latin America: [South America, Mexico, Belize, Costa Rica, El Salvador, Guatemala, Honduras, Nicaragua, Panama, Anguilla, Antigua and Barbuda, Aruba, Bahamas, Barbados, Cuba, Dominica, Dominican Republic, Grenada, Haiti, Jamaica, Puerto Rico, Saint Kitts and Nevis, Saint Lucia, Saint Vincent and the Grenadines, Trinidad and Tobago]
+    Americas: [North America, Latin America]
+
+    # South Asia, Central Asia, East Asia, South-East Asia and Oceania.
+    Asia-Pacific: [Afghanistan, Bangladesh, Bhutan, India, Maldives, Nepal, Pakistan, Sri Lanka, Kazakhstan, Kyrgyzstan, Tajikistan, Turkmenistan, Uzbekistan, China, Hong Kong, Macao, Japan, Mongolia, North Korea, South Korea, Taiwan, Brunei, Cambodia, Indonesia, Laos, Malaysia, Myanmar, Philippines, Singapore, Thailand, Timor-Leste, Vietnam, Australia, New Zealand, Papua New Guinea, Fiji, Solomon Islands, Vanuatu, Samoa, Tonga, Kiribati, Tuvalu, Nauru, Palau, Marshall Islands, Micronesia, American Samoa]
+
+    # UN "Western Asia", Cyprus and the South Caucasus included.
+    Western Asia: [Armenia, Azerbaijan, Bahrain, Cyprus, Georgia, Iraq, Israel, Jordan, Kuwait, Lebanon, Oman, Palestine, Qatar, Saudi Arabia, Syria, Türkiye, United Arab Emirates, Yemen]
+    Middle East: [Bahrain, Egypt, Iran, Iraq, Israel, Jordan, Kuwait, Lebanon, Oman, Palestine, Qatar, Saudi Arabia, Syria, Türkiye, United Arab Emirates, Yemen]
+
+    North Africa: [Algeria, Egypt, Libya, Morocco, Sudan, Tunisia]
+    Sub-Saharan Africa: [Angola, Benin, Botswana, Burkina Faso, Burundi, Cabo Verde, Cameroon, Central African Republic, Chad, Comoros, Congo, "Côte d'Ivoire", Democratic Republic of the Congo, Djibouti, Equatorial Guinea, Eritrea, Eswatini, Ethiopia, Gabon, Gambia, Ghana, Guinea, Guinea-Bissau, Kenya, Lesotho, Liberia, Madagascar, Malawi, Mali, Mauritania, Mauritius, Mozambique, Namibia, Niger, Nigeria, Rwanda, Sao Tome and Principe, Senegal, Seychelles, Sierra Leone, Somalia, South Africa, South Sudan, Tanzania, Togo, Uganda, Zambia, Zimbabwe, British Indian Ocean Territory]
+    Africa: [North Africa, Sub-Saharan Africa]
+
+    EMEA: [Europe, Western Asia, Middle East, Africa]

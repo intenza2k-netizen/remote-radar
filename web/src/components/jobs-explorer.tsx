@@ -4,13 +4,17 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 import { JobRow } from "./job-row";
+import { LocationSelect } from "./geo/location-select";
 import { SkillPicker, type PickerOption } from "./skill-picker";
 import { fmtInt, roleLabel, seniorityLabel, seniorityRank, skillLabel } from "@/lib/format";
+import { isOpenTo, type LocationOptions, type Memberships } from "@/lib/geo";
 import { regionOptions } from "@/lib/regions";
 import type { Job } from "@/lib/types";
 
 type Props = {
   jobs: Job[];
+  /** Region membership lists and locations for the "Open to applicants in" filter (geo.json); the filter is hidden without them. */
+  openTo?: { memberships: Memberships; sanctioned?: readonly string[]; options: LocationOptions };
   skills: PickerOption[];
   /** Display names for every skill slug used by `jobs` (the picker list only has the published top skills). */
   skillNames?: Record<string, string>;
@@ -27,6 +31,7 @@ type Filters = {
   seniority: string;
   role: string;
   region: string;
+  openTo: string;
   hasSalary: boolean;
   min: number;
   sort: "new" | "pay";
@@ -40,6 +45,7 @@ function parse(sp: URLSearchParams): Filters {
     seniority: sp.get("seniority") ?? "",
     role: sp.get("role") ?? "",
     region: sp.get("region") ?? "",
+    openTo: sp.get("open_to") ?? "",
     hasSalary: sp.get("salary") === "1",
     min: Number.isFinite(min) && min > 0 ? min : 0,
     sort: sp.get("sort") === "pay" ? "pay" : "new",
@@ -53,13 +59,14 @@ function serialize(f: Filters): string {
   if (f.seniority) sp.set("seniority", f.seniority);
   if (f.role) sp.set("role", f.role);
   if (f.region) sp.set("region", f.region);
+  if (f.openTo) sp.set("open_to", f.openTo);
   if (f.hasSalary) sp.set("salary", "1");
   if (f.min) sp.set("min", String(f.min));
   if (f.sort !== "new") sp.set("sort", f.sort);
   return sp.toString();
 }
 
-export function JobsExplorer({ jobs, skills, skillNames: publishedNames, companySlugs, sourceNames }: Props) {
+export function JobsExplorer({ jobs, openTo, skills, skillNames: publishedNames, companySlugs, sourceNames }: Props) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const filters = useMemo(() => parse(new URLSearchParams(searchParams.toString())), [searchParams]);
@@ -102,6 +109,7 @@ export function JobsExplorer({ jobs, skills, skillNames: publishedNames, company
       if (filters.seniority && j.seniority !== filters.seniority) return false;
       if (filters.role && j.role !== filters.role) return false;
       if (filters.region && !j.remote_regions.includes(filters.region)) return false;
+      if (filters.openTo && openTo && !isOpenTo(j, filters.openTo, openTo.memberships, openTo.sanctioned)) return false;
       if ((filters.hasSalary || filters.min) && !j.salary) return false;
       if (filters.min && (j.salary?.annual_usd_mid ?? 0) < filters.min) return false;
       return true;
@@ -109,15 +117,15 @@ export function JobsExplorer({ jobs, skills, skillNames: publishedNames, company
     if (filters.sort === "pay") list.sort((a, b) => (b.salary?.annual_usd_mid ?? -1) - (a.salary?.annual_usd_mid ?? -1));
     else list.sort((a, b) => b.posted_at.localeCompare(a.posted_at));
     return list;
-  }, [jobs, filters]);
+  }, [jobs, filters, openTo]);
 
   const active =
-    filters.q || filters.skills.length || filters.seniority || filters.role || filters.region || filters.hasSalary || filters.min ? true : false;
+    filters.q || filters.skills.length || filters.seniority || filters.role || filters.region || (openTo && filters.openTo) || filters.hasSalary || filters.min ? true : false;
 
   function clearAll() {
     if (qTimer.current) clearTimeout(qTimer.current);
     setQText("");
-    commit({ q: "", skills: [], seniority: "", role: "", region: "", hasSalary: false, min: 0, sort: filters.sort });
+    commit({ q: "", skills: [], seniority: "", role: "", region: "", openTo: "", hasSalary: false, min: 0, sort: filters.sort });
   }
 
   const visible = results.slice(0, shown);
@@ -187,6 +195,14 @@ export function JobsExplorer({ jobs, skills, skillNames: publishedNames, company
             ))}
           </select>
         </div>
+        {openTo ? (
+          <div>
+            <label htmlFor="f-open" className="mb-1 block text-xs font-medium text-ink-3">
+              Open to applicants in
+            </label>
+            <LocationSelect id="f-open" value={filters.openTo} onChange={(v) => update({ openTo: v })} options={openTo.options} emptyLabel="Anywhere" keep={filters.openTo} />
+          </div>
+        ) : null}
         <div>
           <label htmlFor="f-min" className="mb-1 block text-xs font-medium text-ink-3">
             Min. salary (USD / yr)

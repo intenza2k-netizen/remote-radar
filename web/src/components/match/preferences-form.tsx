@@ -1,6 +1,8 @@
 "use client";
 
+import { LocationSelect } from "@/components/geo/location-select";
 import { fmtInt, seniorityLabel } from "@/lib/format";
+import type { LocationOptions } from "@/lib/geo";
 import { MIN_SALARY_OPTIONS, type MatchOptions } from "@/lib/match/options";
 import { LEVELS, type Level, type Preferences, type SeniorityGuess } from "@/lib/match/types";
 
@@ -9,9 +11,17 @@ type Props = {
   onChange: (p: Preferences) => void;
   options: MatchOptions;
   guess: SeniorityGuess | null;
+  /** Where you can work from. Null (no geo.json) keeps the older "Region" filter instead. */
+  locations?: LocationOptions | null;
+  location?: string;
+  onLocation?: (value: string) => void;
+  /** What the location filter removed, as a sentence (empty when no location is chosen). */
+  locationNote?: string;
+  /** The region group the pay estimate uses for the chosen location, as a short label. */
+  locationPayNote?: string;
 };
 
-export function PreferencesForm({ prefs, onChange, options, guess }: Props) {
+export function PreferencesForm({ prefs, onChange, options, guess, locations = null, location = "", onLocation, locationNote = "", locationPayNote = "" }: Props) {
   const set = (patch: Partial<Preferences>) => onChange({ ...prefs, ...patch });
   const toggleRole = (role: string) => set({ roles: prefs.roles.includes(role) ? prefs.roles.filter((r) => r !== role) : [...prefs.roles, role] });
 
@@ -52,19 +62,37 @@ export function PreferencesForm({ prefs, onChange, options, guess }: Props) {
           </select>
           {guess && !prefs.seniority ? <p className="mt-1 text-xs text-ink-3">{guess.reason}.</p> : null}
         </div>
-        <div>
-          <label htmlFor="pref-region" className="mb-1 block text-xs font-medium text-ink-3">
-            Region (keeps worldwide jobs too)
-          </label>
-          <select id="pref-region" className="field w-full text-ellipsis" value={prefs.region} onChange={(e) => set({ region: e.target.value })}>
-            <option value="">Anywhere</option>
-            {options.regions.map((r) => (
-              <option key={r.value} value={r.value}>
-                {r.label} ({fmtInt(r.count)})
-              </option>
-            ))}
-          </select>
-        </div>
+        {locations && onLocation ? (
+          <div>
+            <label htmlFor="pref-location" className="mb-1 block text-xs font-medium text-ink-3">
+              I can work from
+            </label>
+            <LocationSelect id="pref-location" value={location} onChange={onLocation} options={locations} emptyLabel="Anywhere (no filter)" />
+            <p className="mt-1 text-xs text-ink-3" aria-live="polite">
+              {location ? (
+                <>
+                  {locationNote} {locationPayNote}
+                </>
+              ) : (
+                "Keeps only postings open to applicants there, worldwide ones included. Remembered in this browser."
+              )}
+            </p>
+          </div>
+        ) : (
+          <div>
+            <label htmlFor="pref-region" className="mb-1 block text-xs font-medium text-ink-3">
+              Region (keeps worldwide jobs too)
+            </label>
+            <select id="pref-region" className="field w-full text-ellipsis" value={prefs.region} onChange={(e) => set({ region: e.target.value })}>
+              <option value="">Anywhere</option>
+              {options.regions.map((r) => (
+                <option key={r.value} value={r.value}>
+                  {r.label} ({fmtInt(r.count)})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <div>
           <label htmlFor="pref-min" className="mb-1 block text-xs font-medium text-ink-3">
             Min. salary (USD / yr)

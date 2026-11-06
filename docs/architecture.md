@@ -178,6 +178,18 @@ the same space but not identical. Cosines between a CV and a posting also sit in
 band with this small model, which is why the score stretches the range between 0.55 and
 0.80. The page shows the raw cosine in the score breakdown.
 
+Four analyses sit on top of the ranking, all computed in the browser from the published files
+and trimmed on the server first (`lib/match/extras.ts`, so no centroids or plot coordinates are
+sent): (1) the "I can work from" location filters the postings with `isOpenTo` from `lib/geo.ts`
+(the rule the Python pipeline pins with fixtures) before they are scored, and picks the region
+group for the pay estimate; (2) the job type of each of the 30 best data matches comes from the
+`archetypes.json` assignment of that posting, which is steadier than comparing a CV vector with
+cluster centroids; (3) `predictPay` from `lib/salary-model.ts` turns role, seniority, region group
+and CV skills into an 80% range shown next to the model's held-out error; (4) the next skill is
+ranked by re-scoring only the skills part of every posting with the skill added (the other terms do
+not change), counting postings that enter the top 30 or become well covered (two thirds of their
+listed skills, at least three listed), with the skill's pay coefficient and interval beside it.
+
 ## SQLite schema
 
 Defined in `pipeline/src/radar/models.py`. The file lives at `data/jobs.sqlite` (git-ignored).
@@ -281,8 +293,16 @@ Everything the website reads lives in `web/public/data/`:
 | `skill_vocab.json` | Skill names, aliases and match patterns the browser uses to read skills out of a CV. |
 | `insights.json` | Skill pay premium, raw (difference of medians) and adjusted for role, seniority and region group (regression of log salary, Frisch-Waugh-Lovell per resample), both with company-cluster bootstrap intervals from the same resamples (at least 5 companies per skill), seniority lift, skill co-occurrence graph (PMI) with a force layout computed at build time, role-skill profiles. |
 | `companies.json` | One row per hiring company with its postings, for `/companies` and `/companies/[slug]`. |
+| `geo.json` | Per country and macro region: how many listed postings are open to applicants there, how many are data roles, median advertised pay, top skills of the open data jobs; plus the region membership lists the browser needs and the mix of the window by region group. For `/locations` and the "Open to applicants in" filter on `/jobs`. |
+| `archetypes.json` | Job types: clusters of the listed `role == "data"` postings by embedding, with per-cluster size, seniority mix, signature skills (share and lift), common titles, median advertised pay (only with 5 or more salaries), three example postings, the embedding centroid (for the matcher) and PCA coordinates per posting for the scatter plot. For `/job-types`. |
 
 All salaries are annualised and converted to USD.
+
+**Where you can work from (`geo.json`).** "Remote" often means remote within one country, so `radar.geo` scores every listed posting against every country and macro region (EU, EEA, Europe, EMEA, Americas ...), using the `memberships:` block of `regions.yaml`. A posting is open to a location when its regions contain `worldwide`, the location itself, or a macro region that contains it (for a macro location the posting must cover the whole region); postings with no region are counted as unknown and never as open. The same rule is implemented in TypeScript (`web/src/lib/geo.ts`) so the jobs filter can apply it in the browser, and a fixture computed in Python (`geo.fixtures.json`) keeps the two in step.
+
+**Job types (`archetypes.json`).** `radar.archetypes` clusters the listed postings whose extracted role is `data` and that have a vector (the decoded `job_vectors.json`) with spherical k-means: unit vectors, cosine distance, k-means++ seeding, best of 10 seeded restarts per k, k from 6 to 12 (never more than one cluster per 5 postings). Each k is scored by the mean cosine silhouette, which is low and flat for text embeddings, so k follows a stated rule: among the k within 0.01 of the best silhouette, the one whose clusters are named after the most different title families, then the smaller k. Names are rule-based and deterministic: a curated keyword list maps titles to a family (data engineer, analytics engineer, BI analyst, ...), a cluster takes its dominant family, and clusters that share a family get the skill that best separates them from their siblings in brackets. Each archetype also publishes `family_share` (the share of its titles in that family) and its own mean silhouette, and the page flags fuzzy or mixed-title clusters instead of hiding them. Lift is the smoothed share in the cluster over the smoothed share in all data postings; signature skills are ranked by `share * ln(lift)`. The plot coordinates are the first two principal components, and `method.pca_variance` records how little of the variance they keep. With fewer than 30 data postings the file holds no archetypes and the page shows an empty state.
+
+**Pay estimator (`salary_model.json`).** `radar.salary_model` fits a ridge regression of `log(annual_usd_mid)` on role, seniority, `region_group` dummies (most common level as reference) and 0/1 indicators for skills with at least 15 salaried postings from at least 5 companies, in closed form with numpy (intercept unpenalised). Because a few companies contribute dozens of postings each, every split is grouped by company: 5 balanced folds, no company in both train and test, and the penalty `alpha` is chosen again inside each training part (nested), so the published MAE, median absolute percentage error and log-scale R² are out-of-fold figures. The 80% range is the 10th/90th percentile of the out-of-fold log residuals, and its coverage is measured cross-fitted. The baseline (median pay of the same role and seniority, falling back to role, then overall) is scored on the same folds and compared by a company-cluster bootstrap; the document carries `eval.verdict` (`better`, `similar` or `worse`) and a sentence, so a model that does not beat the baseline says so. A CV (or the estimator form) is turned into a number by the profile rule: unknown skills are ignored, the rest are ordered by market frequency and capped at `profile_max_skills` (the median skills per salaried posting). The browser runs one implementation, `predictPay` in `web/src/lib/salary-model.ts`, and `salary-model.fixtures.json`, computed in Python, keeps it and `regionGroupOf` in step with `radar.salary_model.predict_pay` and `radar.regions.region_group`. With fewer than 100 salaried postings the file holds only `{version, reason}`.
 
 ## Design decisions
 

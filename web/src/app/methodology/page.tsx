@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { PipelineDiagram } from "@/components/pipeline-diagram";
+import { AccuracyTable } from "@/components/pay/accuracy-table";
+import { maeSentence, trainingSentence } from "@/components/pay/copy";
 import { Container, PageHeader, Section } from "@/components/ui";
 import { getEval, getMeta } from "@/lib/data";
 import { fmtDateLong, fmtInt } from "@/lib/format";
+import { hasModel } from "@/lib/salary-model";
+import { getSalaryModel } from "@/lib/salary-model-data";
 import { ATTRIBUTION } from "@/lib/site";
 import { MIN_WEEK_JOBS, collectionStartPhrase } from "@/lib/weeks";
 import type { EvalBackend } from "@/lib/types";
@@ -31,6 +35,8 @@ const COLS: Col[] = [
 export default function MethodologyPage() {
   const meta = getMeta();
   const evalData = getEval();
+  const salaryDoc = getSalaryModel();
+  const payModel = hasModel(salaryDoc) ? salaryDoc : null;
 
   // Source mix, computed from the snapshot (never hard-coded).
   const sourceTotal = meta.sources.reduce((n, x) => n + x.jobs, 0);
@@ -140,6 +146,42 @@ export default function MethodologyPage() {
         ) : (
           <div className="rounded-lg border border-dashed border-line-strong p-8 text-center text-ink-3">
             No evaluation has been published yet. Results appear here after the first run of the evaluation harness.
+          </div>
+        )}
+      </Section>
+
+      <Section
+        id="pay-model"
+        title="Pay estimator accuracy"
+        lede={
+          payModel
+            ? `Fitted on ${trainingSentence(payModel)}. Scored on companies it had not seen, and compared with a plain median.`
+            : "The pay estimator is only published when enough postings state a salary to test it on unseen companies."
+        }
+      >
+        {payModel ? (
+          <>
+            <AccuracyTable model={payModel} />
+            <div className="prose-lite mt-4">
+              <ul>
+                <li>
+                  <strong>Held out by company.</strong> The salaried postings are split into 5 folds so that every company is wholly in one fold; each fold is predicted by a model that never saw that company. The shrinkage strength of the ridge regression is chosen again inside each training part, so no figure above was tuned on the postings it is scored on.
+                </li>
+                <li>
+                  <strong>Baseline.</strong> The median advertised pay of the same role and seniority among the training folds (the role alone, then everything, when a group has fewer than 5 postings). {payModel.eval.note} The interval comes from a bootstrap that resamples whole companies; {maeSentence(payModel.eval)}.
+                </li>
+                <li>
+                  <strong>What the error means.</strong> A median error of {Math.round(payModel.eval.median_ape * 100)}% means half of the postings were closer than that and half further. The model explains R&sup2; = {payModel.eval.r2_log.toFixed(2)} of the variation in log pay, so most of what separates one posting&rsquo;s pay from another&rsquo;s (the company, the exact country, the team, negotiation) is not in the model.
+                </li>
+                <li>
+                  <strong>Not a forecast of your pay.</strong> It describes advertised pay (midpoints of stated ranges) of the {fmtInt(payModel.n_train)} postings that state one, in USD at static exchange rates. Skill effects are associations and can stand in for something unobserved.
+                </li>
+              </ul>
+            </div>
+          </>
+        ) : (
+          <div className="rounded-lg border border-dashed border-line-strong p-8 text-center text-ink-3">
+            {salaryDoc && "reason" in salaryDoc ? `Not published in this snapshot: ${salaryDoc.reason}.` : "No salary model has been published yet. It appears after the next pipeline run."}
           </div>
         )}
       </Section>

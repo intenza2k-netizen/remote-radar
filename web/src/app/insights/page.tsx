@@ -5,6 +5,7 @@ import { LiftChart } from "@/components/insights/lift-chart";
 import { PremiumChart } from "@/components/insights/premium-chart";
 import { RoleSkillsGrid } from "@/components/insights/role-skills";
 import { SkillNetwork } from "@/components/insights/skill-network";
+import { PaySection } from "@/components/pay/pay-section";
 import { Container, PageHeader } from "@/components/ui";
 import { getMeta } from "@/lib/data";
 import { fmtInt, roleLabel } from "@/lib/format";
@@ -23,6 +24,7 @@ export const metadata: Metadata = {
 
 const JUMPS = [
   { href: "#premium", label: "Pay premium" },
+  { href: "#pay", label: "Pay estimator" },
   { href: "#seniority", label: "Senior vs junior" },
   { href: "#map", label: "Skill map" },
   { href: "#roles", label: "Skills by role" },
@@ -93,6 +95,8 @@ export default function InsightsPage() {
         >
           {skill_premium.length ? <PremiumChart rows={skill_premium} roleNote={premiumRoleNote(skill_premium)} /> : <EmptyNote>No skill has 15 or more salaried postings from at least 5 companies yet.</EmptyNote>}
         </InsightSection>
+
+        <PaySection />
 
         <InsightSection
           id="seniority"

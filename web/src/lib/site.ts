@@ -21,9 +21,11 @@ export const ATTRIBUTION = [
 export const NAV = [
   { href: "/", label: "Overview" },
   { href: "/match", label: "Match my CV" },
+  { href: "/job-types", label: "Job types" },
   { href: "/skills", label: "Skills" },
   { href: "/jobs", label: "Jobs" },
   { href: "/insights", label: "Insights" },
+  { href: "/locations", label: "Locations" },
   { href: "/companies", label: "Companies" },
   { href: "/methodology", label: "Methodology" },
 ] as const;

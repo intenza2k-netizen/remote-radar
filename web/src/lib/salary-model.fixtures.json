@@ -1,0 +1,434 @@
+{
+ "note": "Computed by radar.salary_model.predict_pay and radar.regions.region_group. Regenerate: RADAR_WRITE_FIXTURES=1 pytest tests/test_salary_model.py",
+ "model": {
+  "version": 1,
+  "intercept": 11.5,
+  "reference": {
+   "role": "data",
+   "seniority": "senior",
+   "region_group": "us_canada"
+  },
+  "coef": {
+   "role": {
+    "software_engineering": 0.1,
+    "sales": -0.2,
+    "support": -0.35
+   },
+   "seniority": {
+    "junior": -0.4,
+    "mid": -0.25,
+    "lead": 0.15,
+    "unspecified": -0.1
+   },
+   "region_group": {
+    "europe": -0.35,
+    "latam": -0.8,
+    "worldwide": -0.4,
+    "unknown": 0.01
+   },
+   "skill": {
+    "sql": 0.0,
+    "python": 0.05,
+    "excel": -0.2,
+    "power-bi": -0.2,
+    "dbt": 0.3,
+    "kubernetes": 0.12
+   }
+  },
+  "skills": [
+   {
+    "slug": "sql",
+    "n": 120
+   },
+   {
+    "slug": "python",
+    "n": 100
+   },
+   {
+    "slug": "excel",
+    "n": 60
+   },
+   {
+    "slug": "power-bi",
+    "n": 60
+   },
+   {
+    "slug": "dbt",
+    "n": 40
+   },
+   {
+    "slug": "kubernetes",
+    "n": 30
+   }
+  ],
+  "profile_max_skills": 3,
+  "interval": {
+   "low_log": -0.5,
+   "high_log": 0.45,
+   "level": 0.8
+  }
+ },
+ "predict": [
+  {
+   "input": {
+    "role": "data",
+    "seniority": "senior",
+    "regionGroup": "us_canada",
+    "skills": []
+   },
+   "expected": {
+    "median": 98716,
+    "low": 59874,
+    "high": 154817,
+    "used_skills": []
+   }
+  },
+  {
+   "input": {
+    "role": "data",
+    "seniority": "senior",
+    "regionGroup": "us_canada",
+    "skills": [
+     "sql"
+    ]
+   },
+   "expected": {
+    "median": 98716,
+    "low": 59874,
+    "high": 154817,
+    "used_skills": [
+     "sql"
+    ]
+   }
+  },
+  {
+   "input": {
+    "role": "software_engineering",
+    "seniority": "lead",
+    "regionGroup": "europe",
+    "skills": [
+     "python",
+     "kubernetes"
+    ]
+   },
+   "expected": {
+    "median": 105873,
+    "low": 64216,
+    "high": 166043,
+    "used_skills": [
+     "python",
+     "kubernetes"
+    ]
+   }
+  },
+  {
+   "input": {
+    "role": "sales",
+    "seniority": "junior",
+    "regionGroup": "latam",
+    "skills": [
+     "excel",
+     "power-bi",
+     "dbt",
+     "sql",
+     "python"
+    ]
+   },
+   "expected": {
+    "median": 20952,
+    "low": 12708,
+    "high": 32860,
+    "used_skills": [
+     "sql",
+     "python",
+     "excel"
+    ]
+   }
+  },
+  {
+   "input": {
+    "role": "support",
+    "seniority": "mid",
+    "regionGroup": "worldwide",
+    "skills": [
+     "kubernetes",
+     "dbt",
+     "python",
+     "sql"
+    ]
+   },
+   "expected": {
+    "median": 51534,
+    "low": 31257,
+    "high": 80822,
+    "used_skills": [
+     "sql",
+     "python",
+     "dbt"
+    ]
+   }
+  },
+  {
+   "input": {
+    "role": "data",
+    "seniority": "unspecified",
+    "regionGroup": "unknown",
+    "skills": [
+     "dbt",
+     "not-a-skill",
+     "dbt"
+    ]
+   },
+   "expected": {
+    "median": 121783,
+    "low": 73865,
+    "high": 190995,
+    "used_skills": [
+     "dbt"
+    ]
+   }
+  },
+  {
+   "input": {
+    "role": "astronaut",
+    "seniority": "senior",
+    "regionGroup": "mars",
+    "skills": [
+     "kubernetes"
+    ]
+   },
+   "expected": {
+    "median": 111302,
+    "low": 67508,
+    "high": 174556,
+    "used_skills": [
+     "kubernetes"
+    ]
+   }
+  },
+  {
+   "input": {
+    "role": "data",
+    "seniority": "senior",
+    "regionGroup": "us_canada",
+    "skills": [
+     "power-bi",
+     "excel"
+    ]
+   },
+   "expected": {
+    "median": 66171,
+    "low": 40135,
+    "high": 103777,
+    "used_skills": [
+     "excel",
+     "power-bi"
+    ]
+   }
+  }
+ ],
+ "region_groups": [
+  {
+   "regions": [],
+   "expected": "unknown"
+  },
+  {
+   "regions": [
+    "worldwide"
+   ],
+   "expected": "worldwide"
+  },
+  {
+   "regions": [
+    "United States"
+   ],
+   "expected": "us_canada"
+  },
+  {
+   "regions": [
+    "Canada"
+   ],
+   "expected": "us_canada"
+  },
+  {
+   "regions": [
+    "North America"
+   ],
+   "expected": "us_canada"
+  },
+  {
+   "regions": [
+    "Germany"
+   ],
+   "expected": "europe"
+  },
+  {
+   "regions": [
+    "Estonia",
+    "Latvia"
+   ],
+   "expected": "europe"
+  },
+  {
+   "regions": [
+    "EMEA"
+   ],
+   "expected": "europe"
+  },
+  {
+   "regions": [
+    "EU",
+    "United Kingdom"
+   ],
+   "expected": "europe"
+  },
+  {
+   "regions": [
+    "Brazil",
+    "Mexico"
+   ],
+   "expected": "latam"
+  },
+  {
+   "regions": [
+    "Latin America"
+   ],
+   "expected": "latam"
+  },
+  {
+   "regions": [
+    "India",
+    "Singapore"
+   ],
+   "expected": "apac"
+  },
+  {
+   "regions": [
+    "Asia-Pacific"
+   ],
+   "expected": "apac"
+  },
+  {
+   "regions": [
+    "Germany",
+    "India"
+   ],
+   "expected": "other_or_mixed"
+  },
+  {
+   "regions": [
+    "worldwide",
+    "Germany"
+   ],
+   "expected": "other_or_mixed"
+  },
+  {
+   "regions": [
+    "worldwide",
+    "United States"
+   ],
+   "expected": "us_canada"
+  },
+  {
+   "regions": [
+    "Germany",
+    "United States"
+   ],
+   "expected": "us_canada"
+  },
+  {
+   "regions": [
+    "Israel"
+   ],
+   "expected": "other_or_mixed"
+  },
+  {
+   "regions": [
+    "Americas"
+   ],
+   "expected": "other_or_mixed"
+  },
+  {
+   "regions": [
+    "Africa",
+    "Kenya"
+   ],
+   "expected": "other_or_mixed"
+  },
+  {
+   "regions": [
+    "Türkiye"
+   ],
+   "expected": "other_or_mixed"
+  },
+  {
+   "regions": [
+    "Czechia",
+    "Poland"
+   ],
+   "expected": "europe"
+  },
+  {
+   "regions": [
+    "Bosnia and Herzegovina"
+   ],
+   "expected": "europe"
+  },
+  {
+   "regions": [
+    "Timor-Leste"
+   ],
+   "expected": "apac"
+  },
+  {
+   "regions": [
+    "germany"
+   ],
+   "expected": "europe"
+  },
+  {
+   "regions": [
+    "  United   States "
+   ],
+   "expected": "us_canada"
+  },
+  {
+   "regions": [
+    "Anywhere"
+   ],
+   "expected": "worldwide"
+  },
+  {
+   "regions": [
+    "Global",
+    "Worldwide"
+   ],
+   "expected": "worldwide"
+  },
+  {
+   "regions": [
+    "Germany",
+    "germany"
+   ],
+   "expected": "europe"
+  },
+  {
+   "regions": [
+    "Côte d'Ivoire"
+   ],
+   "expected": "other_or_mixed"
+  },
+  {
+   "regions": [
+    "Hong Kong"
+   ],
+   "expected": "apac"
+  },
+  {
+   "regions": [
+    "Puerto Rico"
+   ],
+   "expected": "latam"
+  }
+ ]
+}

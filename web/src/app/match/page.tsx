@@ -5,6 +5,7 @@ import { Container, PageHeader } from "@/components/ui";
 import { getJobs, getMeta, getSkillNames, getSkills } from "@/lib/data";
 import { fmtInt } from "@/lib/format";
 import { WEIGHTS } from "@/lib/match/constants";
+import { getMatchExtras } from "@/lib/match/extras-data";
 
 const w = (x: number) => `${Math.round(x * 100)}%`;
 
@@ -31,7 +32,7 @@ export default function MatchPage() {
         title="Which remote jobs fit your CV?"
         lede={`Paste or upload your CV and get the best of ${fmtInt(jobs.length)} remote postings, scored by skills, seniority and meaning, with the skills you would still need. It all runs in your browser.`}
       />
-      <MatchApp jobs={jobs} skills={skills} skillNames={getSkillNames()} sourceNames={sourceNames} />
+      <MatchApp jobs={jobs} skills={skills} skillNames={getSkillNames()} sourceNames={sourceNames} extras={getMatchExtras()} />
       <section className="mt-14 max-w-3xl" aria-labelledby="how-h">
         <h2 id="how-h" className="text-xl font-semibold tracking-tight">
           How the score works

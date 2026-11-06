@@ -34,6 +34,10 @@ V2_FILES = {
     "skill_vocab": "skill_vocab.json",
     "insights": "insights.json",
     "companies": "companies.json",
+    # v4 (PLAN.md section 6)
+    "archetypes": "archetypes.json",
+    "salary_model": "salary_model.json",
+    "geo": "geo.json",
 }
 ALL_FILES = {**FILES, **V2_FILES}
 

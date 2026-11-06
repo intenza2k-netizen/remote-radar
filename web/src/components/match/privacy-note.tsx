@@ -11,7 +11,8 @@ export function PrivacyNote() {
           Your CV never leaves this browser
         </h2>
         <p className="mt-1 max-w-3xl">
-          Reading, skill detection and matching all run on your device. Nothing is uploaded, logged or stored: close the tab and it is gone. The only network
+          Reading, skill detection and matching all run on your device. Nothing from your CV is uploaded, logged or stored: close the tab and it is gone. The one thing
+          this browser remembers is the location you pick under &ldquo;I can work from&rdquo; (in local storage, never sent anywhere). The only network
           requests are this site&apos;s own job data and, the first time you run a match, the language model (about 30 MB, downloaded once from Hugging Face and
           cached by your browser). You can check the Network tab yourself.
         </p>

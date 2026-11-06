@@ -22,13 +22,16 @@ from typing import Any
 from sqlalchemy import func, select
 
 from radar import config, embed
+from radar.archetypes import compute_archetypes
 from radar.dedupe import normalize_company
 from radar.extract_stage import current_backend_model, current_model
 from radar.fx import to_usd
+from radar.geo import compute_geo
 from radar.insights import build_skill_vocab, compute_companies, compute_insights
 from radar.models import Extraction, Job, RawJob, Run, utcnow
 from radar.normalize import annualize
 from radar.regions import normalize_regions
+from radar.salary_model import compute_salary_model
 from radar.skills import find_spellings, is_known_skill, normalize_skills, pick_display, skill_info
 from radar.sources import ALL_SOURCES
 
@@ -312,6 +315,8 @@ def compute_snapshot(
         "insights": compute_insights(population, names=names),
         "companies": companies,
         "skill_vocab": build_skill_vocab(),
+        "salary_model": compute_salary_model(population, names=names),
+        "geo": compute_geo(population, listed, names=names),
     }
 
 
@@ -705,5 +710,8 @@ def aggregate(
         session, listed_records(records, now), embed_model_key or embed.current_model_key()
     )
     snapshot["job_vectors"] = vectors
+    snapshot["archetypes"] = compute_archetypes(
+        listed_records(records, now), vectors, names=derive_skill_names(records)
+    )
     snapshot["missing_vectors"] = missing
     return snapshot

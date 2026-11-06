@@ -4,6 +4,8 @@ import { JobsExplorer } from "@/components/jobs-explorer";
 import { Container, PageHeader } from "@/components/ui";
 import { getJobs, getMeta, getSkillNames, getSkills } from "@/lib/data";
 import { fmtInt } from "@/lib/format";
+import { locationOptions } from "@/lib/geo";
+import { getGeo } from "@/lib/geo-data";
 import { getCompanySlugMap } from "@/lib/insights";
 
 export const metadata: Metadata = {
@@ -23,6 +25,8 @@ function ExplorerFallback() {
 export default function JobsPage() {
   const meta = getMeta();
   const jobs = getJobs();
+  const geo = getGeo();
+  const openTo = geo ? { memberships: geo.memberships, sanctioned: geo.sanctioned, options: locationOptions(geo.by_location) } : undefined;
   const skills = getSkills().map((s) => ({ slug: s.slug, name: s.name, count: s.count, category: s.category }));
   const sourceNames = Object.fromEntries(meta.sources.map((s) => [s.name, s.display_name]));
   return (
@@ -34,7 +38,7 @@ export default function JobsPage() {
       />
       <div className="mt-8">
         <Suspense fallback={<ExplorerFallback />}>
-          <JobsExplorer jobs={jobs} skills={skills} skillNames={getSkillNames()} sourceNames={sourceNames} companySlugs={getCompanySlugMap()} />
+          <JobsExplorer jobs={jobs} openTo={openTo} skills={skills} skillNames={getSkillNames()} sourceNames={sourceNames} companySlugs={getCompanySlugMap()} />
         </Suspense>
       </div>
     </Container>
