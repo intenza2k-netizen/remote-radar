@@ -12,6 +12,7 @@ type Props = {
   jobs: Job[];
   skills: PickerOption[];
   sourceNames: Record<string, string>;
+  companySlugs?: Record<string, string>;
 };
 
 const PAGE = 25;
@@ -55,7 +56,7 @@ function serialize(f: Filters): string {
   return sp.toString();
 }
 
-export function JobsExplorer({ jobs, skills, sourceNames }: Props) {
+export function JobsExplorer({ jobs, skills, sourceNames, companySlugs }: Props) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const filters = useMemo(() => parse(new URLSearchParams(searchParams.toString())), [searchParams]);
@@ -258,7 +259,7 @@ export function JobsExplorer({ jobs, skills, sourceNames }: Props) {
       {results.length ? (
         <ul className="m-0 mt-4 list-none p-0">
           {visible.map((j) => (
-            <JobRow key={j.id} job={j} skillNames={skillNames} sourceNames={sourceNames} />
+            <JobRow key={j.id} job={j} skillNames={skillNames} sourceNames={sourceNames} companySlugs={companySlugs} />
           ))}
         </ul>
       ) : (

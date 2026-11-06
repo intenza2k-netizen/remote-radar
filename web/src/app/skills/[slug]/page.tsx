@@ -10,6 +10,7 @@ import { TrendEmptyState } from "@/components/trend-empty";
 import { reliableTrend, reliableWeeks, trendReady, windowClause } from "@/lib/weeks";
 import { getJobs, getMeta, getSkill, getSkillIndex, getSkills } from "@/lib/data";
 import { categoryLabel, fmtInt, fmtShare, fmtUsdShort } from "@/lib/format";
+import { getCompanySlugMap } from "@/lib/insights";
 
 export function generateStaticParams() {
   return getSkills().map((s) => ({ slug: s.slug }));
@@ -166,7 +167,7 @@ async function SkillContent({ params }: { params: PageProps<"/skills/[slug]">["p
           {recent.length ? (
             <ul className="m-0 list-none p-0">
               {recent.map((j) => (
-                <JobRow key={j.id} job={j} skillNames={skillNames} sourceNames={sourceNames} maxSkills={4} />
+                <JobRow key={j.id} job={j} skillNames={skillNames} sourceNames={sourceNames} maxSkills={4} companySlugs={getCompanySlugMap()} />
               ))}
             </ul>
           ) : (

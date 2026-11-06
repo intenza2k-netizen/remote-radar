@@ -152,6 +152,30 @@ All salaries in the snapshot are annualised and converted to USD (static FX tabl
 - **F**: `eval/run_eval.py --backend ... --model ...` runs any number of models (planned: Claude Sonnet 5.5, gemma4:12b, one Qwen model, one larger local model; exact tags from the research step, user approves downloads) and writes `eval/report.md` and `web/public/data/eval.json` with one row per model.
 - **G**: nightly PowerShell script, CI workflow (ruff, pytest, web lint + build), README with architecture and attribution.
 
+## v2: use the data (started 2026-11-06)
+
+Goal: turn the snapshot into tools a job seeker uses. Headline feature is a private, in-browser CV matcher.
+
+| Step | Owner | Files owned | Depends on |
+|---|---|---|---|
+| H. Pipeline: embeddings, skill vocab, insights | worker | `pipeline/src/radar/{embed,insights}.py`, edits to `aggregate.py`, `publish.py`, `cli.py`, `config.py` (new constants only), `pipeline/tests/test_{embed,insights}.py`, `pipeline/pyproject.toml` deps | — |
+| I. Web: CV matcher `/match` | worker | `web/src/app/match/**`, `web/src/lib/match/**`, `web/src/components/match/**`, `web/package.json` deps, `web/next.config.ts`, `web/scripts/make-sample-v2.mjs` (match files only) | contract §5 |
+| J. Web: `/insights`, `/companies`, `/companies/[slug]` | worker | `web/src/app/{insights,companies}/**`, `web/src/components/insights/**`, `web/src/lib/insights.ts`, `web/src/lib/site.ts` (NAV only), `web/scripts/make-sample-v2.mjs` (insights files only) | contract §5 |
+
+I and J both need `make-sample-v2.mjs`: I writes it first section `// MATCH`, J appends section `// INSIGHTS`; whoever finds the file existing edits only their own section. Neither edits the other's directories or shared components outside their own folders; shared needs go in the report.
+Model files and caches download to F: (`RADAR_MODEL_CACHE=F:\Models\remote-radar`, user env var). Never download to C:.
+
+### 5. v2 snapshot files (`web/public/data/`)
+
+- `job_vectors.json`: `{model: "Xenova/bge-small-en-v1.5", python_model: "BAAI/bge-small-en-v1.5", dim: 384, normalized: true, pooling: "cls", query_prefix: "Represent this sentence for searching relevant passages: ", encoding: "int8-base64", ids: [job id...], scales: [float per vector], data: "<base64 of N*dim int8, row-major>"}`. Value = int8 * scale. Ids match `jobs.json`. Passage text embedded per job = title + role + seniority + top skills + first ~1500 chars of description (descriptions are NOT published).
+- `skill_vocab.json`: `[{slug, name, category, patterns: [lowercase strings], strict: bool}]` for every canonical skill in `aliases.yaml`. `patterns` = canonical slug words, display name and aliases. `strict: true` marks ambiguous short patterns (e.g. "go", "r", "c", "ai", "ml", "ps", "sem", "excel" in prose) that the browser must only accept with case/context rules.
+- `insights.json`:
+  - `skill_premium`: `[{slug, name, n_with, n_without, median_with, median_without, diff, ci_low, ci_high}]` annual USD, skills with n_with >= 15 salaried postings, bootstrap 95% CI on the difference of medians (1000 resamples, fixed seed), sorted by diff.
+  - `seniority_lift`: per role with >= 30 postings, `{role, n_senior, n_junior, skills: [{slug, name, share_senior, share_junior, lift}]}` top 10 by lift, senior = senior|lead|principal, junior = intern|junior|mid.
+  - `skill_graph`: `{nodes: [{slug, name, category, count}], edges: [{a, b, count, pmi}]}` top 80 skills by count; edges with count >= 3, ranked by PMI, max 250.
+  - `role_skills`: `[{role, n, top: [{slug, name, share}]}]` top 12 per role.
+- `companies.json`: `[{slug, name, jobs, roles: {role: n}, seniority: {..}, top_skills: [{slug, name, count}], median_salary_usd, sources: [..], job_ids: [..]}]` companies with >= 1 job, sorted by jobs desc.
+
 ## Integration (2026-11-06)
 
 - Full extraction: 448/448 canonical remote jobs with gemma4:31b, 0 failures, median 1.36 s, 12 min.

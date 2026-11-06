@@ -48,3 +48,6 @@ desktop.ini
 
 # Eval gold set with full job-posting text: local only (see pipeline/eval/run_eval.py)
 pipeline/eval/gold.jsonl
+
+# Generated at build from node_modules (scripts/copy-ort.mjs)
+web/public/ort/

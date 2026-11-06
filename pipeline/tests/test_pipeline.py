@@ -38,7 +38,7 @@ from radar.extract_stage import run_extract
 from radar.fx import to_usd, usd_rate
 from radar.ingest import StageError, fetch_sources, ingest_raw_jobs, make_client
 from radar.models import Extraction, Job, JobSkill, RawJob, Run
-from radar.publish import FILES, publish, write_snapshot
+from radar.publish import FILES, V2_FILES, publish, write_snapshot
 from radar.skills import normalize_skills
 from radar.sources import ALL_SOURCES
 from radar.sources import base as base_mod
@@ -884,7 +884,9 @@ def test_publish_writes_files_matching_the_contract(extracted, tmp_path):
 
     result = publish(extracted, out, now=NOW)
 
-    assert sorted(p.name for p in out.iterdir()) == sorted([*FILES.values(), "eval.json"])
+    assert sorted(p.name for p in out.iterdir()) == sorted(
+        [*FILES.values(), *V2_FILES.values(), "eval.json"]
+    )
     assert (out / "eval.json").read_text(encoding="utf-8") == '{"keep":"me"}'
     docs = {
         key: json.loads((out / name).read_text(encoding="utf-8")) for key, name in FILES.items()

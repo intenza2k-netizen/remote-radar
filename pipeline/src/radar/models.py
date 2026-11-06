@@ -11,6 +11,7 @@ from sqlalchemy import (
     Float,
     ForeignKey,
     Integer,
+    LargeBinary,
     String,
     Text,
     UniqueConstraint,
@@ -119,6 +120,25 @@ class Extraction(Base):
     data: Mapped[dict | None] = mapped_column(JSON, nullable=True)
 
     job: Mapped[Job] = relationship(back_populates="extractions")
+
+
+class JobEmbedding(Base):
+    """Cached passage embedding, keyed by (job, model, hash of the embedded text).
+
+    ``vector`` is the L2-normalised float32 embedding (``dim`` values, little-endian). A job
+    whose passage text changes gets a new hash, so it is embedded again on the next run.
+    """
+
+    __tablename__ = "job_embeddings"
+    __table_args__ = (UniqueConstraint("job_id", "model", "text_hash", name="uq_job_embedding"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    job_id: Mapped[int] = mapped_column(ForeignKey("jobs.id"), index=True)
+    model: Mapped[str] = mapped_column(String(128))
+    text_hash: Mapped[str] = mapped_column(String(64))
+    dim: Mapped[int] = mapped_column(Integer)
+    vector: Mapped[bytes] = mapped_column(LargeBinary)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
 
 class JobSkill(Base):

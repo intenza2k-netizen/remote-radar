@@ -70,6 +70,14 @@ export default function OverviewPage() {
               ) : null}{" "}
               Every figure below is extracted by an LLM from {fmtInt(total)} postings on {meta.sources.length} public job boards.
             </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/match" className="btn no-underline">
+                Match my CV to these jobs
+              </Link>
+              <Link href="/insights" className="btn no-underline">
+                See what pays and what clusters
+              </Link>
+            </div>
           </>
         ) : (
           <h1 className="text-4xl font-semibold tracking-tight">Remote Radar</h1>

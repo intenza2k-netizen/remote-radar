@@ -7,6 +7,8 @@ type Props = {
   skillNames: Record<string, string>;
   sourceNames: Record<string, string>;
   maxSkills?: number;
+  /** Company name to /companies/<slug>. Omit (e.g. on a company page) to show plain text. */
+  companySlugs?: Record<string, string>;
 };
 
 /**
@@ -14,8 +16,9 @@ type Props = {
  * rel="noopener" only: no nofollow (Remote OK requires followed links) and the
  * source board is always named.
  */
-export function JobRow({ job, skillNames, sourceNames, maxSkills = 6 }: Props) {
+export function JobRow({ job, skillNames, sourceNames, maxSkills = 6, companySlugs }: Props) {
   const source = sourceNames[job.source] ?? job.source;
+  const companySlug = companySlugs?.[job.company];
   const shown = job.skills.slice(0, maxSkills);
   const more = job.skills.length - shown.length;
   const pay = job.salary;
@@ -34,7 +37,13 @@ export function JobRow({ job, skillNames, sourceNames, maxSkills = 6 }: Props) {
             </a>
           </h3>
           <p className="mt-0.5 text-sm text-ink-2">
-            {job.company}
+            {companySlug ? (
+              <Link href={`/companies/${companySlug}`} className="text-ink-2 no-underline hover:text-ink hover:underline">
+                {job.company}
+              </Link>
+            ) : (
+              job.company
+            )}
             {job.location ? <span className="text-ink-3"> &middot; {job.location}</span> : null}
           </p>
           <p className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-ink-3">

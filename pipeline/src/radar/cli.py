@@ -10,12 +10,14 @@ from typing import Annotated, Any
 import typer
 from rich.console import Console
 from rich.logging import RichHandler
+from rich.progress import BarColumn, MofNCompleteColumn, Progress, TextColumn, TimeElapsedColumn
 from rich.table import Table
 from sqlalchemy import func, select
 
 from radar import config
 from radar.aggregate import WINDOW_DAYS, aggregate
 from radar.db import session_scope
+from radar.embed import DEFAULT_DTYPE, MODEL_FILES, EmbedSummary, run_embed
 from radar.extract import get_extractor
 from radar.extract_stage import (
     DEFAULT_WORKERS,
@@ -203,6 +205,58 @@ def extract(
     )
 
 
+# --------------------------------------------------------------------------- embed
+
+
+def _do_embed(
+    db: Path | None,
+    backend: str | None = None,
+    model: str | None = None,
+    *,
+    force: bool = False,
+    dtype: str = DEFAULT_DTYPE,
+) -> EmbedSummary:
+    with Progress(
+        TextColumn("embedding"),
+        BarColumn(),
+        MofNCompleteColumn(),
+        TimeElapsedColumn(),
+        console=console,
+        transient=True,
+    ) as bar:
+        task = bar.add_task("embed", total=None)
+
+        def progress(done: int, total: int) -> None:
+            bar.update(task, completed=done, total=total)
+
+        summary = run_embed(
+            db, backend=backend, model=model, force=force, dtype=dtype, progress=progress
+        )
+    console.print(
+        f"embed: {summary.total} listed jobs, {summary.embedded} embedded, "
+        f"{summary.cached} cached, {summary.seconds:.1f} s"
+    )
+    return summary
+
+
+@app.command("embed")
+def embed_cmd(
+    ctx: typer.Context,
+    backend: BackendOption = None,
+    model: ModelOption = None,
+    force: Annotated[
+        bool, typer.Option("--force", help="Re-embed every listed job, ignoring the cache.")
+    ] = False,
+    dtype: Annotated[
+        str, typer.Option(help=f"Model precision: {', '.join(sorted(MODEL_FILES))}.")
+    ] = DEFAULT_DTYPE,
+) -> None:
+    """Embed the published jobs for the CV matcher (cached; only new or changed jobs run)."""
+    if dtype not in MODEL_FILES:
+        raise typer.BadParameter(f"expected one of {sorted(MODEL_FILES)}")
+    _guard(lambda: _do_embed(_db(ctx), backend, model, force=force, dtype=dtype))
+
+
 # --------------------------------------------------------------------------- aggregate / publish
 
 
@@ -278,7 +332,8 @@ def _do_publish(
     )
     console.print(
         f"published {result['jobs']} jobs, {result['skills']} skills, "
-        f"{result['jobs_listed']} listed postings to {result['out_dir']}"
+        f"{result['jobs_listed']} listed postings, {result['vectors']} job vectors, "
+        f"{result['companies']} companies to {result['out_dir']}"
     )
     return result
 
@@ -313,13 +368,14 @@ def run_all(
     workers: Annotated[int, typer.Option(help="Parallel calls (Claude only).")] = DEFAULT_WORKERS,
     out: Annotated[Path | None, typer.Option("--out", help="Publish directory.")] = None,
 ) -> None:
-    """fetch -> ingest -> extract -> publish. Stops with exit code 1 on a fatal stage error."""
+    """fetch -> ingest -> extract -> embed -> publish. Stops with exit code 1 on a fatal error."""
     db = _db(ctx)
 
     def go() -> None:
         _do_fetch(db)
         _do_ingest(db)
         _do_extract(db, backend, model, limit=limit, since_days=since_days, workers=workers)
+        _do_embed(db, backend, model)
         # Publish from the backend/model that was just extracted (or the configured current
         # one when none was given).
         _do_publish(db, out, backend=backend, model=model)

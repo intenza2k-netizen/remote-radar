@@ -1,6 +1,8 @@
 """Pipeline stage 5: write the snapshot JSON files the dashboard reads.
 
-Writes ``meta.json``, ``skills.json``, ``roles.json``, ``salary.json`` and ``jobs.json``.
+Writes ``meta.json``, ``skills.json``, ``roles.json``, ``salary.json`` and ``jobs.json``
+(PLAN.md section 4) and the v2 files ``job_vectors.json``, ``skill_vocab.json``,
+``insights.json`` and ``companies.json`` (section 5).
 It never writes ``eval.json`` (owned by the eval step) and never emits a ``sample`` key.
 Files are written to temporary names first and then renamed over the old ones, so a crash
 leaves the previous snapshot intact.
@@ -9,6 +11,7 @@ leaves the previous snapshot intact.
 from __future__ import annotations
 
 import json
+import logging
 import os
 from datetime import datetime
 from pathlib import Path
@@ -26,19 +29,36 @@ FILES = {
     "salary": "salary.json",
     "jobs": "jobs.json",
 }
+V2_FILES = {
+    "job_vectors": "job_vectors.json",
+    "skill_vocab": "skill_vocab.json",
+    "insights": "insights.json",
+    "companies": "companies.json",
+}
+ALL_FILES = {**FILES, **V2_FILES}
+
+log = logging.getLogger(__name__)
 
 
 def write_snapshot(snapshot: dict[str, Any], out_dir: Path) -> list[Path]:
-    """Write all documents atomically (temp files first, then renames)."""
-    if set(snapshot) != set(FILES):
-        raise ValueError(f"snapshot must have exactly the keys {sorted(FILES)}")
+    """Write all documents atomically (temp files first, then renames).
+
+    The five section-4 documents are required; the section-5 documents are written when
+    present."""
+    keys = set(snapshot)
+    if not set(FILES) <= keys <= set(ALL_FILES):
+        raise ValueError(
+            f"snapshot must have the keys {sorted(FILES)} and may add {sorted(V2_FILES)}"
+        )
     if "sample" in snapshot["meta"]:
         raise ValueError("refusing to publish a snapshot flagged as sample data")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     staged: list[tuple[Path, Path]] = []
     try:
-        for key, filename in FILES.items():
+        for key, filename in ALL_FILES.items():
+            if key not in snapshot:
+                continue
             final = out_dir / filename
             tmp = out_dir / f".{filename}.tmp"
             tmp.write_text(
@@ -72,15 +92,25 @@ def publish(
             snapshot = aggregate(
                 session, backend=backend, model=model, now=now, window_days=window_days
             )
+        missing = snapshot.pop("missing_vectors", 0)
+        if missing:
+            log.warning(
+                "%d listed jobs have no embedding yet and are left out of job_vectors.json "
+                "(run `radar embed`)",
+                missing,
+            )
         meta = snapshot["meta"]
         run.stats = {
             "out_dir": str(target),
             "backend": meta["backend"],
             "model": meta["model"],
+            "missing_vectors": missing,
             "jobs": meta["totals"]["jobs"],
             "skills": meta["totals"]["skills"],
             "with_salary": meta["totals"]["with_salary"],
             "jobs_listed": len(snapshot["jobs"]),
+            "vectors": len(snapshot["job_vectors"]["ids"]),
+            "companies": len(snapshot["companies"]),
         }
         if meta["totals"]["jobs"] == 0 and not allow_empty:
             raise StageError(

@@ -20,10 +20,11 @@ from typing import Any
 
 from sqlalchemy import func, select
 
-from radar import config
+from radar import config, embed
 from radar.dedupe import normalize_company
 from radar.extract_stage import current_backend_model, current_model
 from radar.fx import to_usd
+from radar.insights import build_skill_vocab, compute_companies, compute_insights
 from radar.models import Extraction, Job, RawJob, Run, utcnow
 from radar.normalize import annualize
 from radar.skills import normalize_skills, skill_info
@@ -79,6 +80,8 @@ class JobRecord:
     remote_regions: list[str]
     skills: list[str]  # canonical slugs, deduped
     salaries: list[RawSalary] = field(default_factory=list)  # preference order
+    db_id: int = 0  # jobs.id, for joining cached embeddings
+    description: str = field(default="", repr=False)  # never published; embedded only
 
     @cached_property
     def salary(self) -> ResolvedSalary | None:
@@ -192,7 +195,9 @@ def compute_snapshot(
     model: str = "",
     last_run_at: datetime | None = None,
 ) -> dict[str, Any]:
-    """Build ``{"meta", "skills", "roles", "salary", "jobs"}`` from ``records``.
+    """Build the snapshot documents from ``records``: ``meta``, ``skills``, ``roles``,
+    ``salary``, ``jobs`` (section 4) plus ``insights``, ``companies`` and ``skill_vocab``
+    (section 5). ``job_vectors`` needs the embedding cache and is added by :func:`aggregate`.
 
     ``records`` may be a superset of the window (the jobs list reaches back 60 days); the
     statistics only use records posted inside the window.
@@ -243,6 +248,9 @@ def compute_snapshot(
         "roles": _roles(population),
         "salary": _salary(population),
         "jobs": _jobs(records, now),
+        "insights": compute_insights(population),
+        "companies": compute_companies(population),
+        "skill_vocab": build_skill_vocab(),
     }
 
 
@@ -351,12 +359,17 @@ def _salary(population: list[JobRecord]) -> dict[str, list[dict[str, Any]]]:
     return {"by_seniority": seniority_rows, "by_role": role_rows}
 
 
-def _jobs(records: list[JobRecord], now: datetime) -> list[dict[str, Any]]:
+def listed_records(records: list[JobRecord], now: datetime) -> list[JobRecord]:
+    """The records published in ``jobs.json``: posted in the last 60 days, newest first."""
     cutoff = now - timedelta(days=JOBS_LIST_DAYS)
     recent = [r for r in records if cutoff <= r.posted_at <= now]
     recent.sort(key=lambda r: (r.posted_at, r.id), reverse=True)
+    return recent
+
+
+def _jobs(records: list[JobRecord], now: datetime) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
-    for rec in recent:
+    for rec in listed_records(records, now):
         resolved = rec.salary
         salary = None
         if resolved is not None:
@@ -450,6 +463,8 @@ def load_records(
                 remote_regions=list(data.get("remote_regions") or []),
                 skills=normalize_skills(data.get("skills") or []),
                 salaries=salaries,
+                db_id=job.id,
+                description=job.description_text or "",
             )
         )
     return records
@@ -464,7 +479,7 @@ def latest_fetch_time(session) -> datetime | None:
     )
 
 
-def aggregate(
+def load_snapshot_records(
     session,
     *,
     backend: str | None = None,
@@ -472,12 +487,9 @@ def aggregate(
     prompt_version: str | None = None,
     now: datetime | None = None,
     window_days: int = WINDOW_DAYS,
-    sources: list[Any] | None = None,
-) -> dict[str, Any]:
-    """Aggregate the database into the five snapshot documents (see :func:`compute_snapshot`).
-
-    ``backend``/``model`` default to the current extraction backend and model.
-    """
+) -> tuple[list[JobRecord], str, str, datetime]:
+    """Records for the snapshot (window plus the 60-day jobs list), with the resolved
+    backend, model and ``now``. ``backend``/``model`` default to the current extraction."""
     default_backend, _ = current_backend_model()
     backend = backend or default_backend
     model = model or current_model(backend)
@@ -491,7 +503,35 @@ def aggregate(
         since=since,
         now=now,
     )
-    return compute_snapshot(
+    return records, backend, model, now
+
+
+def aggregate(
+    session,
+    *,
+    backend: str | None = None,
+    model: str | None = None,
+    prompt_version: str | None = None,
+    now: datetime | None = None,
+    window_days: int = WINDOW_DAYS,
+    sources: list[Any] | None = None,
+    embed_model_key: str | None = None,
+) -> dict[str, Any]:
+    """Aggregate the database into the snapshot documents (see :func:`compute_snapshot`)
+    plus ``job_vectors`` from the embedding cache (``embed_model_key``, default fp32 model).
+
+    ``backend``/``model`` default to the current extraction backend and model. The result
+    also carries ``missing_vectors``: listed jobs without a cached vector yet.
+    """
+    records, backend, model, now = load_snapshot_records(
+        session,
+        backend=backend,
+        model=model,
+        prompt_version=prompt_version,
+        now=now,
+        window_days=window_days,
+    )
+    snapshot = compute_snapshot(
         records,
         now=now,
         window_days=window_days,
@@ -500,3 +540,9 @@ def aggregate(
         model=model,
         last_run_at=latest_fetch_time(session),
     )
+    vectors, missing = embed.job_vectors_document(
+        session, listed_records(records, now), embed_model_key or embed.current_model_key()
+    )
+    snapshot["job_vectors"] = vectors
+    snapshot["missing_vectors"] = missing
+    return snapshot
