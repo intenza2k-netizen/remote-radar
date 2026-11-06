@@ -8,16 +8,16 @@ import { SkillNetwork } from "@/components/insights/skill-network";
 import { Container, PageHeader } from "@/components/ui";
 import { getMeta } from "@/lib/data";
 import { fmtInt, roleLabel } from "@/lib/format";
-import { buildNetwork, getInsights, graphHeadline, liftHeadline, prepareLift, premiumHeadline, roleSkillsHeadline, strongestPairs } from "@/lib/insights";
+import { buildNetwork, getInsights, graphHeadline, liftHeadline, prepareLift, premiumHeadline, premiumRoleNote, roleSkillsHeadline, strongestPairs } from "@/lib/insights";
 import { windowCaption } from "@/lib/weeks";
 
 export const metadata: Metadata = {
   title: "Insights",
   description:
-    "Which skills carry a pay premium (with confidence intervals), what separates senior from junior postings, how skills cluster, and the top skills per role in remote job postings.",
+    "Which skills carry a pay premium within the same role, seniority and region (with confidence intervals), what separates senior from junior postings, how skills cluster, and the top skills per role in remote job postings.",
   openGraph: {
     title: "Insights · Remote Radar",
-    description: "Skill pay premiums with 95% intervals, senior vs junior skill lift, a skill co-occurrence map and top skills per role.",
+    description: "Role-, seniority- and region-adjusted skill pay premiums with 95% intervals, senior vs junior skill lift, a skill co-occurrence map and top skills per role.",
   },
 };
 
@@ -77,12 +77,21 @@ export default function InsightsPage() {
           headline={premiumHeadline(skill_premium) ?? "Not enough salaried postings yet to compare pay by skill."}
           howTo={
             <>
-              Each row compares the median advertised yearly salary (USD) of postings that mention the skill with postings that do not. The dot is the difference; the line is a 95% bootstrap interval. Postings from one company are not independent (a company board can bring dozens at similar pay), so each of the 1,000 resamples draws whole <em>companies</em> with replacement and keeps all of a drawn company&rsquo;s salaried postings; a skill that rests on one or two employers gets a wide line. Where the line crosses $0 the row is greyed: the data cannot distinguish it from no difference.
-              {premiumTested ? ` With ${premiumTested} skills tested, about ${chance} "clear" rows would appear from luck alone.` : ""} Only skills with at least 15 salaried postings from at least 5 different companies are tested, and the headline is the skill whose interval stays furthest from $0, not the one with the biggest dot. This is not adjusted for role or seniority, and it describes advertised pay, not what learning a skill would add to yours: skills travel with role and seniority.
+              Each row compares postings that mention a skill with postings of the same role, seniority and region group that do not, on advertised yearly salary. +12% means those postings advertise 12% more. The line is a 95% interval; greyed rows cross zero and could be noise. Switch to <em>raw difference</em> to see the plain gap in medians: the difference between the two views is the part explained by role, seniority and region.
+            </>
+          }
+          details={
+            <>
+              <p>
+                The adjusted view is a least-squares fit of log salary on the skill plus role (ten groups), seniority (intern to principal, or unspecified) and region group (US or Canada, Europe, Latin America, Asia-Pacific, worldwide, mixed or other, unknown), one skill at a time. The dollar figure is that percentage at the pay level of the postings that list the skill: what they advertise minus what they would advertise without the skill, all else equal. Not controlled for: company, the other skills a posting lists and the exact location (country, city, time zone), so a skill can still stand in for one of these.
+              </p>
+              <p>
+                Postings from one company are not independent (a company board can bring dozens at similar pay), so each of the 1,000 bootstrap resamples draws whole <em>companies</em> with replacement and keeps all of a drawn company&rsquo;s salaried postings; both views use the same resamples, and a skill that rests on one or two employers gets a wide line. The intervals are not corrected for multiple comparisons{premiumTested ? `: with ${premiumTested} skills tested, about ${chance} "clear" rows would appear from luck alone` : ""}. Only skills with at least 15 salaried postings from at least 5 different companies are tested, and the headline is the skill whose adjusted interval stays furthest from zero, not the one with the biggest dot. This describes advertised pay and is an association, not a cause: it is not what learning a skill would add to your pay.
+              </p>
             </>
           }
         >
-          {skill_premium.length ? <PremiumChart rows={skill_premium} /> : <EmptyNote>No skill has 15 or more salaried postings from at least 5 companies yet.</EmptyNote>}
+          {skill_premium.length ? <PremiumChart rows={skill_premium} roleNote={premiumRoleNote(skill_premium)} /> : <EmptyNote>No skill has 15 or more salaried postings from at least 5 companies yet.</EmptyNote>}
         </InsightSection>
 
         <InsightSection

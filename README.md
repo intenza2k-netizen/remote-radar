@@ -30,7 +30,7 @@ It also gave me a reason to build the whole chain once, end to end: collecting d
   - **Skill detail**: weekly trend, skills it is requested with, recent matching jobs.
   - **Jobs**: filter postings by skill, seniority, role, region and salary; every result links to the original listing.
   - **Match my CV** (`/match`): paste or upload a CV and get a ranked list of jobs with a score breakdown and the skills you are missing. Everything runs in your browser (transformers.js in a Web Worker), so the CV is never uploaded. The score mixes semantic similarity (0.4), skill overlap (0.35), seniority fit (0.15) and role fit (0.1), with a prior that stops jobs listing very few skills from floating to the top.
-  - **Insights** (`/insights`): skill pay premium with confidence intervals from a bootstrap that resamples companies, so one employer with many postings cannot drive a result (not adjusted for role), seniority lift with Newcombe intervals, a skill co-occurrence graph and the top skills per role.
+  - **Insights** (`/insights`): skill pay premium with confidence intervals from a bootstrap that resamples companies, so one employer with many postings cannot drive a result, shown both as a raw gap and adjusted for role, seniority and region (a regression of log salary on the skill plus role, seniority and coarse region-group dummies, with a switch between the two views), seniority lift with Newcombe intervals, a skill co-occurrence graph and the top skills per role.
   - **Companies** (`/companies`): the companies that are hiring, with their postings.
   - **Methodology**: how it works, extraction accuracy, how much of the data is targeted at data roles, and known limitations.
 
@@ -233,7 +233,7 @@ remote-radar/
 
 ## Roadmap
 
-- **Role-adjusted pay premium**: the skill pay premium on the Insights page is not adjusted for role, so it partly reflects which roles a skill travels with. Adjusting for role would give a fairer figure.
+- **Fuller pay-premium model**: the skill pay premium is adjusted for role, seniority and a coarse region group, one skill at a time. Company, the other skills in a posting and the exact location are not controlled for; a joint model (or a company fixed effect) would separate a skill from the stack it travels with.
 - **Postgres**: move the store off SQLite if the data outgrows one machine.
 - **Alerts**: notify when a skill's share moves sharply or a matching job appears.
 

@@ -1,9 +1,9 @@
 import "server-only";
 import fs from "node:fs";
 import path from "node:path";
-import { crossesZero, fmtSignedUsd, groupIdOf, headlineRow, median, newcombeDiff } from "@/components/insights/stats";
+import { adjustedHeadlineRow, adjustedOf, crossesZero, fmtSignedPct, fmtSignedUsd, groupIdOf, headlineRow, median, mostRoleDrivenRow, newcombeDiff } from "@/components/insights/stats";
 import { fmtInt, fmtShare, roleLabel } from "./format";
-import type { Job } from "./types";
+import type { Job, SkillPremium } from "./types";
 
 /**
  * Types, build-time loaders and server-side computations for the analytical pages
@@ -14,19 +14,7 @@ import type { Job } from "./types";
 
 // ------------------------------------------------------------------ contract types
 
-export type SkillPremium = {
-  slug: string;
-  name: string;
-  n_with: number;
-  n_without: number;
-  /** Distinct companies behind `n_with` (v3.1); absent in older snapshots. */
-  n_companies?: number;
-  median_with: number;
-  median_without: number;
-  diff: number;
-  ci_low: number;
-  ci_high: number;
-};
+export type { SkillPremium } from "./types";
 
 export type LiftSkill = { slug: string; name: string; share_senior: number; share_junior: number; lift: number };
 export type RoleLift = { role: string; n_senior: number; n_junior: number; skills: LiftSkill[] };
@@ -169,18 +157,47 @@ export function prepareLift(roles: RoleLift[]): RoleLiftPrepared[] {
 
 // ------------------------------------------------------------------ headlines (one sentence each, generated from the data)
 
+/**
+ * Headline of the pay-premium section. Judged on the role-, seniority- and region-adjusted interval; a snapshot
+ * from before v3.2 has no adjusted fields, so it falls back to the raw comparison and says so.
+ */
 export function premiumHeadline(rows: SkillPremium[]): string | null {
   if (!rows.length) return null;
+  if (!rows.some((r) => adjustedOf(r))) return rawPremiumHeadline(rows);
+  const tested = rows.filter((r) => adjustedOf(r)).length;
+  const pick = adjustedHeadlineRow(rows);
+  if (!pick) {
+    return `Once role, seniority and region are held fixed, no skill shows a pay gap we can tell apart from zero (${tested} skills tested).`;
+  }
+  const { top, clear } = pick;
+  const a = adjustedOf(top)!;
+  const dollars = a.usd != null && Math.round(Math.abs(a.usd)) >= 500 ? ` (about ${fmtSignedUsd(a.usd)} a year at these postings’ pay)` : "";
+  const gap = `${top.name}: postings that list it advertise ${Math.round(Math.abs(a.diff))}% ${a.diff > 0 ? "more" : "less"}${dollars} than postings of the same role, seniority and region group that do not (95% interval ${fmtSignedPct(a.ci_low)} to ${fmtSignedPct(a.ci_high)})`;
+  if (clear === 1) return `Only one of ${tested} skills shows a pay gap within role, seniority and region that we can tell apart from zero: ${gap}.`;
+  return `${clear} of ${tested} skills show a pay gap within role, seniority and region that we can tell apart from zero; the most solid is ${gap}.`;
+}
+
+function rawPremiumHeadline(rows: SkillPremium[]): string {
   const pick = headlineRow(rows);
   if (!pick) {
     return `At this sample size no skill shows a pay difference we can tell apart from zero (${rows.length} skills tested).`;
   }
   const { top, clear } = pick;
   const gap = `${fmtSignedUsd(top.diff)} a year in median advertised salary (95% interval ${fmtSignedUsd(top.ci_low)} to ${fmtSignedUsd(top.ci_high)})`;
-  // Raw comparison, not adjusted for role or seniority: say so in the headline itself.
-  const caveat = "Postings that list it pay differently, mostly because of which roles ask for it, not because of the skill itself.";
+  const caveat = "This snapshot has no role, seniority or region adjustment, so the gap mostly reflects which roles and places ask for the skill.";
   if (clear === 1) return `${top.name} is the only skill of ${rows.length} tested with a pay gap we can tell apart from zero: ${gap}. ${caveat}`;
   return `${clear} of ${rows.length} skills show a pay gap we can tell apart from zero; the most solid is ${top.name} at ${gap}. ${caveat}`;
+}
+
+/** The skill whose raw gap is mostly role, seniority and region: one sentence from the data, or null. */
+export function premiumRoleNote(rows: SkillPremium[]): string | null {
+  const pick = mostRoleDrivenRow(rows);
+  if (!pick) return null;
+  const { row, share } = pick;
+  const possessive = row.name.endsWith("s") ? `${row.name}’` : `${row.name}’s`;
+  const lead = share <= 0.5 ? "Most" : "Part";
+  const dollars = row.adj_usd != null && Math.round(Math.abs(row.adj_usd)) >= 500 ? ` (about ${fmtSignedUsd(row.adj_usd)} at these postings’ pay)` : "";
+  return `${lead} of ${possessive} raw gap is role, seniority and region, not the skill: ${fmtSignedUsd(row.diff)} raw, ${fmtSignedPct(row.adj_pct as number)}${dollars} within role, seniority and region.`;
 }
 
 export function liftHeadline(roles: RoleLiftPrepared[]): string | null {

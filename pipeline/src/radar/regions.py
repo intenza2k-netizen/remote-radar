@@ -27,7 +27,15 @@ from pathlib import Path
 
 import yaml
 
-__all__ = ["REGIONS_PATH", "US", "WORLDWIDE", "normalize_region", "normalize_regions"]
+__all__ = [
+    "REGIONS_PATH",
+    "REGION_GROUPS",
+    "US",
+    "WORLDWIDE",
+    "normalize_region",
+    "normalize_regions",
+    "region_group",
+]
 
 REGIONS_PATH = Path(__file__).with_name("regions.yaml")
 US = "United States"
@@ -142,3 +150,88 @@ def normalize_regions(raws: Iterable[str] | None) -> list[str]:
         seen.add(name.casefold())
         out.append(name)
     return out
+
+
+# --------------------------------------------------------------------------- region groups
+
+US_CANADA = "us_canada"
+EUROPE = "europe"
+LATAM = "latam"
+APAC = "apac"
+WORLDWIDE_GROUP = "worldwide"
+OTHER_OR_MIXED = "other_or_mixed"
+UNKNOWN = "unknown"
+REGION_GROUPS = (US_CANADA, EUROPE, LATAM, APAC, WORLDWIDE_GROUP, OTHER_OR_MIXED, UNKNOWN)
+
+_NORTH_AMERICA = ("United States", "Canada", "North America")
+_EUROPE = (
+    # multi-country regions; EMEA is counted as Europe (a judgement call: most EMEA postings
+    # are European time zones)
+    "EU, EEA, EMEA, Europe, European Union, "
+    "United Kingdom, Ireland, Germany, France, Spain, Portugal, Italy, Netherlands, Belgium, "
+    "Luxembourg, Switzerland, Austria, Liechtenstein, Monaco, Andorra, Malta, Cyprus, Iceland, "
+    "Norway, Sweden, Denmark, Finland, Estonia, Latvia, Lithuania, Poland, Czechia, Slovakia, "
+    "Hungary, Romania, Bulgaria, Greece, Croatia, Slovenia, Serbia, Bosnia and Herzegovina, "
+    "Montenegro, North Macedonia, Albania, Kosovo, Moldova, Ukraine, Belarus, Russia"
+)
+_LATAM = (
+    "Latin America, Mexico, Guatemala, Belize, Honduras, El Salvador, Nicaragua, Costa Rica, "
+    "Panama, Colombia, Venezuela, Guyana, Suriname, Ecuador, Peru, Bolivia, Brazil, Paraguay, "
+    "Uruguay, Argentina, Chile, Cuba, Dominican Republic, Haiti, Jamaica, Puerto Rico, "
+    "Trinidad and Tobago, Barbados, Bahamas, Anguilla, Antigua and Barbuda, Aruba"
+)
+_APAC = (
+    "Asia-Pacific, India, Pakistan, Bangladesh, Sri Lanka, Nepal, China, Hong Kong, Taiwan, "
+    "Japan, South Korea, Mongolia, Philippines, Indonesia, Malaysia, Singapore, Vietnam, "
+    "Thailand, Cambodia, Laos, Myanmar, Brunei, Timor-Leste, Australia, New Zealand, "
+    "Papua New Guinea, Fiji"
+)
+
+
+def _keys(csv: str) -> frozenset[str]:
+    return frozenset(region_key(name.strip()) for name in csv.split(","))
+
+
+_GROUP_OF: dict[str, str] = {
+    key: group
+    for group, names in (
+        (US_CANADA, ", ".join(_NORTH_AMERICA)),
+        (EUROPE, _EUROPE),
+        (LATAM, _LATAM),
+        (APAC, _APAC),
+    )
+    for key in _keys(names)
+}
+
+
+def region_group(raws: Iterable[str] | None) -> str:
+    """Coarse region group of one posting, from its ``remote_regions`` (raw or canonical).
+
+    Used as a fixed effect in the skill pay premium, because pay differs more by where a role
+    is open than by almost anything else. The rules, in order:
+
+    1. no region at all: ``unknown``;
+    2. any of United States, Canada or North America: ``us_canada``;
+    3. only "worldwide" (or "anywhere"): ``worldwide``;
+    4. every value in one list of Europe (EU, EEA, EMEA, Europe and European countries, UK
+       included), Latin America (Mexico to Argentina and the Caribbean) or Asia-Pacific
+       (South and East Asia, South-East Asia, Oceania): that group, ``europe``, ``latam`` or
+       ``apac``. EMEA counts as Europe, a judgement call;
+    5. anything else, including a mix of groups ("Germany, India"), "worldwide" next to
+       other values, "Americas" and places outside the lists (Israel, Africa, Gulf states,
+       Türkiye): ``other_or_mixed``.
+
+    Values are canonicalised first (:func:`normalize_regions`), so "USA", "AL, AZ, IL, IN" and
+    "Anywhere" read as United States and worldwide."""
+    names = normalize_regions(raws)
+    if not names:
+        return UNKNOWN
+    keys = [region_key(n) for n in names]
+    if any(_GROUP_OF.get(k) == US_CANADA for k in keys):
+        return US_CANADA
+    if all(k == region_key(WORLDWIDE) for k in keys):
+        return WORLDWIDE_GROUP
+    groups = {_GROUP_OF.get(k) for k in keys}
+    if len(groups) == 1 and None not in groups:
+        return groups.pop() or OTHER_OR_MIXED
+    return OTHER_OR_MIXED

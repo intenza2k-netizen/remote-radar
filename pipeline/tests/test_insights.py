@@ -24,6 +24,7 @@ def rec(
     role: str = "data",
     seniority: str = "senior",
     company: str | None = None,
+    regions: list[str] | None = None,
     source: str = "remotive",
     days_ago: int = 3,
 ) -> JobRecord:
@@ -38,7 +39,7 @@ def rec(
         role=role,
         seniority=seniority,
         employment_type="full_time",
-        remote_regions=[],
+        remote_regions=list(regions or []),
         skills=list(skills),
         salaries=[RawSalary(salary, salary, "USD", "year")] if salary else [],
     )
@@ -87,7 +88,7 @@ def test_skill_premium_filters_small_groups_and_sorts_by_interval_lower_bound():
     slugs = [r["slug"] for r in rows]
     assert "rare" not in slugs  # only 5 salaried jobs
     assert "git" not in slugs  # nobody without it: no comparison group
-    gaps = [insights._certain_gap(r) for r in rows]
+    gaps = [insights._certain_adj_gap(r) for r in rows]
     assert gaps == sorted(gaps, reverse=True)
     assert rows[0]["slug"] == "dbt"  # the clear gap leads, the noisy docker row trails
     assert insights.skill_premium([rec(1, skills=["a"])]) == []  # no salaries at all
@@ -191,6 +192,182 @@ def test_skill_premium_is_reproducible_and_independent_of_other_skills():
         dbt["ci_low"],
         dbt["ci_high"],
     )
+
+
+def adjusted_population(effect: float = 0.0, *, seed: int = 21) -> list[JobRecord]:
+    """160 salaried postings, each from its own company. "ml" roles pay about twice as much as
+    "data" roles. "torch" appears in half of the ml postings and in none of the data ones;
+    "sql" appears in a random 40% of both roles and multiplies pay by exp(effect). Seniority
+    alternates senior/mid and is paid +25% for senior."""
+    rng = np.random.default_rng(seed)
+    out: list[JobRecord] = []
+    for i in range(160):
+        role = "ml" if i < 80 else "data"
+        seniority = "senior" if i % 2 == 0 else "mid"
+        has_sql = bool(rng.random() < 0.4)
+        skills = ["git"] if i % 3 else ["git", "docker"]
+        if role == "ml" and i % 2 == 1:
+            skills.append("torch")
+        if has_sql:
+            skills.append("sql")
+        log_pay = (
+            math.log(120_000 if role == "ml" else 60_000)
+            + (math.log(1.25) if seniority == "senior" else 0.0)
+            + (effect if has_sql else 0.0)
+            + float(rng.normal(0, 0.08))
+        )
+        out.append(
+            rec(i, skills=skills, salary=round(math.exp(log_pay)), role=role, seniority=seniority)
+        )
+    return out
+
+
+def test_role_confounded_skill_has_a_large_raw_gap_but_no_adjusted_premium():
+    rows = {r["slug"]: r for r in insights.skill_premium(adjusted_population())}
+    torch = rows["torch"]
+    assert torch["diff"] > 30_000 and torch["ci_low"] > 0  # raw: looks like a big premium
+    assert abs(torch["adj_pct"]) < 8  # within role it pays the same
+    assert torch["adj_ci_low_pct"] < 0 < torch["adj_ci_high_pct"]
+    # adj_usd is the effect at the with-skill pay level; it is computed from the unrounded
+    # percentage, so allow for the 0.1 pp rounding of adj_pct.
+    expected = torch["median_with"] * (1 - 1 / (1 + torch["adj_pct"] / 100))
+    assert torch["adj_usd"] == pytest.approx(expected, abs=0.002 * torch["median_with"])
+
+
+def test_adjusted_usd_is_the_effect_at_the_with_skill_pay_level():
+    sql = next(
+        r for r in insights.skill_premium(adjusted_population(math.log(1.2))) if r["slug"] == "sql"
+    )
+    without_skill = sql["median_with"] / (1 + sql["adj_pct"] / 100)  # what they'd advertise
+    assert sql["adj_usd"] == pytest.approx(sql["median_with"] - without_skill, abs=0.003 * 1e5)
+    assert sql["adj_usd"] > 0
+
+
+def region_population(effect: float = 0.0, *, seed: int = 8) -> list[JobRecord]:
+    """120 salaried postings, one company each, same role and seniority throughout. 60 are
+    open in the US (about 120k) and 60 in India (about 30k). "offshore" is listed by half of
+    the Indian postings and by none of the US ones; "sql" is listed by a random 40% of both
+    regions and multiplies pay by exp(effect)."""
+    rng = np.random.default_rng(seed)
+    out: list[JobRecord] = []
+    for i in range(120):
+        us = i < 60
+        has_sql = bool(rng.random() < 0.4)
+        skills = ["git"] if i % 3 else ["git", "docker"]
+        if not us and i % 2 == 0:
+            skills.append("offshore")
+        if has_sql:
+            skills.append("sql")
+        log_pay = (
+            math.log(120_000 if us else 30_000)
+            + (effect if has_sql else 0.0)
+            + float(rng.normal(0, 0.08))
+        )
+        out.append(
+            rec(
+                i,
+                skills=skills,
+                salary=round(math.exp(log_pay)),
+                regions=["United States"] if us else ["India"],
+            )
+        )
+    return out
+
+
+def test_skill_confined_to_a_low_pay_region_has_no_adjusted_premium():
+    rows = {r["slug"]: r for r in insights.skill_premium(region_population())}
+    offshore = rows["offshore"]
+    assert offshore["diff"] < -60_000 and offshore["ci_high"] < 0  # raw: a huge, clear penalty
+    assert abs(offshore["adj_pct"]) < 8  # same region, same pay
+    assert offshore["adj_ci_low_pct"] < 0 < offshore["adj_ci_high_pct"]
+    # Without the region control the same data would show a big penalty: the control matters.
+    pop = region_population()
+    salaried = sorted(pop, key=lambda r: (r.salary.annual_usd_mid, r.id))
+    y = np.log([r.salary.annual_usd_mid for r in salaried])
+    s = np.array([["offshore" in r.skills] for r in salaried], dtype=float)
+    plain = np.hstack([np.ones((len(y), 1)), s])
+    b = np.linalg.lstsq(plain, y, rcond=None)[0][1]
+    assert 100 * math.expm1(b) < -50
+
+
+def test_region_effect_is_still_recovered_within_a_region():
+    rows = {r["slug"]: r for r in insights.skill_premium(region_population(math.log(1.2)))}
+    assert rows["sql"]["adj_pct"] == pytest.approx(20, abs=6)
+    assert rows["sql"]["adj_ci_low_pct"] > 0
+
+
+def test_adjusted_estimate_recovers_a_true_within_role_effect():
+    effect = math.log(1.2)
+    rows = {r["slug"]: r for r in insights.skill_premium(adjusted_population(effect))}
+    sql = rows["sql"]
+    assert sql["adj_pct"] == pytest.approx(20, abs=5)
+    assert sql["adj_ci_low_pct"] < 20 < sql["adj_ci_high_pct"]
+    assert sql["adj_ci_low_pct"] > 0  # and it is clearly positive
+    assert sql["adj_ci_low_pct"] < sql["adj_pct"] < sql["adj_ci_high_pct"]
+    # The confounded skill stays near zero in the same data.
+    assert abs(rows["torch"]["adj_pct"]) < 8
+
+
+def test_adjusted_estimate_matches_a_direct_regression_and_is_deterministic():
+    population = adjusted_population(math.log(1.2))
+    first = insights.skill_premium(population)
+    assert insights.skill_premium(population) == first  # seeded: identical across runs
+
+    salaried = sorted(population, key=lambda r: (r.salary.annual_usd_mid, r.id))
+    y = np.log([r.salary.annual_usd_mid for r in salaried])
+    design = np.column_stack(
+        [
+            np.ones(len(salaried)),
+            [r.role == "data" for r in salaried],
+            [r.seniority == "mid" for r in salaried],
+            ["sql" in r.skills for r in salaried],
+        ]
+    ).astype(float)
+    b = np.linalg.lstsq(design, y, rcond=None)[0][-1]
+    sql = next(r for r in first if r["slug"] == "sql")
+    assert sql["adj_pct"] == pytest.approx(100 * math.expm1(b), abs=0.05)
+
+
+def test_fwl_bootstrap_coefficients_equal_weighted_regressions():
+    """Each resample's coefficient equals the full weighted least squares fit with that
+    resample's company multiplicities."""
+    population = adjusted_population(math.log(1.2))
+    salaried = sorted(population, key=lambda r: (r.salary.annual_usd_mid, r.id))
+    y = np.log([r.salary.annual_usd_mid for r in salaried])
+    sql = np.array([["sql" in r.skills] for r in salaried], dtype=float)
+    design = insights._fixed_effects_design(salaried)
+    rng = np.random.default_rng(4)
+    weights = rng.integers(0, 4, (5, len(salaried)))
+    got = insights._adjusted_coefficients(y, sql, design, weights)[0]
+    full = np.hstack([design, sql])
+    for i, w in enumerate(np.vstack([np.ones(len(salaried)), weights])):
+        root = np.sqrt(w)[:, None]
+        coef = np.linalg.lstsq(full * root, y * root[:, 0], rcond=None)[0]
+        assert got[i] == pytest.approx(coef[-1], abs=1e-9)
+
+
+def test_skill_without_variation_inside_role_and_seniority_is_skipped():
+    population = adjusted_population()
+    # "ml-only" is in every ml posting and in no data posting: role explains it completely.
+    population = [
+        replace(r, skills=[*r.skills, "ml-only"]) if r.role == "ml" else r for r in population
+    ]
+    rows = {r["slug"]: r for r in insights.skill_premium(population)}
+    flat = rows["ml-only"]
+    assert flat["adj_pct"] is None and flat["adj_usd"] is None
+    assert flat["adj_ci_low_pct"] is None and flat["adj_ci_high_pct"] is None
+    assert flat["diff"] > 30_000 and flat["ci_low"] < flat["diff"] < flat["ci_high"]  # raw kept
+    order = [r["slug"] for r in insights.skill_premium(population)]
+    assert order[-1] == "ml-only"  # rows without an adjusted estimate sort last
+    assert rows["sql"]["adj_pct"] is not None
+
+
+def test_adjusted_rows_sort_by_distance_of_the_adjusted_interval_from_zero():
+    rows = insights.skill_premium(adjusted_population(math.log(1.2)))
+    adjusted = [r for r in rows if r["adj_pct"] is not None]
+    gaps = [insights._certain_adj_gap(r) for r in adjusted]
+    assert gaps == sorted(gaps, reverse=True)
+    assert rows[0]["slug"] == "sql"
 
 
 # --------------------------------------------------------------------------- seniority lift

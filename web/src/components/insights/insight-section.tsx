@@ -2,19 +2,22 @@ import type { ReactNode } from "react";
 
 /**
  * One analysis block: a small name above, the generated one-sentence takeaway as the heading,
- * then a "how to read this" note and the figure.
+ * then a "how to read this" note, optional collapsed method details, and the figure.
  */
 export function InsightSection({
   id,
   name,
   headline,
   howTo,
+  details,
   children,
 }: {
   id: string;
   name: string;
   headline: ReactNode;
   howTo: ReactNode;
+  /** Longer method notes, collapsed under "Method details" so the figure stays close to the takeaway. */
+  details?: ReactNode;
   children: ReactNode;
 }) {
   return (
@@ -26,6 +29,12 @@ export function InsightSection({
       <p className="mt-3 max-w-3xl text-pretty text-sm leading-relaxed text-ink-2">
         <strong className="font-semibold text-ink">How to read this.</strong> {howTo}
       </p>
+      {details ? (
+        <details className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-2">
+          <summary className="cursor-pointer text-ink-3 hover:text-ink">Method details</summary>
+          <div className="mt-2 space-y-3 text-pretty">{details}</div>
+        </details>
+      ) : null}
       <div className="mt-6">{children}</div>
     </section>
   );

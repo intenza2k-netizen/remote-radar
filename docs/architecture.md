@@ -279,7 +279,7 @@ Everything the website reads lives in `web/public/data/`:
 | `eval.json` | Per-model accuracy, latency and cost from the eval harness. Written by the eval step, not by `publish`. |
 | `job_vectors.json` | One int8 vector per listed job with a per-vector scale, plus the model name and the query prefix the browser must use. Read by the CV matcher. |
 | `skill_vocab.json` | Skill names, aliases and match patterns the browser uses to read skills out of a CV. |
-| `insights.json` | Skill pay premium with company-cluster bootstrap intervals (at least 5 companies per skill), seniority lift, skill co-occurrence graph (PMI) with a force layout computed at build time, role-skill profiles. |
+| `insights.json` | Skill pay premium, raw (difference of medians) and adjusted for role, seniority and region group (regression of log salary, Frisch-Waugh-Lovell per resample), both with company-cluster bootstrap intervals from the same resamples (at least 5 companies per skill), seniority lift, skill co-occurrence graph (PMI) with a force layout computed at build time, role-skill profiles. |
 | `companies.json` | One row per hiring company with its postings, for `/companies` and `/companies/[slug]`. |
 
 All salaries are annualised and converted to USD.
@@ -328,9 +328,12 @@ All salaries are annualised and converted to USD.
   matching against a vocabulary, so a skill written in an unusual way is missed (the user
   can add it). Seniority is guessed from title words and years of experience. Similarity
   comes from a small model, and its scores are compressed into a narrow band.
-- **The skill pay premium is not adjusted for role.** The Insights page compares median pay
-  with and without a skill. Skills travel with seniority and role, so the number is an
-  association, not the pay a skill adds. The site says so.
+- **The skill pay premium controls for role, seniority and region group only.** The Insights page shows,
+  by default, how much more postings that mention a skill advertise than postings of the same
+  role, seniority and region group that do not (least squares on log salary, one skill at a
+  time), and lets the reader switch to the raw difference of medians. Company, the other
+  skills in a posting and the exact location are not controlled for, so the number is an association, not the pay a skill
+  adds. The site says so.
 - **History starts at the first run.** Postings are only seen when they are published
   while the pipeline runs (or are still listed), so early trend lines are short and the
   latest week is always partial.

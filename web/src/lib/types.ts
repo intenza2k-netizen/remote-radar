@@ -113,3 +113,34 @@ export type EvalData = {
   n_labeled: number;
   backends: EvalBackend[];
 };
+
+/**
+ * One row of `insights.json` `skill_premium` (PLAN.md section 5). Raw fields compare the median
+ * advertised annual USD salary of postings with and without the skill, with a company-cluster
+ * bootstrap 95% interval. The `adj_*` fields come from a regression of log salary on the skill plus
+ * role, seniority and region-group dummies, over the same resamples: `adj_pct` = 100 * (exp(b) - 1)
+ * is how much more postings with the skill advertise than postings of the same role, seniority and
+ * region group without it, and `adj_usd` is that effect at the pay level of the postings that list the
+ * skill (`median_with - median_with / (1 + adj_pct / 100)`).
+ * They are `null` when nothing varies within role, seniority and region for the skill, and absent in
+ * snapshots older than v3.2.
+ */
+export type SkillPremium = {
+  slug: string;
+  name: string;
+  n_with: number;
+  n_without: number;
+  /** Distinct companies behind `n_with` (v3.1); absent in older snapshots. */
+  n_companies?: number;
+  median_with: number;
+  median_without: number;
+  diff: number;
+  ci_low: number;
+  ci_high: number;
+  /** Role-, seniority- and region-adjusted premium in percent (v3.2). */
+  adj_pct?: number | null;
+  /** The adjusted effect in annual USD at the pay level of postings that list the skill (v3.2). */
+  adj_usd?: number | null;
+  adj_ci_low_pct?: number | null;
+  adj_ci_high_pct?: number | null;
+};

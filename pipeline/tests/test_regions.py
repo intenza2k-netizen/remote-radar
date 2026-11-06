@@ -112,3 +112,45 @@ def test_bad_yaml_is_rejected(tmp_path):
     )
     with pytest.raises(ValueError, match="two upper-case"):
         regions._load(bad)
+
+
+@pytest.mark.parametrize(
+    ("raws", "group"),
+    [
+        (None, "unknown"),
+        ([], "unknown"),
+        (["", "  "], "unknown"),
+        (["United States"], "us_canada"),
+        (["USA", "Germany"], "us_canada"),  # any US/Canada value wins
+        (["Canada"], "us_canada"),
+        (["North America"], "us_canada"),
+        (["AL", "AZ", "IL", "IN"], "us_canada"),  # a list of states reads as the US
+        (["worldwide"], "worldwide"),
+        (["Anywhere", "Global"], "worldwide"),
+        (["Worldwide", "Germany"], "other_or_mixed"),  # worldwide next to anything else
+        (["United Kingdom"], "europe"),
+        (["UK", "Ireland", "Poland"], "europe"),
+        (["EU"], "europe"),
+        (["EMEA"], "europe"),  # judgement call: EMEA counts as Europe
+        (["Europe", "Türkiye"], "other_or_mixed"),  # one value outside Europe
+        (["Latin America"], "latam"),
+        (["Mexico", "Brazil", "Colombia"], "latam"),
+        (["APAC"], "apac"),
+        (["India", "Philippines", "Australia"], "apac"),
+        (["Germany", "India"], "other_or_mixed"),  # two groups mixed
+        (["Americas"], "other_or_mixed"),  # does not name the US or Canada
+        (["Israel"], "other_or_mixed"),
+        (["South Africa", "Kenya"], "other_or_mixed"),
+    ],
+)
+def test_region_group(raws, group):
+    assert regions.region_group(raws) == group
+    assert group in regions.REGION_GROUPS
+
+
+def test_region_groups_cover_every_canonical_alias_name():
+    # The group lists use canonical names, so every one must survive normalisation unchanged.
+    for key, group in regions._GROUP_OF.items():
+        canonical = normalize_region(key)
+        assert canonical is not None
+        assert regions.region_group([canonical]) == group, key

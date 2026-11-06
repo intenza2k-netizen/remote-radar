@@ -176,6 +176,9 @@ export default function MethodologyPage() {
               <strong>Salary is partial and self-selected.</strong> Only about {meta.totals.jobs ? Math.round((meta.totals.with_salary / meta.totals.jobs) * 100) : 0}% of postings state pay, and those that do are not a random sample (transparent employers, certain regions). Ranges are reduced to their midpoint.
             </li>
             <li>
+              <strong>The skill pay premium is adjusted for role, seniority and region, and for nothing else.</strong> On the Insights page, postings that mention a skill are compared with postings of the same role, seniority and region group (US or Canada, Europe, Latin America, Asia-Pacific, worldwide, mixed or other, unknown) that do not (least squares on log salary, one skill at a time, intervals from a bootstrap that resamples companies). Company, the other skills in a posting and the exact location are not controlled for, many skills rest on few employers, and only the postings that state a salary count, so the numbers are associations in advertised pay, not what learning a skill would add to yours.
+            </li>
+            <li>
               <strong>FX and annualisation are approximations.</strong> A static exchange-rate table converts to USD, so figures drift from real rates and ignore purchasing power. Hourly and monthly rates assume a full-time year, which overstates contract work.
             </li>
             <li>

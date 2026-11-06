@@ -18,7 +18,32 @@ insights.json
         disappear. Rows carry ``n_companies`` (distinct companies behind ``n_with``) and are
         sorted by the interval's lower bound (the distance of the interval from zero for a
         negative gap), so a fragile large estimate cannot lead.
-        This is an association, not a causal effect: skills travel with seniority and role.
+        The raw difference mostly says which roles and places ask for a skill, so every row
+        also carries a role-, seniority- and region-adjusted estimate: least squares of
+        ``log(salary)`` on the skill indicator plus fixed-effect dummies for role (10
+        categories), seniority (7 levels, ``unspecified`` included) and region group (7 groups
+        built from the canonical ``remote_regions`` by ``regions.region_group``: us_canada,
+        europe, latam, apac, worldwide, other_or_mixed, unknown; the rules are in that
+        function's docstring). The coefficient ``b`` is reported as ``adj_pct =
+        100 * (exp(b) - 1)``: postings that mention the skill advertise that much more than
+        postings with the same role, seniority and region group that do not. ``adj_usd`` is
+        that effect at the pay level of the postings that list the skill:
+        ``median_with - median_with / (1 + adj_pct / 100)``, i.e. what those postings would
+        advertise without the skill, all else equal, subtracted from what they advertise.
+        Each skill is fitted on its own (not jointly with the other skills). To stay fast the fit
+        uses the Frisch-Waugh-Lovell theorem: per resample, ``log(salary)`` and the whole
+        skill-indicator matrix are projected onto the fixed-effect design once (weighted by
+        that resample's company multiplicities, pseudo-inverse for rank safety), and each
+        skill's ``b`` is ``sum(w rs ry) / sum(w rs^2)`` on the residuals. The adjusted interval
+        (``adj_ci_low_pct``, ``adj_ci_high_pct``) is the 2.5/97.5 percentile of ``b`` over the
+        *same* company resamples as the raw interval, transformed to percent. A skill with no
+        variation left within role, seniority and region group (``sum(w rs^2)`` about zero in
+        the point fit, e.g. it only occurs in one role and in all of that role's postings)
+        keeps its raw fields and gets ``null`` adjusted fields. Rows are sorted by the adjusted
+        interval's distance from zero (``adj_ci_low_pct`` for a positive estimate,
+        ``-adj_ci_high_pct`` for a negative one), rows without an adjusted estimate last, by
+        the raw rule. Still an association, not a causal effect: company, the other skills of a
+        posting and the exact location (country, city, time zone) are not controlled for.
     ``seniority_lift``  Per role with at least ``MIN_ROLE_POSTINGS`` postings: how much more
         often each skill appears in senior (senior, lead, principal) than in junior (intern,
         junior, mid) postings. Postings with unspecified seniority are in neither group.
@@ -75,6 +100,7 @@ import numpy as np
 import yaml
 
 from radar.dedupe import normalize_company
+from radar.regions import region_group
 from radar.skills import normalize as _skills_module
 from radar.skills import skill_info
 
@@ -86,6 +112,8 @@ BOOTSTRAPS = 1000
 MIN_PREMIUM_WITH = 15
 MIN_PREMIUM_WITHOUT = 10
 MIN_PREMIUM_COMPANIES = 5  # distinct companies among the with-skill salaried postings
+# Share of sum(w s) that sum(w rs^2) must exceed: below it nothing varies within role/seniority.
+DEGENERATE_TOL = 1e-7
 MIN_ROLE_POSTINGS = 30
 MIN_GROUP = 5
 MIN_LIFT_SUPPORT = 3
@@ -168,6 +196,7 @@ def skill_premium(
     weights = draws[:, posting_company].astype(np.int64)  # (replicates, postings)
 
     rows: list[dict[str, Any]] = []
+    masks: list[np.ndarray] = []
     for slug in candidates:
         mask = np.array([slug in r.skills for r in salaried])
         with_, without = values[mask], values[~mask]
@@ -196,7 +225,15 @@ def skill_premium(
                 "ci_high": round(float(high)),
             }
         )
-    rows.sort(key=lambda r: (-_certain_gap(r), -r["diff"], r["slug"]))
+        masks.append(mask)
+
+    if rows:
+        indicators = np.column_stack(masks).astype(np.float64)
+        design = _fixed_effects_design(salaried)
+        betas = _adjusted_coefficients(np.log(values), indicators, design, weights)
+        for row, boot in zip(rows, betas, strict=True):
+            row.update(_adjusted_fields(boot, row["median_with"]))
+    rows.sort(key=_row_order)
     return rows
 
 
@@ -204,6 +241,103 @@ def _certain_gap(row: dict[str, Any]) -> float:
     """How far the interval stays from zero in the direction of the gap: ``ci_low`` for a
     positive gap, ``-ci_high`` for a negative one (negative when the interval crosses zero)."""
     return row["ci_low"] if row["diff"] >= 0 else -row["ci_high"]
+
+
+def _certain_adj_gap(row: dict[str, Any]) -> float:
+    """``_certain_gap`` on the adjusted percentages (the row must have an adjusted estimate)."""
+    return row["adj_ci_low_pct"] if row["adj_pct"] >= 0 else -row["adj_ci_high_pct"]
+
+
+def _row_order(row: dict[str, Any]) -> tuple[Any, ...]:
+    """Adjusted rows first, furthest from zero first; rows without an adjusted estimate follow,
+    ordered by the raw interval the same way."""
+    if row["adj_pct"] is not None:
+        return (0, -_certain_adj_gap(row), -row["adj_pct"], row["slug"])
+    return (1, -_certain_gap(row), -row["diff"], row["slug"])
+
+
+# ----------------------------------------- role-, seniority- and region-adjusted premium
+
+
+def _fixed_effects_design(salaried: Sequence[JobRecord]) -> np.ndarray:
+    """Intercept plus a dummy for every role, seniority and region-group level except the most
+    common one of each (the reference level). Levels with a single posting are kept: the
+    pseudo-inverse in ``_adjusted_coefficients`` makes a rank-deficient design harmless."""
+    columns = [np.ones(len(salaried))]
+    for labels in (
+        [r.role for r in salaried],
+        [r.seniority for r in salaried],
+        [region_group(r.remote_regions) for r in salaried],
+    ):
+        levels = sorted(set(labels), key=lambda lv: (-labels.count(lv), lv))
+        for level in levels[1:]:
+            columns.append(np.array([lab == level for lab in labels], dtype=np.float64))
+    return np.column_stack(columns)
+
+
+def _adjusted_coefficients(
+    log_y: np.ndarray,
+    skills: np.ndarray,
+    design: np.ndarray,
+    weights: np.ndarray,
+    *,
+    block: int = 48,
+) -> np.ndarray:
+    """Skill coefficients of ``log y ~ skill + role + seniority + region group`` for the point
+    sample and every resample, one skill at a time, via the Frisch-Waugh-Lovell theorem.
+
+    ``weights`` is (replicates, postings) company multiplicity; the function prepends an
+    all-ones row for the point fit. Per replicate the fixed effects are projected out of
+    ``log y`` and of every skill indicator with that replicate's weights (``pinv`` keeps it
+    stable when a role or seniority level is absent from a resample); the skill coefficient is
+    ``sum(w rs ry) / sum(w rs^2)`` on the residuals ``rs`` and ``ry``. Because the residuals are
+    weighted-orthogonal to the design, this needs only the cross-products ``X'Wz`` and
+    ``z'Wz'`` and never builds a residual matrix. Returns (skills, 1 + replicates): column 0 is
+    the point estimate; NaN where ``sum(w rs^2)`` is (relatively) zero, i.e. the skill has no
+    variation left within role, seniority and region group."""
+    n, p = design.shape
+    w = np.vstack([np.ones(n), weights.astype(np.float64)])  # (1 + B, n)
+    y = log_y - log_y.mean()  # centring only limits rounding error; the intercept absorbs it
+    xx = (design[:, :, None] * design[:, None, :]).reshape(n, p * p)
+    a = (w @ xx).reshape(-1, p, p)  # X'WX per replicate
+    a_inv = np.linalg.pinv(a, rcond=1e-10, hermitian=True)
+    beta_y = np.einsum("bpq,bq->bp", a_inv, w @ (design * y[:, None]))  # (1 + B, p)
+
+    out = np.empty((skills.shape[1], w.shape[0]))
+    for start in range(0, skills.shape[1], block):
+        s = skills[:, start : start + block]
+        k = s.shape[1]
+        xs = (w @ (design[:, :, None] * s[:, None, :]).reshape(n, p * k)).reshape(-1, p, k)
+        s_mass = w @ s  # sum(w s) = sum(w s^2) for 0/1 indicators
+        num = w @ (s * y[:, None]) - np.einsum("bpk,bp->bk", xs, beta_y)
+        den = s_mass - np.einsum("bpk,bpk->bk", xs, a_inv @ xs)
+        usable = den > DEGENERATE_TOL * s_mass
+        out[start : start + k] = np.where(usable, num / np.where(usable, den, 1.0), np.nan).T
+    return out
+
+
+def _adjusted_fields(boot: np.ndarray, median_with: float) -> dict[str, Any]:
+    """Row fields from one skill's coefficients (index 0 = point fit, the rest = resamples).
+    ``adj_usd`` is the effect at the pay level of the postings that list the skill: what they
+    advertise (``median_with``) minus what they would advertise without it."""
+    empty: dict[str, Any] = {
+        "adj_pct": None,
+        "adj_usd": None,
+        "adj_ci_low_pct": None,
+        "adj_ci_high_pct": None,
+    }
+    point, resampled = boot[0], boot[1:]
+    resampled = resampled[np.isfinite(resampled)]
+    if not np.isfinite(point) or len(resampled) < max(1, (len(boot) - 1) // 2):
+        return empty
+    low, high = np.percentile(resampled, [2.5, 97.5])
+    pct = 100 * np.expm1(point)
+    return {
+        "adj_pct": round(float(pct), 1),
+        "adj_usd": round(median_with - median_with / (1 + float(pct) / 100)),
+        "adj_ci_low_pct": round(float(100 * np.expm1(low)), 1),
+        "adj_ci_high_pct": round(float(100 * np.expm1(high)), 1),
+    }
 
 
 # --------------------------------------------------------------------------- seniority lift

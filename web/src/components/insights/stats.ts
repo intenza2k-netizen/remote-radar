@@ -24,6 +24,55 @@ export function headlineRow<T extends PremiumLike>(rows: T[]): { top: T; clear: 
   return { top, clear: clear.length };
 }
 
+/** The fields of a `skill_premium` row that the helpers below read. */
+export type PremiumFields = PremiumLike & {
+  adj_pct?: number | null;
+  adj_usd?: number | null;
+  adj_ci_low_pct?: number | null;
+  adj_ci_high_pct?: number | null;
+};
+
+/** A row's role- and seniority-adjusted estimate as `{diff, ci_low, ci_high}` in percent, or null when it has none. */
+export function adjustedOf(r: PremiumFields): (PremiumLike & { usd: number | null }) | null {
+  if (r.adj_pct == null || r.adj_ci_low_pct == null || r.adj_ci_high_pct == null) return null;
+  return { diff: r.adj_pct, ci_low: r.adj_ci_low_pct, ci_high: r.adj_ci_high_pct, usd: r.adj_usd ?? null };
+}
+
+/** Like `headlineRow`, judged on the adjusted intervals; rows without an adjusted estimate are ignored. */
+export function adjustedHeadlineRow<T extends PremiumFields>(rows: T[]): { top: T; clear: number; tested: number } | null {
+  const usable = rows.flatMap((r) => {
+    const a = adjustedOf(r);
+    return a ? [{ r, a }] : [];
+  });
+  const pick = headlineRow(usable.map((u) => ({ ...u.a, row: u.r })));
+  return pick ? { top: pick.top.row, clear: pick.clear, tested: usable.length } : null;
+}
+
+/**
+ * The skill whose raw gap shrinks most once role, seniority and region are held fixed: among rows whose raw
+ * interval excludes zero, the one that loses the most dollars (raw gap minus the adjusted dollar figure,
+ * in the direction of the raw gap; a sign flip counts as losing more than the whole gap). `share` is the
+ * part of the raw gap that is left (can be negative after a flip).
+ */
+export function mostRoleDrivenRow<T extends PremiumFields>(rows: T[]): { row: T; lost: number; share: number } | null {
+  let best: { row: T; lost: number; share: number } | null = null;
+  for (const row of rows) {
+    if (crossesZero(row.ci_low, row.ci_high) || row.diff === 0 || row.adj_pct == null || row.adj_usd == null) continue;
+    const dir = row.diff > 0 ? 1 : -1;
+    const kept = dir * row.adj_usd;
+    const lost = Math.abs(row.diff) - kept;
+    if (lost > 0 && (!best || lost > best.lost)) best = { row, lost, share: kept / Math.abs(row.diff) };
+  }
+  return best;
+}
+
+/** 12.4 -> "+12%", -3.2 -> "−3%", 0.2 -> "0%". */
+export function fmtSignedPct(n: number): string {
+  const v = Math.round(Math.abs(n));
+  if (v === 0) return "0%";
+  return `${n > 0 ? "+" : "−"}${v}%`;
+}
+
 const Z = 1.96;
 
 /** Wilson score interval for a proportion x/n (better behaved than the Wald interval at small n and near 0/1). */
