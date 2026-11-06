@@ -176,6 +176,12 @@ Model files and caches download to F: (`RADAR_MODEL_CACHE=F:\Models\remote-radar
   - `role_skills`: `[{role, n, top: [{slug, name, share}]}]` top 12 per role.
 - `companies.json`: `[{slug, name, jobs, roles: {role: n}, seniority: {..}, top_skills: [{slug, name, count}], median_salary_usd, sources: [..], job_ids: [..]}]` companies with >= 1 job, sorted by jobs desc.
 
+### v2 status (2026-11-06): shipped in e7719f2, live
+
+- H, I, J reviewed. Orchestrator fixes: pay-premium headline states it is unadjusted for role; matcher coverage prior 1 -> 3 (one-skill postings no longer outrank rich matches); single-row scrolling nav on phones; company names in job lists link to company pages; overview CTAs to /match and /insights; `web/public/ort/` gitignored (copied at build).
+- Checks: pipeline 534 tests, web 47 unit tests, lint, build (461 pages), browser review of /match (sample CV, network log shows no CV data sent), /insights, /companies, 375 px dark; CI green; live pages 200.
+- Follow-ups: role-adjusted pay premium; display names for unknown skill slugs ("Lqa", "Ada"); more sources for more data roles; user review of eval gold labels; nightly task (user said not yet).
+
 ## Integration (2026-11-06)
 
 - Full extraction: 448/448 canonical remote jobs with gemma4:31b, 0 failures, median 1.36 s, 12 min.
