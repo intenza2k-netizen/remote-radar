@@ -7,10 +7,9 @@
 ![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-**Live demo:** https://remote-radar.vercel.app *(coming soon)*
+**Live demo:** https://remote-radar-nine.vercel.app
 
-<!-- ![Remote Radar dashboard](docs/screenshot.png) -->
-*Screenshot: to be added at `docs/screenshot.png`.*
+![Remote Radar dashboard overview](docs/screenshot.jpg)
 
 ## Why I built this
 

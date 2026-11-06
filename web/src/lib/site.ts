@@ -3,10 +3,9 @@ export const SITE_TAGLINE = "What remote employers actually ask for";
 export const SITE_DESCRIPTION =
   "A nightly-updated snapshot of the remote job market: which skills, seniority levels and salaries show up in postings from Remotive, Remote OK, Arbeitnow and Jobicy, extracted with an LLM.";
 
-/** Placeholder until the repository is published. */
-export const GITHUB_URL = "https://github.com/your-username/remote-radar";
+export const GITHUB_URL = "https://github.com/intenza2k-netizen/remote-radar";
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://remote-radar-nine.vercel.app";
 
 /** Attribution list. Always named on the methodology page regardless of snapshot contents. */
 export const ATTRIBUTION = [
